@@ -99,28 +99,13 @@ void initOpengl() {
 void printHelp() {
     const char * helpScreen = R"V0G0N(
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        ~~~~ Assignment 3 - Part 1 ~~~~
+        ~~~~ Assignment 3 - Part 2 ~~~~
         ~~~~~~~ By Ben Winding ~~~~~~~~
 
     Usage: 
-        ./assign3_part1 file1.obj
-        ./assign3_part1 file1.obj file2.obj
-
-        At least one obj filepath is expected by the program.
+        ./assign3_part2
 
     Keyboard:
-        B    = Cycle between debug modes:
-               Mode 1 : Wireframe mode.
-               Mode 2 : Vertex normal mode.
-               Mode 3 : Diffuse colour mode.
-
-        S    = Cycle between lighting modes:
-               Mode 1 : An overhead 'red' directional light. 
-               Mode 2 : A 'green' camera light.
-               Mode 3 : A 'yellow' light, which orbits the model.
-
-        D    = Lighting on/off
-
         ESC  = Exit Program
 
     )V0G0N";
@@ -136,7 +121,7 @@ int main(int argc, char **argv)
     const char* fileName = "models/Barrel/Barrel02.obj";
     objFileNames.push_back((char*)fileName);
     // Parse program arguments, add to a vector
-    std::string windowTitle = "Assign3 Part2"; 
+    std::string windowTitle = "Assign3 - Part2";
     glfwSetWindowTitle(window, windowTitle.c_str());
     TheApp = new App(winX, winY, objFileNames);
 
