@@ -1,0 +1,7 @@
+assign*
+*.o
+*.d
+.idea
+cmake-build-debug
+CMakeFiles
+CMakeCache.txt
