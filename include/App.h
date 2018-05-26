@@ -41,10 +41,6 @@ public:
 private:
     int winX, winY;
 
-    float objScale;
-    glm::vec3 totalExtents;
-
-    std::vector<ObjContainer *> objList;
     WorldFloor* worldFloor;
 
     InputState mouseInput;
@@ -54,7 +50,6 @@ private:
     Shader *lightingShader;
     void setShaders();
 
-    void loadObjFiles(std::vector<char*> objFilePath);
     void loadSceneComponents();
     
     void cycleDebugView();

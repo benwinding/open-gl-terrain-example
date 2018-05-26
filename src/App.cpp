@@ -9,8 +9,6 @@
 
 #include "App.h"
 #include "utils/Logger.h"
-#include "graphics/Shape.h"
-#include "graphics/SceneCalculations.h"
 
 // Public API
 
@@ -19,7 +17,6 @@ App::App(int winX, int winY)
     this->setShaders();
     this->SetWindowSize(winX, winY);
     this->loadSceneComponents();
-    // this->loadObjFiles(objFilePaths);
     glm::vec3 cameraPos(0.0f, 0.0f, 3.5f);
     this->Camera = new ObjectViewer(cameraPos);
     cycleDebugView();
@@ -87,24 +84,6 @@ void App::SetWindowSize(int x, int y)
 }
 
 // Private methods
-
-void App::loadObjFiles(std::vector<char*> objFilePaths) 
-{
-    int objCount = objFilePaths.size();
-    std::cout << objCount << " filepaths recieved, reading files." << std::endl;
-
-    for (int i = 0; i < objCount; ++i)
-    {
-        char* objFilePath = objFilePaths[i];
-        ObjContainer* newObj = new ObjContainer(objFilePath);
-        PrintObjFileInfo(newObj);
-        this->objList.push_back(newObj);
-    }
-    this->objScale = CalculateTotalScale(this->objList);
-    this->totalExtents = CalculateBoundingBoxTotal(this->objList);
-    Print("     Total Extents: ", totalExtents);
-    Print("All Objects Scaled: ", objScale);
-}
 
 void App::setDebugView(int debug) 
 {
