@@ -1,6 +1,6 @@
 #include <GL/glew.h>
 
-#include "FileUtils.h"
+#include "utils/FileUtils.h"
 
 std::string GetBaseDir(const std::string& filepath) {
   if (filepath.find_last_of("/\\") != std::string::npos)

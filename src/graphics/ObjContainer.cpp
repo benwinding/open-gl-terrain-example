@@ -6,12 +6,12 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include "tiny_obj_loader.h"
-#include "stb_image.h"
-#include "ObjContainer.h"
-#include "FileUtils.h"
-#include "Shape.h"
-#include "Shader.h"
+#include "external_files/tiny_obj_loader.h"
+#include "external_files/stb_image.h"
+#include "graphics/ObjContainer.h"
+#include "utils/FileUtils.h"
+#include "graphics/Shape.h"
+#include "graphics/Shader.h"
 
 ObjContainer::ObjContainer(char* objFilePath) {    
     this->maxExtents = glm::vec3(-FLT_MAX,-FLT_MAX,-FLT_MAX);

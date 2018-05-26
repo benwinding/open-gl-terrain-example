@@ -4,8 +4,8 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-#include "Logger.h"
-#include "ObjContainer.h"
+#include "utils/Logger.h"
+#include "graphics/ObjContainer.h"
 
 void Print(std::string vecName, glm::mat4 mat) 
 {

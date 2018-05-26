@@ -40,7 +40,7 @@ THE SOFTWARE.
 //
 // Use this in *one* .cc
 //   #define TINYOBJLOADER_IMPLEMENTATION
-//   #include "tiny_obj_loader.h"
+//   #include "external_files/tiny_obj_loader.h"
 //
 
 #pragma once

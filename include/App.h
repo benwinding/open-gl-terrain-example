@@ -3,10 +3,10 @@
 
 #include "glm/glm.hpp"
 
-#include "Shader.h"
-#include "Viewer.h"
-#include "ObjContainer.h"
-#include "InputState.h"
+#include "graphics/Shader.h"
+#include "graphics/Viewer.h"
+#include "graphics/ObjContainer.h"
+#include "graphics/InputState.h"
 
 enum debugViewType
 {

@@ -3,9 +3,9 @@
 #include <cmath>
 #include "glm/glm.hpp"
 
-#include "SceneCalculations.h"
-#include "ObjContainer.h"
-#include "Logger.h"
+#include "graphics/SceneCalculations.h"
+#include "graphics/ObjContainer.h"
+#include "utils/Logger.h"
 
 glm::vec3 CalculateBoundingBoxTotal(std::vector<ObjContainer*> objList) 
 {

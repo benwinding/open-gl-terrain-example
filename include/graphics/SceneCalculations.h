@@ -3,7 +3,7 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "ObjContainer.h"
+#include "graphics/ObjContainer.h"
 
 glm::vec3 CalculateBoundingBoxTotal(std::vector<ObjContainer*> objList);
 float CalculateTotalScale(std::vector<ObjContainer*> objList);

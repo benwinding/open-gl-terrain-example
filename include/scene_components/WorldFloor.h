@@ -1,7 +1,7 @@
 #ifndef _WORLDFLOOR_H_
 #define _WORLDFLOOR_H_
 
-#include "SceneComponent.h"
+#include "scene_components/SceneComponent.h"
 
 class WorldFloor : SceneComponent
 {

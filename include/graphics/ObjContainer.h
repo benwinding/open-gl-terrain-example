@@ -4,8 +4,8 @@
 #include <vector>
 
 #include <glm/glm.hpp>
-#include "Shape.h"
-#include "Shader.h"
+#include "graphics/Shape.h"
+#include "graphics/Shader.h"
 
 class ObjContainer
 {

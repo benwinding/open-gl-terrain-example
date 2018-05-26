@@ -8,9 +8,9 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "App.h"
-#include "Logger.h"
-#include "Shape.h"
-#include "SceneCalculations.h"
+#include "utils/Logger.h"
+#include "graphics/Shape.h"
+#include "graphics/SceneCalculations.h"
 
 // Public API
 

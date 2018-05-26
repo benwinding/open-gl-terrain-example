@@ -8,7 +8,7 @@
 #include <glm/glm.hpp>
 #include "glm/gtc/matrix_transform.hpp"
 
-#include "Shape.h"
+#include "graphics/Shape.h"
 
 Shape::Shape() {    
     this->vertexCount = 0;

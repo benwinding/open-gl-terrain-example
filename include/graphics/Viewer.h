@@ -9,7 +9,7 @@
 #ifndef _VIEWER_H_
 #define _VIEWER_H_
 
-#include "InputState.h"
+#include "graphics/InputState.h"
 #include "glm/glm.hpp"
 
 /**

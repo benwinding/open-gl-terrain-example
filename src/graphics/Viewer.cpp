@@ -4,7 +4,7 @@
 #include <math.h>
 #include <string>
 
-#include "Viewer.h"
+#include "graphics/Viewer.h"
 #include "glm/gtc/matrix_transform.hpp"
 
 #define DEG2RAD(x) ((x)*M_PI/180.0) 

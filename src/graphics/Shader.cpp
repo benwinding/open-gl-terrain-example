@@ -6,7 +6,7 @@
 
 #include <GL/glew.h>
 
-#include "Shader.h"
+#include "graphics/Shader.h"
 
 int Shader::CompileShader(const char *ShaderPath, const GLuint ShaderID)
 {
