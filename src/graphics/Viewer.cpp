@@ -33,7 +33,7 @@ const glm::mat4 Viewer::getViewMtx() const
 */
 void Viewer::reset()
 {
-    glm::vec3 at(0.0f, 0.0f, 0.0f);
+    glm::vec3 at(0.0f, 1.0f, -1.0f);
     glm::vec3 up(0.0f, 1.0f, 0.0f);
     viewMtx = glm::lookAt(initEye, at, up);
 }

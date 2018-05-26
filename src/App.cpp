@@ -17,14 +17,16 @@ App::App(int winX, int winY)
     this->setShaders();
     this->SetWindowSize(winX, winY);
     this->loadSceneComponents();
-    glm::vec3 cameraPos(0.0f, 0.0f, 3.5f);
+    glm::vec3 cameraPos(0.0f, 1.0f, 3.5f);
     this->Camera = new ObjectViewer(cameraPos);
-    cycleDebugView();
+    this->cycleDebugView();
 }
 
 void App::loadSceneComponents() {
-    this->worldFloor = new WorldFloor();
+    this->worldFloor = new WorldFloor(65, true);
     this->worldFloor->onSetup();
+    this->worldFloor2 = new WorldFloor(10000, false);
+    this->worldFloor2->onSetup();
 }
 
 void App::Render() 
@@ -37,6 +39,7 @@ void App::Render()
     shader->setMat4("view", this->Camera->getViewMtx());
 
     this->worldFloor->onRender(this->simpleShader);
+    this->worldFloor2->onRender(this->simpleShader);
 
     glFlush();
 }

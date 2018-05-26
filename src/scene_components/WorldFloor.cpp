@@ -1,10 +1,13 @@
-
 #include "scene_components/WorldFloor.h"
+
+WorldFloor::WorldFloor(float scale, bool alignBottom) {
+    this->objScale = scale;
+    this->alignBottom = alignBottom;
+}
 
 void WorldFloor::onSetup() {
     const char* fname = "models/Barrel/Barrel02.obj";
     this->objContainer = new ObjContainer((char*) fname);
-    this->objScale = 65;
 }
 
 void WorldFloor::onRender(Shader* shader) {
@@ -12,10 +15,11 @@ void WorldFloor::onRender(Shader* shader) {
     glm::mat4 modelM(1.f);
     // Move to side
     float objWidth = obj->GetObjSize().x;
-    float transXCenter = 0;
+    float objHeight = obj->GetObjSize().y;
     modelM = glm::scale(modelM, glm::vec3(objScale));
     modelM = glm::translate(modelM, -obj->GetOffsetCenter());
-    modelM = glm::translate(modelM, glm::vec3(transXCenter, 0, 0));
+    float align = this->alignBottom ? 1 : -1;
+    modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2, 0));
     // Draw object
     shader->setMat4("model", modelM);
 

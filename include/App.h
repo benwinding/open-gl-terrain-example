@@ -42,6 +42,7 @@ private:
     int winX, winY;
 
     WorldFloor* worldFloor;
+    WorldFloor* worldFloor2;
 
     InputState mouseInput;
 
