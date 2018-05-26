@@ -7,6 +7,7 @@
 #include "graphics/Viewer.h"
 #include "graphics/ObjContainer.h"
 #include "graphics/InputState.h"
+#include "scene_components/WorldFloor.h"
 
 enum debugViewType
 {
@@ -44,10 +45,9 @@ private:
     glm::vec3 totalExtents;
 
     std::vector<ObjContainer *> objList;
+    WorldFloor* worldFloor;
 
     InputState mouseInput;
-
-    void drawObject(ObjContainer* obj) ;
 
     Shader *shader;
     Shader *simpleShader;

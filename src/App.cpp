@@ -22,64 +22,38 @@ App::App(int winX, int winY)
     // this->loadObjFiles(objFilePaths);
     glm::vec3 cameraPos(0.0f, 0.0f, 3.5f);
     this->Camera = new ObjectViewer(cameraPos);
-    this->cycleLighting();
+    cycleDebugView();
 }
 
 void App::loadSceneComponents() {
-    const char* fname = "models/Barrel/Barrel02.obj";
-    ObjContainer* newObj = new ObjContainer((char*) fname);
-    this->objList.push_back(newObj);
-    this->objScale = CalculateTotalScale(this->objList);
-    this->totalExtents = CalculateBoundingBoxTotal(this->objList);
+    this->worldFloor = new WorldFloor();
+    this->worldFloor->onSetup();
 }
 
 void App::Render() 
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    Camera->update(mouseInput);    
+    Camera->update(mouseInput);
     // Set common uniforms
     shader->setMat4("projection", projection);
     shader->setMat4("view", this->Camera->getViewMtx());
 
-    int objCount = this->objList.size();
-    float totalWidth = totalExtents.x;
-    float remainingWidth = 0;
+    this->worldFloor->onRender(this->simpleShader);
 
-    for (int i = 0; i < objCount; ++i)
-    {
-        ObjContainer* obj = this->objList[i];
-        glm::mat4 modelM(1.f);
-        // Move to side
-        float objWidth = obj->GetObjSize().x;
-        float transAllToSide = -(objWidth * 0.5f) - remainingWidth;
-        float transAllToCenter = transAllToSide + (totalWidth * 0.5f);
-        float transAllScaled = transAllToCenter;
-        modelM = glm::scale(modelM, glm::vec3(objScale));
-        modelM = glm::translate(modelM, -obj->GetOffsetCenter());
-        modelM = glm::translate(modelM, glm::vec3(transAllScaled, 0, 0));
-        // Draw object
-        shader->setMat4("model", modelM);
-        this->drawObject(obj);
-        remainingWidth += objWidth;
-    }
     glFlush();
 }
 
 void App::MouseBtn_callback(int button, int action)
 {
-    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
         mouseInput.rMousePressed = true;
-    }
-    else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) {
+    else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE)
         mouseInput.rMousePressed = false;
-    }
-    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
         mouseInput.lMousePressed = true;
-    }
-    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-        mouseInput.lMousePressed = false;
-    }                
+    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+        mouseInput.lMousePressed = false;               
 }
 
 void App::MouseMove_callback(double x, double y)
@@ -130,35 +104,6 @@ void App::loadObjFiles(std::vector<char*> objFilePaths)
     this->totalExtents = CalculateBoundingBoxTotal(this->objList);
     Print("     Total Extents: ", totalExtents);
     Print("All Objects Scaled: ", objScale);
-}
-
-void App::drawObject(ObjContainer* obj) 
-{
-    glm::vec3 rotatingPosition = GetRotatingPosition();
-
-    int numShapes = obj->shapes.size();
-    for (int i = 0; i < numShapes; ++i)
-    {
-        Shape currentShape = obj->shapes[i];
-        if(shader == simpleShader) {
-            shader->setVec3("diffuse", currentShape.material.diffuse);
-        } 
-        if(shader == lightingShader)
-        {
-            shader->setVec3("scene.viewDir", glm::vec3(0,-1,0));
-            shader->setVec3("scene.viewPos", this->Camera->GetCameraPosition());
-            shader->setVec3("scene.rotatingPosition", rotatingPosition);
-
-            shader->setInt("material.texture", 0);
-            shader->setFloat("material.shininess", currentShape.material.shininess);
-            shader->setVec3("material.diffuse", currentShape.material.diffuse);
-            shader->setVec3("material.specular", currentShape.material.specular);
-            shader->setVec3("material.ambient", currentShape.material.ambient);
-            shader->EnableTexture(currentShape.textureDiffuseId);
-        }
-
-        currentShape.DrawShape();
-    }
 }
 
 void App::setDebugView(int debug) 
