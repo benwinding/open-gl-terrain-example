@@ -117,13 +117,10 @@ int main(int argc, char **argv)
     initWindow();
     initOpengl();
     printHelp();
-    std::vector<char*> objFileNames;
-    const char* fileName = "models/Barrel/Barrel02.obj";
-    objFileNames.push_back((char*)fileName);
     // Parse program arguments, add to a vector
     std::string windowTitle = "Assign3 - Part2";
     glfwSetWindowTitle(window, windowTitle.c_str());
-    TheApp = new App(winX, winY, objFileNames);
+    TheApp = new App(winX, winY);
 
     while (!glfwWindowShouldClose(window))
     {

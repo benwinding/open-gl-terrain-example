@@ -29,7 +29,7 @@ enum lightingModeType
  */
 class App {
 public:
-    App(int winX, int winY, std::vector<char*> objFilePath);
+    App(int winX, int winY);
 
     void Render();
     void Key_callback(int key, int action);
@@ -55,7 +55,8 @@ private:
     void setShaders();
 
     void loadObjFiles(std::vector<char*> objFilePath);
-
+    void loadSceneComponents();
+    
     void cycleDebugView();
     void cycleLighting();
     void toggleLightTexture();

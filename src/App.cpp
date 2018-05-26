@@ -14,14 +14,23 @@
 
 // Public API
 
-App::App(int winX, int winY, std::vector<char*> objFilePaths)
+App::App(int winX, int winY)
 {
     this->setShaders();
     this->SetWindowSize(winX, winY);
-    this->loadObjFiles(objFilePaths);
+    this->loadSceneComponents();
+    // this->loadObjFiles(objFilePaths);
     glm::vec3 cameraPos(0.0f, 0.0f, 3.5f);
     this->Camera = new ObjectViewer(cameraPos);
     this->cycleLighting();
+}
+
+void App::loadSceneComponents() {
+    const char* fname = "models/Barrel/Barrel02.obj";
+    ObjContainer* newObj = new ObjContainer((char*) fname);
+    this->objList.push_back(newObj);
+    this->objScale = CalculateTotalScale(this->objList);
+    this->totalExtents = CalculateBoundingBoxTotal(this->objList);
 }
 
 void App::Render() 
