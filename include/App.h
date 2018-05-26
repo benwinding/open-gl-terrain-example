@@ -52,10 +52,6 @@ private:
 
     void loadSceneComponents();
     
-    void cycleDebugView();
-    void cycleLighting();
-    void toggleLightTexture();
-
     // Modes
     int currentDebugView;
     int currentLightingMode;
@@ -63,6 +59,9 @@ private:
     void setDebugView(int debug);
     void setLightingMode(int debug);
     void setTextureMode(bool textureMode);
+    void cycleDebugView();
+    void cycleLighting();
+    void toggleLightTexture();
 
     glm::mat4 projection;
     void updateProjection();
