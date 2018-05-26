@@ -39,4 +39,3 @@ $(EXE): $(O_FILES)
 
 clean:
 	rm -rf $(OUT_DIR)* $(EXE)$(EXT)
-
