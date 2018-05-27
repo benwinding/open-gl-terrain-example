@@ -6,7 +6,7 @@ WorldFloor::WorldFloor(float scale, bool alignBottom) {
 }
 
 void WorldFloor::onSetup() {
-    const char* fname = "models/Barrel/Barrel02.obj";
+    const char* fname = "res/models/Barrel/Barrel02.obj";
     this->objContainer = new ObjContainer((char*) fname);
 }
 
