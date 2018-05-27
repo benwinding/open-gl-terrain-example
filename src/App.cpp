@@ -23,9 +23,9 @@ App::App(int winX, int winY)
 }
 
 void App::loadSceneComponents() {
-    this->worldFloor = new WorldFloor(65, true);
+    this->worldFloor = new WorldFloor(1, true);
     this->worldFloor->onSetup();
-    this->worldFloor2 = new WorldFloor(10000, false);
+    this->worldFloor2 = new WorldFloor(20, false);
     this->worldFloor2->onSetup();
 }
 
