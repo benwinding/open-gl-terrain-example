@@ -4,14 +4,19 @@
 #include "scene_components/SceneComponent.h"
 #include "graphics/Shader.h"
 
+enum alignment {
+    ALIGN_BOTTOM,
+    ALIGN_TOP
+};
+
 class WorldFloor : SceneComponent
 {
     ObjContainer* objContainer;
     float objScale;
-    bool alignBottom;
+    int align;
 
 public:
-    WorldFloor(float scale, bool alignBottom);
+    WorldFloor(float scale, int alignment);
     void onSetup();
     void onRender(Shader* shader);    
 };

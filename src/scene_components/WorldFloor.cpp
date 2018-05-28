@@ -1,8 +1,8 @@
 #include "scene_components/WorldFloor.h"
 
-WorldFloor::WorldFloor(float scale, bool alignBottom) {
+WorldFloor::WorldFloor(float scale, int align) {
     this->objScale = scale;
-    this->alignBottom = alignBottom;
+    this->align = align;
 }
 
 void WorldFloor::onSetup() {
@@ -19,7 +19,7 @@ void WorldFloor::onRender(Shader* shader) {
     float objHeight = obj->GetObjSize().y;
     modelM = glm::scale(modelM, glm::vec3(objScale));
     modelM = glm::translate(modelM, -obj->GetOffsetCenter());
-    float align = this->alignBottom ? 1 : -1;
+    float align = this->align == ALIGN_BOTTOM ? 1 : -1;
     modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2, 0));
     // Draw object
     shader->setMat4("model", modelM);

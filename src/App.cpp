@@ -22,11 +22,25 @@ App::App(int winX, int winY)
     this->cycleDebugView();
 }
 
+// TODO: 1. Flat landscape, load obj file (Tree)
+// TODO: 2. Switchable camera First Person, World View
+// TODO: 3. Multiple shaders; Lighting, sun, torches
+// TODO: 4. Sky box
+// TODO: 5. Environment box on mirror cube
+// TODO: 6. Depth cue (fog)
+// TODO: 7. Bump mapping, light mapping, parralax mapping
+// TODO: 8. Generated terrain
+// TODO: 9. Height mapping
+// TODO: 10. Alpha blending 
+// TODO: 11. Sounds
+// TODO: 12. Collision detection
+
 void App::loadSceneComponents() {
-    this->worldFloor = new WorldFloor(1, true);
-    this->worldFloor->onSetup();
-    this->worldFloor2 = new WorldFloor(20, false);
+    this->worldFloor2 = new WorldFloor(20, ALIGN_TOP);
     this->worldFloor2->onSetup();
+
+    this->worldFloor = new WorldFloor(1, ALIGN_BOTTOM);
+    this->worldFloor->onSetup();
 }
 
 void App::Render() 
