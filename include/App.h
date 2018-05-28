@@ -44,7 +44,7 @@ private:
     WorldFloor* worldFloor;
     WorldFloor* worldFloor2;
 
-    InputState mouseInput;
+    InputState userInput;
 
     Shader *shader;
     Shader *simpleShader;

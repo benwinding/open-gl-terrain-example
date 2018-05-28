@@ -6,12 +6,17 @@
 #ifndef _INPUTSTATE_H_
 #define _INPUTSTATE_H_
 
+#include <glm/glm.hpp>
+#include "glm/gtc/matrix_transform.hpp"
+
 struct InputState
 {    
     InputState(): lMousePressed(false),
                   rMousePressed(false),
                   prevX(0), prevY(0),
-                  deltaX(0), deltaY(0) {}
+                  deltaX(0), deltaY(0) {
+                    resetKeys();
+                  }
 
     // Is the mouse button currently being held down?
     bool lMousePressed;
@@ -44,6 +49,47 @@ struct InputState
         deltaX = 0;
         deltaY = 0;
     };
+
+    glm::vec3 GetMoveDir() {
+        glm::vec3 dir;
+        if (stateUp)
+            dir = glm::vec3(0,0,1);
+        else if (stateDown)
+            dir = glm::vec3(0,0,-1);
+        else
+            dir = glm::vec3(0,0,0);
+        return dir;
+    };
+
+    bool isMovePress() {
+        return stateUp || stateDown || stateLeft || stateRight;
+    };
+
+    void pressedUp() {
+        stateUp = true;
+    };
+    void pressedDown() {
+        stateDown = true;
+    };
+    void pressedLeft() {
+        stateLeft = true;
+    };
+    void pressedRight() {
+        stateRight = true;
+    };
+
+    bool resetKeys() {
+        stateUp = false;
+        stateDown = false;
+        stateLeft = false;
+        stateRight = false;
+    };
+
+private:
+    bool stateUp;
+    bool stateDown;
+    bool stateLeft;
+    bool stateRight;
 };
 
 #endif // _INPUTSTATE_H_

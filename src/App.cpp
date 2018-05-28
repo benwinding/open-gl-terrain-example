@@ -19,7 +19,7 @@ App::App(int winX, int winY)
     this->loadSceneComponents();
     glm::vec3 cameraPos(0.0f, 1.0f, 3.5f);
     this->Camera = new ObjectViewer(cameraPos);
-    this->cycleDebugView();
+    this->setDebugView(NORMAL);
 }
 
 // TODO: 1. Flat landscape, load obj file (Tree)
@@ -47,11 +47,12 @@ void App::Render()
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    Camera->update(mouseInput);
+    Camera->update(userInput);
     // Set common uniforms
     shader->setMat4("projection", projection);
     shader->setMat4("view", this->Camera->getViewMtx());
 
+    this->Camera->update(this->userInput);
     this->worldFloor->onRender(this->simpleShader);
     this->worldFloor2->onRender(this->simpleShader);
 
@@ -61,35 +62,50 @@ void App::Render()
 void App::MouseBtn_callback(int button, int action)
 {
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
-        mouseInput.rMousePressed = true;
+        userInput.rMousePressed = true;
     else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE)
-        mouseInput.rMousePressed = false;
+        userInput.rMousePressed = false;
     else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-        mouseInput.lMousePressed = true;
+        userInput.lMousePressed = true;
     else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
-        mouseInput.lMousePressed = false;               
+        userInput.lMousePressed = false;               
 }
 
 void App::MouseMove_callback(double x, double y)
 {
-    mouseInput.update((float)x, (float)y);
+    userInput.update((float)x, (float)y);
 }
 
 void App::Key_callback(int key, int action)
 {
-    if (action != GLFW_PRESS) 
-        return;
-    switch(key) 
+    if (action == GLFW_RELEASE) 
+        userInput.resetKeys();
+    if (action == GLFW_PRESS || action == GLFW_REPEAT)
     {
-        case GLFW_KEY_B:
-            cycleDebugView();
-            break;
-        case GLFW_KEY_S:
-            cycleLighting();
-            break;
-        case GLFW_KEY_D:
-            toggleLightTexture();
-            break;
+        switch(key) 
+        {
+            case GLFW_KEY_B:
+                cycleDebugView();
+                break;
+            case GLFW_KEY_S:
+                cycleLighting();
+                break;
+            case GLFW_KEY_D:
+                toggleLightTexture();
+                break;
+            case GLFW_KEY_UP:
+                userInput.pressedUp();
+                break;
+            case GLFW_KEY_DOWN:
+                userInput.pressedDown();
+                break;
+            case GLFW_KEY_LEFT:
+                userInput.pressedLeft();
+                break;
+            case GLFW_KEY_RIGHT:
+                userInput.pressedRight();
+                break;
+        }
     }
 }
 

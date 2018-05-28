@@ -46,6 +46,9 @@ public:
 */
 class ObjectViewer : public Viewer
 {
+    float velocity;
+    float getVelocity();
+
 public:
     ObjectViewer( glm::vec3 eye );
 

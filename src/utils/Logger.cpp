@@ -26,6 +26,11 @@ void Print(std::string vecName, glm::vec3 vec)
     std::cout << vecName << vec.x << ", " << vec.y << ", " << vec.z << std::endl;
 }
 
+void Print(std::string vecName, glm::vec2 vec) 
+{
+    std::cout << vecName << vec.x << ", " << vec.y << std::endl;
+}
+
 void Print(std::string vecName, float vec) 
 {
     std::cout << vecName << vec << std::endl;

@@ -6,6 +6,7 @@
 
 #include "graphics/Viewer.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "utils/Logger.h"
 
 #define DEG2RAD(x) ((x)*M_PI/180.0) 
 #define RAD2DEG(x) ((x)*180.0/M_PI) 
@@ -40,7 +41,20 @@ void Viewer::reset()
 
 ObjectViewer::ObjectViewer(glm::vec3 eye)
     : Viewer(eye)
-{}
+{
+    this->velocity = 0;
+}
+
+float ObjectViewer::getVelocity()
+{
+    static float velocityMax = 0.10f;
+    static float velocityInc = 0.001f;
+    if(this->velocity < velocityMax)
+        this->velocity += velocityInc;
+    else
+        this->velocity = velocityMax;
+    return this->velocity;
+};
 
 void ObjectViewer::update( InputState &input ) 
 {
@@ -97,7 +111,13 @@ void ObjectViewer::update( InputState &input )
         eyeZ = glm::normalize(eyeZ) * xRot * -0.2f;
         viewMtx = glm::translate(viewMtx, eyeZ);
     }
-
+    if (input.isMovePress()) 
+    {
+        glm::vec3 moveDir = input.GetMoveDir() * this->getVelocity();
+        viewMtx = glm::translate(viewMtx, moveDir);
+    }
+    else 
+        this->velocity = 0;
 }
 
 glm::vec3 ObjectViewer::GetCameraPosition() {
