@@ -50,6 +50,17 @@ struct InputState
         deltaY = 0;
     };
 
+    float GetRotationAngle() {
+        float angle;
+        if (stateLeft)
+            angle = -1;
+        else if (stateRight)
+            angle = 1;
+        else
+            angle = 0;
+        return angle;
+    }
+
     glm::vec3 GetMoveDir() {
         glm::vec3 dir;
         if (stateUp)

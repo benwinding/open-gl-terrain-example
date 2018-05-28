@@ -61,7 +61,7 @@ void ObjectViewer::update( InputState &input )
     float xRot, yRot;
     input.readDeltaAndReset( &yRot, &xRot );
     
-    if ( input.lMousePressed )
+    if (input.lMousePressed)
     {
         // The first 3 rows of the view matrix are the camera x, y, z axes
         // in world coordinate space. (see lecture 6)
@@ -103,16 +103,16 @@ void ObjectViewer::update( InputState &input )
         viewMtx[1][2] = eyeZ[1];
         viewMtx[2][2] = eyeZ[2];
     }
-
-    else if ( input.rMousePressed )
+    else if (input.rMousePressed)
     {
-        // Update the view matrix with new eye axes.
         glm::vec3 eyeZ(viewMtx[0][2], viewMtx[1][2], viewMtx[2][2]);
         eyeZ = glm::normalize(eyeZ) * xRot * -0.2f;
         viewMtx = glm::translate(viewMtx, eyeZ);
     }
     if (input.isMovePress()) 
     {
+        float turn = input.GetRotationAngle() * this->getVelocity();
+        viewMtx = glm::rotate(viewMtx, turn, glm::vec3(0,1,0));
         glm::vec3 moveDir = input.GetMoveDir() * this->getVelocity();
         viewMtx = glm::translate(viewMtx, moveDir);
     }
@@ -155,24 +155,3 @@ void WorldObjectViewer::update( InputState &input )
         viewMtx = glm::rotate( viewMtx, xRot, glm::vec3(1.0f, 0.0f, 0.0f) );
     }
 }
-
-// void Viewer::orthogonaliseViewMtx()
-// {
-//     Vec3 xAxis( viewMtx[0], viewMtx[1], viewMtx[2] );
-//     Vec3 yAxis( viewMtx[4], viewMtx[5], viewMtx[6] );
-//     Vec3 zAxis( viewMtx[8], viewMtx[9], viewMtx[10] );
-
-//     // Gram-Schmidt orthogonalisation
-//     normalise( yAxis );
-//     zAxis = zAxis - dot( zAxis, yAxis ) * yAxis;
-//     normalise( zAxis );
-//     xAxis = xAxis - dot( xAxis, yAxis ) * yAxis 
-//                   - dot( xAxis, zAxis ) * zAxis;
-//     normalise( xAxis );
-
-//     viewMtx[0] = xAxis[0]; viewMtx[4] = yAxis[0]; viewMtx[8] = zAxis[0];
-//     viewMtx[1] = xAxis[1]; viewMtx[5] = yAxis[1]; viewMtx[9] = zAxis[1];
-//     viewMtx[2] = xAxis[2]; viewMtx[6] = yAxis[2]; viewMtx[10] = zAxis[2];
-// }
-
-
