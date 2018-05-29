@@ -25,17 +25,33 @@ void Player::Update(InputState userInput)
     int dir = userInput.GetMove();
     switch (dir) 
     {
-        case MOVEFORWARD:
-            MoveStraight(MOVEFORWARD);
+        case MOVE_FORWARD:
+            MoveStraight(MOVE_FORWARD);
             break;
-        case MOVEBACKWARD:
-            MoveStraight(MOVEBACKWARD);
+        case MOVE_BACKWARD:
+            MoveStraight(MOVE_BACKWARD);
             break;
-        case MOVELEFT:
+        case MOVE_LEFT:
             PanLeft();
             break;
-        case MOVERIGHT:
+        case MOVE_RIGHT:
             PanRight();
+            break;
+        case MOVE_LEFTFORWARD:
+            PanLeft();
+            MoveStraight(MOVE_FORWARD);
+            break;
+        case MOVE_LEFTBACKWARD:
+            PanLeft();
+            MoveStraight(MOVE_BACKWARD);
+            break;
+        case MOVE_RIGHTFORWARD:
+            PanRight();
+            MoveStraight(MOVE_FORWARD);
+            break;
+        case MOVE_RIGHTBACKWARD:
+            PanRight();
+            MoveStraight(MOVE_BACKWARD);
             break;
         case NOMOVE:
             resetAcceleration();
@@ -48,9 +64,9 @@ void Player::MoveStraight(int moveDir)
     float incr = this->getMoveIncrement();
     glm::vec3 playerDir = this->GetDirection3();
     glm::vec3 playerLoc = this->GetLocation3();
-    if (moveDir == MOVEFORWARD)
+    if (moveDir == MOVE_FORWARD)
         this->location += playerDir * incr;
-    if (moveDir == MOVEBACKWARD)
+    if (moveDir == MOVE_BACKWARD)
         this->location -= playerDir * incr;
 }
 

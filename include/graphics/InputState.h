@@ -10,10 +10,15 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 enum keyMove {
-    MOVEFORWARD,
-    MOVEBACKWARD,
-    MOVELEFT,
-    MOVERIGHT,
+    MOVE_LEFT,
+    MOVE_LEFTFORWARD,
+    MOVE_FORWARD,
+    MOVE_RIGHTFORWARD,
+    MOVE_RIGHT,
+    MOVE_RIGHTBACKWARD,
+    MOVE_BACKWARD,
+    MOVE_LEFTBACKWARD,
+
     NOMOVE,
 };
 
@@ -81,14 +86,25 @@ struct InputState
     };
 
     int GetMove() {
+        if (stateUp && stateLeft)
+            return MOVE_LEFTFORWARD;
+        if (stateDown && stateLeft)
+            return MOVE_LEFTBACKWARD;
+
+        if (stateUp && stateRight)
+            return MOVE_RIGHTFORWARD;
+        if (stateDown && stateRight)
+            return MOVE_RIGHTBACKWARD;
+
         if (stateUp)
-            return MOVEFORWARD;
-        else if (stateDown)
-            return MOVEBACKWARD;
-        else if (stateLeft)
-            return MOVELEFT;
-        else if (stateRight)
-            return MOVERIGHT;
+            return MOVE_FORWARD;
+        if (stateDown)
+            return MOVE_BACKWARD;
+        if (stateLeft)
+            return MOVE_LEFT;
+        if (stateRight)
+            return MOVE_RIGHT;
+
         return NOMOVE;
     };
 
