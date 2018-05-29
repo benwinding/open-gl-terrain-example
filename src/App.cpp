@@ -41,13 +41,17 @@ void App::loadSceneComponents() {
 
     this->worldFloor = new WorldFloor(1, ALIGN_BOTTOM);
     this->worldFloor->onSetup();
+
+    this->player = new Player();
 }
 
 void App::Render() 
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    Camera->update(userInput);
+    player->Update(userInput);
+    // Camera->update(userInput);
+    Camera->updateFromPlayer(player->GetLocation3(), player->GetDirection3());
     // Set common uniforms
     shader->setMat4("projection", projection);
     shader->setMat4("view", this->Camera->getViewMtx());
@@ -84,15 +88,6 @@ void App::Key_callback(int key, int action)
     {
         switch(key) 
         {
-            case GLFW_KEY_B:
-                cycleDebugView();
-                break;
-            case GLFW_KEY_S:
-                cycleLighting();
-                break;
-            case GLFW_KEY_D:
-                toggleLightTexture();
-                break;
             case GLFW_KEY_UP:
                 userInput.pressedUp();
                 break;
@@ -104,6 +99,21 @@ void App::Key_callback(int key, int action)
                 break;
             case GLFW_KEY_RIGHT:
                 userInput.pressedRight();
+                break;
+        }
+    }
+    if (action == GLFW_PRESS)
+    {
+        switch(key) 
+        {
+            case GLFW_KEY_B:
+                cycleDebugView();
+                break;
+            case GLFW_KEY_S:
+                cycleLighting();
+                break;
+            case GLFW_KEY_D:
+                toggleLightTexture();
                 break;
         }
     }

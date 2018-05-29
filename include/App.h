@@ -8,6 +8,7 @@
 #include "graphics/ObjContainer.h"
 #include "graphics/InputState.h"
 #include "scene_components/WorldFloor.h"
+#include "scene_components/Player.h"
 
 enum debugViewType
 {
@@ -43,6 +44,7 @@ private:
 
     WorldFloor* worldFloor;
     WorldFloor* worldFloor2;
+    Player* player;
 
     InputState userInput;
 

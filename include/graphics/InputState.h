@@ -9,6 +9,14 @@
 #include <glm/glm.hpp>
 #include "glm/gtc/matrix_transform.hpp"
 
+enum keyMove {
+    MOVEFORWARD,
+    MOVEBACKWARD,
+    MOVELEFT,
+    MOVERIGHT,
+    NOMOVE,
+};
+
 struct InputState
 {    
     InputState(): lMousePressed(false),
@@ -70,6 +78,18 @@ struct InputState
         else
             dir = glm::vec3(0,0,0);
         return dir;
+    };
+
+    int GetMove() {
+        if (stateUp)
+            return MOVEFORWARD;
+        else if (stateDown)
+            return MOVEBACKWARD;
+        else if (stateLeft)
+            return MOVELEFT;
+        else if (stateRight)
+            return MOVERIGHT;
+        return NOMOVE;
     };
 
     bool isMovePress() {

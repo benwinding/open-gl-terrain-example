@@ -109,15 +109,16 @@ void ObjectViewer::update( InputState &input )
         eyeZ = glm::normalize(eyeZ) * xRot * -0.2f;
         viewMtx = glm::translate(viewMtx, eyeZ);
     }
-    if (input.isMovePress()) 
-    {
-        float turn = input.GetRotationAngle() * this->getVelocity();
-        viewMtx = glm::rotate(viewMtx, turn, glm::vec3(0,1,0));
-        glm::vec3 moveDir = input.GetMoveDir() * this->getVelocity();
-        viewMtx = glm::translate(viewMtx, moveDir);
-    }
-    else 
-        this->velocity = 0;
+}
+
+void ObjectViewer::updateFromPlayer(glm::vec3 location, glm::vec3 direction) {
+    // location = glm::vec3(0, 1, -5);
+    // direction = glm::vec3(0, 0, 1);
+    // Print("direction:", direction);
+    viewMtx = glm::mat4(0);
+    glm::vec3 up(0.0f, 1.0f, 0.0f);
+    glm::vec3 lookBoth = location + direction;
+    viewMtx = glm::lookAt(location, lookBoth, up);
 }
 
 glm::vec3 ObjectViewer::GetCameraPosition() {
@@ -126,32 +127,4 @@ glm::vec3 ObjectViewer::GetCameraPosition() {
     float z = this->viewMtx[3][2];
     glm::vec3 currentEye = glm::vec3(x,y,z);
     return currentEye;
-}
-
-/**
-   Again, you almost certainly DON'T want to use this camera!
- */
-WorldObjectViewer::WorldObjectViewer(glm::vec3 eye)
-    : Viewer(eye)
-{
-    xRot = 0.0f;
-    yRot = 0.0f;
-}
-
-void WorldObjectViewer::update( InputState &input ) 
-{
-    float x, y;
-    input.readDeltaAndReset(&x, &y);
-    
-    if ( input.lMousePressed )
-    {
-        // Update rotation about world x and y axes
-        yRot += 0.01f * x;
-        xRot += 0.01f * y;
-        
-        // Rotate from our original camera position based on mouse motion
-        reset();
-        viewMtx = glm::rotate( viewMtx, yRot, glm::vec3(0.0f, 1.0f, 0.0f) );
-        viewMtx = glm::rotate( viewMtx, xRot, glm::vec3(1.0f, 0.0f, 0.0f) );
-    }
 }

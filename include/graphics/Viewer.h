@@ -53,25 +53,8 @@ public:
     ObjectViewer( glm::vec3 eye );
 
     virtual void update( InputState &input );
+    void updateFromPlayer(glm::vec3 location, glm::vec3 direction);
     glm::vec3 GetCameraPosition();
 };
-
-/**
- This is an example of what NOT to do!
- WorldObjectViewer rotates about the world x and y axes
- in response to mouse motion. Vertical motion -> x axis
- rotation, horizontal motion -> y axis rotation.
-*/
-class WorldObjectViewer : public Viewer
-{
-    float xRot;
-    float yRot;
-    
-public:
-    WorldObjectViewer( glm::vec3 eye );
-
-    virtual void update( InputState &input );
-};
-
 
 #endif // VIEWER_H
