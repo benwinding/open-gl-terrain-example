@@ -18,9 +18,9 @@ App::App(int winX, int winY)
 {
     this->SetWindowSize(winX, winY);
     this->loadSceneComponents();
-    glm::vec3 fpvPos(0, 1.0f, 3.5f);
-    this->CamFirstPersion = new ObjectViewer(fpvPos);
-    this->CamTopView = new TopObjectViewer(fpvPos);
+    float topHeight = 5.f;
+    this->CamTopView = new TopObjectViewer(topHeight);
+    this->CamFirstPersion = new ObjectViewer();
     this->Camera = this->CamFirstPersion;
 }
 

@@ -23,20 +23,11 @@ class Viewer
 {
 protected:
     glm::mat4 viewMtx;
-    glm::vec3 initEye;
-    glm::vec3 initAt;
-    glm::vec3 initUp;
 
 public:
-    Viewer( glm::vec3 eye );
-    virtual ~Viewer();
-
-    const glm::mat4 getViewMtx() const;
-    //    void orthogonaliseViewMtx();
-    void reset();
-
+    glm::mat4 getViewMtx();
+    glm::vec3 GetCameraPosition();
     virtual void updateFromPlayer(glm::vec3 location, glm::vec3 direction) = 0;
-    virtual glm::vec3 GetCameraPosition() = 0;
 };
 
 
@@ -45,9 +36,7 @@ class ObjectViewer : public Viewer
 private:
     float velocity;
 public:
-    ObjectViewer( glm::vec3 eye );
     void updateFromPlayer(glm::vec3 location, glm::vec3 direction);
-    glm::vec3 GetCameraPosition();
 };
 
 
@@ -56,9 +45,8 @@ class TopObjectViewer : public Viewer
 private:
     float height;
 public:
-    TopObjectViewer( glm::vec3 eye );
+    TopObjectViewer(float height);
     void updateFromPlayer(glm::vec3 location, glm::vec3 direction);
-    glm::vec3 GetCameraPosition();
 };
 
 
