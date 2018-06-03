@@ -16,15 +16,6 @@ glm::mat4 Viewer::getViewMtx()
     return viewMtx;
 }
 
-glm::vec3 Viewer::GetCameraPosition() 
-{
-    float x = this->viewMtx[3][0];
-    float y = this->viewMtx[3][1];
-    float z = this->viewMtx[3][2];
-    glm::vec3 currentEye = glm::vec3(x,y,z);
-    return currentEye;
-}
-
 void ObjectViewer::updateFromPlayer(glm::vec3 location, glm::vec3 direction) 
 {
     viewMtx = glm::mat4(0);

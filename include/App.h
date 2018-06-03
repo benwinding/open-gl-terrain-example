@@ -10,21 +10,6 @@
 #include "scene/SceneComponent.h"
 #include "scene/Player.h"
 
-enum debugViewType
-{
-    WIRE_FRAME,
-    NORMAL,
-    DIFFUSE
-};
-
-enum lightingModeType
-{
-    OVERHEAD_RED_LIGHT,
-    CAMERA_LIGHT,
-    ROTATING_YELLOW_LIGHT,
-    TEXTURE_ONLY
-};
-
 /*
  The App class is Repsonsible Composing the program and 
  Drawing the scene
@@ -43,9 +28,9 @@ private:
     int winX, winY;
 
     SceneComponent* worldFloor;
-    SceneComponent* worldFloor2;
     SceneComponent* skyBox;
     SceneComponent* barrel;
+    SceneComponent* mirrorBox;
     Player* player;
 
     InputState userInput;

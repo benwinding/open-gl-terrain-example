@@ -10,9 +10,10 @@
 #include "utils/Logger.h"
 #include "App.h"
 
-#include "scene/WorldFloor.h"
 #include "scene/Skybox.h"
+#include "scene/WorldFloor.h"
 #include "scene/Plant.h"
+#include "scene/MirrorBox.h"
 
 // Public API
 
@@ -42,10 +43,10 @@ App::App(int winX, int winY)
 void App::loadSceneComponents() {
     glEnable(GL_DEPTH_TEST);
 
-    this->worldFloor2 = new WorldFloor(20, ALIGN_TOP);
-    this->worldFloor = new WorldFloor(1, ALIGN_BOTTOM);
-    this->barrel = new Plant(50, glm::vec3(20,0,20));
     this->skyBox = new Skybox();
+    this->worldFloor = new WorldFloor(20, ALIGN_TOP);
+    this->barrel = new Plant(50, glm::vec3(10,0,10));
+    this->mirrorBox = new MirrorBox(1, glm::vec3(0,0,0));
 
     this->player = new Player();
 }
@@ -63,9 +64,9 @@ void App::Render()
     glm::mat4 view = this->Camera->getViewMtx();
 
     this->worldFloor->render(view, projection);
-    this->worldFloor2->render(view, projection);
-    this->skyBox->render(view, projection);
     this->barrel->render(view, projection);
+    this->mirrorBox->render(view, projection);
+    this->skyBox->render(view, projection);
 
     glFlush();
 }

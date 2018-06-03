@@ -40,7 +40,8 @@ void Plant::drawObject(ObjContainer* obj, Shader* shader)
     for (int i = 0; i < numShapes; ++i)
     {
         Shape currentShape = obj->shapes[i];
-        shader->setVec3("diffuse", currentShape.material.diffuse);
+        shader->setInt("material.texture", 0);
+        shader->EnableTexture(currentShape.textureDiffuseId);
         currentShape.DrawShape();
     }
 }

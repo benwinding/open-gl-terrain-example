@@ -12,6 +12,9 @@ enum alignment
 // Repsonsible For Tracking the players movements
 class SceneComponent 
 {
+protected:
+    glm::vec3 GetCameraPosition(glm::mat4 viewMtx);
+    
 public:
     virtual void onSetup() = 0;
     virtual void render(glm::mat4 viewMtx, glm::mat4 projectionMtx) = 0;

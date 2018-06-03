@@ -26,7 +26,6 @@ protected:
 
 public:
     glm::mat4 getViewMtx();
-    glm::vec3 GetCameraPosition();
     virtual void updateFromPlayer(glm::vec3 location, glm::vec3 direction) = 0;
 };
 

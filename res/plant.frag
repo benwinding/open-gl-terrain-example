@@ -6,9 +6,18 @@ in vec3 FragPos;
 
 out vec4 FragColor;
 
-uniform vec3 diffuse;
+struct Material {
+    sampler2D texture;
+    float shininess;
+    vec3 specular;
+    vec3 diffuse;
+    vec3 ambient;
+}; 
+
+uniform Material material;
 
 void main(void)
 {
-    FragColor = vec4(diffuse, 1.0);
+    vec3 colour = texture(material.texture, TexCoords).rgb;
+    FragColor = vec4(colour, 1);
 }
