@@ -5,13 +5,20 @@ WorldFloor::WorldFloor(float scale, int align) {
     this->align = align;
 }
 
+void WorldFloor::setViewProjection(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
+    // Set common uniforms
+    shader->setMat4("view", viewMtx);
+    shader->setMat4("projection", projectionMtx);
+}
+
 void WorldFloor::onSetup() {
     const char* fname = "res/models/cube-simple/cube-simple.obj";
     // const char* fname = "res/models/Barrel/Barrel02.obj";
     this->objContainer = new ObjContainer((char*) fname);
+    this->shader = new Shader("res/debug_inspect.vert","res/debug_inspect.frag");
 }
 
-void WorldFloor::onRender(Shader* shader) {
+void WorldFloor::onRender() {
     ObjContainer* obj = this->objContainer;
     glm::mat4 modelM(1.f);
     // Move to side
@@ -19,24 +26,23 @@ void WorldFloor::onRender(Shader* shader) {
     float objHeight = obj->GetObjSize().y;
     modelM = glm::scale(modelM, glm::vec3(objScale));
     modelM = glm::translate(modelM, -obj->GetOffsetCenter());
+    // Align to top or bottom
     float align = this->align == ALIGN_BOTTOM ? 1 : -1;
     modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2, 0));
-    // Draw object
     shader->setMat4("model", modelM);
-
-    this->drawObject(obj, shader);
+    // Draw object
+    this->drawObject(obj, this->shader);
 }
 
 void WorldFloor::drawObject(ObjContainer* obj, Shader* shader) 
 {
     // glm::vec3 rotatingPosition = GetRotatingPosition();
-
     int numShapes = obj->shapes.size();
     for (int i = 0; i < numShapes; ++i)
     {
         Shape currentShape = obj->shapes[i];
+        // shader->setVec3("diffuse", currentShape.material.diffuse);
         // if(shader == simpleShader) {
-            shader->setVec3("diffuse", currentShape.material.diffuse);
         // } 
         // if(shader == lightingShader)
         // {

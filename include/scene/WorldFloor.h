@@ -1,16 +1,22 @@
 #ifndef _WORLDFLOOR_H_
 #define _WORLDFLOOR_H_
 
+#include "glm/glm.hpp"
+
 #include "graphics/Shader.h"
 #include "graphics/ObjContainer.h"
+#include "scene/SceneComponent.h"
 
-enum alignment {
+enum alignment 
+{
     ALIGN_BOTTOM,
     ALIGN_TOP
 };
 
-class WorldFloor
+class WorldFloor : SceneComponent
 {
+private:
+    Shader* shader;
     ObjContainer* objContainer;
     float objScale;
     int align;
@@ -18,8 +24,9 @@ class WorldFloor
 
 public:
     WorldFloor(float scale, int alignment);
+    void setViewProjection(glm::mat4 viewMtx, glm::mat4 projectionMtx);
     void onSetup();
-    void onRender(Shader* shader);    
+    void onRender();
 };
 
 #endif

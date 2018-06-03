@@ -48,24 +48,8 @@ private:
 
     InputState userInput;
 
-    Shader *shader;
-    Shader *simpleShader;
-    Shader *lightingShader;
-    void setShaders();
-
     void loadSceneComponents();
     
-    // Modes
-    int currentDebugView;
-    int currentLightingMode;
-    int isTextureOnlyMode;    
-    void setDebugView(int debug);
-    void setLightingMode(int debug);
-    void setTextureMode(bool textureMode);
-    void cycleDebugView();
-    void cycleLighting();
-    void toggleLightTexture();
-
     glm::mat4 projection;
     void updateProjection();
 

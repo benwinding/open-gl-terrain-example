@@ -14,12 +14,10 @@
 
 App::App(int winX, int winY)
 {
-    this->setShaders();
     this->SetWindowSize(winX, winY);
     this->loadSceneComponents();
     glm::vec3 cameraPos(0.0f, 1.0f, 3.5f);
     this->Camera = new ObjectViewer(cameraPos);
-    this->setDebugView(NORMAL);
 }
 
 // TODO: 1. Flat landscape, load obj file (Tree)
@@ -52,13 +50,12 @@ void App::Render()
     player->Update(userInput);
     // Camera->update(userInput);
     Camera->updateFromPlayer(player->GetLocation3(), player->GetDirection3());
-    // Set common uniforms
-    shader->setMat4("projection", projection);
-    shader->setMat4("view", this->Camera->getViewMtx());
 
     this->Camera->update(this->userInput);
-    this->worldFloor->onRender(this->simpleShader);
-    this->worldFloor2->onRender(this->simpleShader);
+    this->worldFloor->setViewProjection(this->Camera->getViewMtx(), projection);
+    this->worldFloor2->setViewProjection(this->Camera->getViewMtx(), projection);
+    this->worldFloor->onRender();
+    this->worldFloor2->onRender();
 
     glFlush();
 }
@@ -102,21 +99,6 @@ void App::Key_callback(int key, int action)
                 break;
         }
     }
-    if (action == GLFW_PRESS)
-    {
-        switch(key) 
-        {
-            case GLFW_KEY_B:
-                cycleDebugView();
-                break;
-            case GLFW_KEY_S:
-                cycleLighting();
-                break;
-            case GLFW_KEY_D:
-                toggleLightTexture();
-                break;
-        }
-    }
 }
 
 void App::SetWindowSize(int x, int y)
@@ -127,89 +109,6 @@ void App::SetWindowSize(int x, int y)
 }
 
 // Private methods
-
-void App::setDebugView(int debug) 
-{
-    this->isTextureOnlyMode = false;
-    this->shader = this->simpleShader;
-    this->shader->use();
-    switch (debug) {
-        case WIRE_FRAME:
-            Print("- Debug Mode 0 : WIRE_FRAME");
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            break;
-        case NORMAL:
-            Print("- Debug Mode 1 : NORMAL");
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            break;        
-        case DIFFUSE:
-            Print("- Debug Mode 2 : DIFFUSE");
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            break;
-    }
-    shader->setInt("debugMode", debug);
-}
-
-void App::setLightingMode(int lightingMode)
-{
-    this->isTextureOnlyMode = false;
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    this->shader = this->lightingShader;
-    this->shader->use();
-    switch (lightingMode) {
-        case OVERHEAD_RED_LIGHT:
-            Print("- Lighting Mode 0 : OVERHEAD_RED_LIGHT");
-            break;            
-        case CAMERA_LIGHT:
-            Print("- Lighting Mode 1 : CAMERA_LIGHT");
-            break;        
-        case ROTATING_YELLOW_LIGHT:
-            Print("- Lighting Mode 2 : ROTATING_YELLOW_LIGHT");
-            break;
-    }
-    shader->setInt("scene.lightingMode", lightingMode);
-}
-
-void App::setTextureMode(bool textureMode)
-{
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    this->shader = this->lightingShader;
-    this->shader->use();
-    if (textureMode) {
-        Print("- TextureMode Mode 1 : TEXTURES ON");
-        shader->setInt("scene.lightingMode", TEXTURE_ONLY);
-    }
-    else {
-        Print("- TextureMode Mode 0 : TEXTURES OFF");
-        setLightingMode(this->currentLightingMode);        
-    }
-}
-
-void App::cycleDebugView()
-{
-    this->currentDebugView = (this->currentDebugView + 1) % 3 ;
-    setDebugView(this->currentDebugView);
-}
-
-void App::cycleLighting() 
-{
-    this->currentLightingMode = (this->currentLightingMode + 1) % 3 ;
-    setLightingMode(this->currentLightingMode);
-}
-
-void App::toggleLightTexture() 
-{    
-    this->isTextureOnlyMode = !this->isTextureOnlyMode;
-    setTextureMode(this->isTextureOnlyMode);
-}
-
-void App::setShaders() 
-{
-    std::string prefix = "res/";
-    this->simpleShader = new Shader(prefix + "debug_inspect.vert", prefix + "debug_inspect.frag");
-    this->lightingShader = new Shader(prefix + "light-shading.vert", prefix + "light-shading.frag");
-    this->shader = this->simpleShader;
-}
 
 void App::updateProjection()
 {
