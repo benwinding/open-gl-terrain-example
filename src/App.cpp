@@ -8,6 +8,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "App.h"
+#include "scene/WorldFloor.h"
 #include "utils/Logger.h"
 
 // Public API

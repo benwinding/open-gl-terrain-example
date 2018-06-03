@@ -7,7 +7,7 @@
 #include "graphics/Viewer.h"
 #include "graphics/ObjContainer.h"
 #include "graphics/InputState.h"
-#include "scene/WorldFloor.h"
+#include "scene/SceneComponent.h"
 #include "scene/Player.h"
 
 enum debugViewType
@@ -42,8 +42,8 @@ public:
 private:
     int winX, winY;
 
-    WorldFloor* worldFloor;
-    WorldFloor* worldFloor2;
+    SceneComponent* worldFloor;
+    SceneComponent* worldFloor2;
     Player* player;
 
     InputState userInput;

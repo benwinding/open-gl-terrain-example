@@ -13,7 +13,7 @@ enum alignment
     ALIGN_TOP
 };
 
-class WorldFloor : SceneComponent
+class WorldFloor : public SceneComponent
 {
 private:
     Shader* shader;
