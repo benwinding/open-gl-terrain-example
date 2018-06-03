@@ -44,6 +44,7 @@ private:
 
     SceneComponent* worldFloor;
     SceneComponent* worldFloor2;
+    SceneComponent* skyBox;
     Player* player;
 
     InputState userInput;

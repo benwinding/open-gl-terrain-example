@@ -89,6 +89,7 @@ GLuint Shader::LoadShaders(std::string vertex_file_path,
 Shader::Shader(std::string vertex_file_path,
                    std::string fragment_file_path)
 {
+    this->shaderPath = vertex_file_path;
 	this->shaderId = this->LoadShaders(vertex_file_path, fragment_file_path);
 	this->use();
 }
@@ -143,7 +144,7 @@ int Shader::getHandle(std::string uniformName)
 {
     int handle = glGetUniformLocation(this->shaderId, uniformName.c_str());
     if (handle == -1) {
-        std::cout << "Uniform '" << uniformName.c_str() << "' is not active, ShaderID=" << this->shaderId << ", Handle=" << handle << std::endl;
+        std::cout << "error: " << this->shaderPath << ", uniform '" << uniformName.c_str() << "' is not active, ShaderID=" << this->shaderId << ", Handle=" << handle << std::endl;
     }
     return handle;
 }

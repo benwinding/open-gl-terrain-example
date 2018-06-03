@@ -17,6 +17,7 @@
 class Shader
 {
 	int shaderId;
+    std::string shaderPath;
 	int getHandle(std::string uniformName);
 	int CompileShader(const char *ShaderPath, const GLuint ShaderID);
 	GLuint LoadShaders(std::string vertex_file_path, std::string fragment_file_path);

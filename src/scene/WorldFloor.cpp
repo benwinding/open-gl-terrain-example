@@ -19,6 +19,7 @@ void WorldFloor::onSetup() {
 }
 
 void WorldFloor::onRender() {
+    this->shader->use();
     ObjContainer* obj = this->objContainer;
     glm::mat4 modelM(1.f);
     // Move to side

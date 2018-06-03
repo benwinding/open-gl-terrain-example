@@ -9,6 +9,7 @@
 
 #include "App.h"
 #include "scene/WorldFloor.h"
+#include "scene/Skybox.h"
 #include "utils/Logger.h"
 
 // Public API
@@ -35,11 +36,15 @@ App::App(int winX, int winY)
 // TODO: 12. Collision detection
 
 void App::loadSceneComponents() {
+    glEnable(GL_DEPTH_TEST);
     this->worldFloor2 = new WorldFloor(20, ALIGN_TOP);
     this->worldFloor2->onSetup();
 
     this->worldFloor = new WorldFloor(1, ALIGN_BOTTOM);
     this->worldFloor->onSetup();
+
+    this->skyBox = new Skybox(100);
+    this->skyBox->onSetup();
 
     this->player = new Player();
 }
@@ -57,6 +62,8 @@ void App::Render()
     this->worldFloor2->setViewProjection(this->Camera->getViewMtx(), projection);
     this->worldFloor->onRender();
     this->worldFloor2->onRender();
+    this->skyBox->setViewProjection(this->Camera->getViewMtx(), projection);
+    this->skyBox->onRender();
 
     glFlush();
 }
