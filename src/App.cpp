@@ -7,10 +7,12 @@
 
 #include "glm/gtc/matrix_transform.hpp"
 
+#include "utils/Logger.h"
 #include "App.h"
+
 #include "scene/WorldFloor.h"
 #include "scene/Skybox.h"
-#include "utils/Logger.h"
+#include "scene/Plant.h"
 
 // Public API
 
@@ -18,8 +20,8 @@ App::App(int winX, int winY)
 {
     this->SetWindowSize(winX, winY);
     this->loadSceneComponents();
-    float topHeight = 5.f;
-    this->CamTopView = new TopObjectViewer(topHeight);
+    float topViewHeight = 5.f;
+    this->CamTopView = new TopObjectViewer(topViewHeight);
     this->CamFirstPersion = new ObjectViewer();
     this->Camera = this->CamFirstPersion;
 }
@@ -39,14 +41,11 @@ App::App(int winX, int winY)
 
 void App::loadSceneComponents() {
     glEnable(GL_DEPTH_TEST);
+
     this->worldFloor2 = new WorldFloor(20, ALIGN_TOP);
-    this->worldFloor2->onSetup();
-
     this->worldFloor = new WorldFloor(1, ALIGN_BOTTOM);
-    this->worldFloor->onSetup();
-
+    this->barrel = new Plant(50, glm::vec3(20,0,20));
     this->skyBox = new Skybox();
-    this->skyBox->onSetup();
 
     this->player = new Player();
 }
@@ -66,6 +65,7 @@ void App::Render()
     this->worldFloor->render(view, projection);
     this->worldFloor2->render(view, projection);
     this->skyBox->render(view, projection);
+    this->barrel->render(view, projection);
 
     glFlush();
 }

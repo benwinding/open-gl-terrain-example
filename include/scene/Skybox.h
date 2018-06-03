@@ -18,6 +18,7 @@ private:
     unsigned int loadCubemap(std::vector<std::string> faces);
 
 public:
+    Skybox();
     void onSetup();
     void render(glm::mat4 viewMtx, glm::mat4 projectionMtx);
 };

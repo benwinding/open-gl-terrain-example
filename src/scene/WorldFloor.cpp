@@ -3,11 +3,11 @@
 WorldFloor::WorldFloor(float scale, int align) {
     this->objScale = scale;
     this->align = align;
+    this->onSetup();
 }
 
 void WorldFloor::onSetup() {
     const char* fname = "res/models/cube-simple/cube-simple.obj";
-    // const char* fname = "res/models/Barrel/Barrel02.obj";
     this->objContainer = new ObjContainer((char*) fname);
     this->shader = new Shader("res/debug_inspect.vert","res/debug_inspect.frag");
 }

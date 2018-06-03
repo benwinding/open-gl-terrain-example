@@ -3,6 +3,12 @@
 
 #include "glm/glm.hpp"
 
+enum alignment 
+{
+    ALIGN_BOTTOM,
+    ALIGN_TOP
+};
+
 // Repsonsible For Tracking the players movements
 class SceneComponent 
 {

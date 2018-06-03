@@ -7,12 +7,6 @@
 #include "graphics/ObjContainer.h"
 #include "scene/SceneComponent.h"
 
-enum alignment 
-{
-    ALIGN_BOTTOM,
-    ALIGN_TOP
-};
-
 class WorldFloor : public SceneComponent
 {
 private:
