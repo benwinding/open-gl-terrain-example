@@ -12,17 +12,14 @@
 class Skybox : public SceneComponent
 {
 private: 
-    int scale;
     Shader* shader;
     unsigned int skyboxVAO, skyboxVBO;
     unsigned int cubemapTexture;
     unsigned int loadCubemap(std::vector<std::string> faces);
 
 public:
-    Skybox(int scale);
     void onSetup();
-    void onRender();
-    void setViewProjection(glm::mat4 viewMtx, glm::mat4 projectionMtx);
+    void render(glm::mat4 viewMtx, glm::mat4 projectionMtx);
 };
 
 #endif

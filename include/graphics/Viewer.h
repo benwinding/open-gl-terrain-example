@@ -29,32 +29,42 @@ protected:
 
 public:
     Viewer( glm::vec3 eye );
-    virtual ~Viewer() = 0;
+    virtual ~Viewer();
 
     const glm::mat4 getViewMtx() const;
     //    void orthogonaliseViewMtx();
     void reset();
 
-    virtual void update( InputState &input ) = 0;
+    virtual void updateFromPlayer(glm::vec3 location, glm::vec3 direction) = 0;
+    virtual glm::vec3 GetCameraPosition() = 0;
 };
 
 
-/**
- ObjectViewer rotates about current camera x and y axes in
- response to mouse motion. To do this it reads the current 
- camera axes from the viewing matrix.
-*/
 class ObjectViewer : public Viewer
 {
+private:
     float velocity;
-    float getVelocity();
-
 public:
     ObjectViewer( glm::vec3 eye );
-
-    virtual void update( InputState &input );
     void updateFromPlayer(glm::vec3 location, glm::vec3 direction);
     glm::vec3 GetCameraPosition();
 };
+
+
+class TopObjectViewer : public Viewer
+{
+private:
+    float height;
+public:
+    TopObjectViewer( glm::vec3 eye );
+    void updateFromPlayer(glm::vec3 location, glm::vec3 direction);
+    glm::vec3 GetCameraPosition();
+};
+
+
+
+
+
+
 
 #endif // VIEWER_H

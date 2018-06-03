@@ -18,14 +18,16 @@ App::App(int winX, int winY)
 {
     this->SetWindowSize(winX, winY);
     this->loadSceneComponents();
-    glm::vec3 cameraPos(0.0f, 1.0f, 3.5f);
-    this->Camera = new ObjectViewer(cameraPos);
+    glm::vec3 fpvPos(0, 1.0f, 3.5f);
+    this->CamFirstPersion = new ObjectViewer(fpvPos);
+    this->CamTopView = new TopObjectViewer(fpvPos);
+    this->Camera = this->CamFirstPersion;
 }
 
-// TODO: 1. Flat landscape, load obj file (Tree)
-// TODO: 2. Switchable camera First Person, World View
+// 1. Flat landscape, load obj file (Tree)
+// 2. Switchable camera First Person, World View
 // TODO: 3. Multiple shaders; Lighting, sun, torches
-// TODO: 4. Sky box
+// 4. Sky box
 // TODO: 5. Environment box on mirror cube
 // TODO: 6. Depth cue (fog)
 // TODO: 7. Bump mapping, light mapping, parralax mapping
@@ -43,7 +45,7 @@ void App::loadSceneComponents() {
     this->worldFloor = new WorldFloor(1, ALIGN_BOTTOM);
     this->worldFloor->onSetup();
 
-    this->skyBox = new Skybox(100);
+    this->skyBox = new Skybox();
     this->skyBox->onSetup();
 
     this->player = new Player();
@@ -53,17 +55,17 @@ void App::Render()
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    player->Update(userInput);
-    // Camera->update(userInput);
-    Camera->updateFromPlayer(player->GetLocation3(), player->GetDirection3());
+    this->player->Update(userInput);
 
-    this->Camera->update(this->userInput);
-    this->worldFloor->setViewProjection(this->Camera->getViewMtx(), projection);
-    this->worldFloor2->setViewProjection(this->Camera->getViewMtx(), projection);
-    this->worldFloor->onRender();
-    this->worldFloor2->onRender();
-    this->skyBox->setViewProjection(this->Camera->getViewMtx(), projection);
-    this->skyBox->onRender();
+    this->Camera->updateFromPlayer(
+        this->player->GetLocation3(), 
+        this->player->GetDirection3()
+    );
+    glm::mat4 view = this->Camera->getViewMtx();
+
+    this->worldFloor->render(view, projection);
+    this->worldFloor2->render(view, projection);
+    this->skyBox->render(view, projection);
 
     glFlush();
 }
@@ -104,6 +106,18 @@ void App::Key_callback(int key, int action)
                 break;
             case GLFW_KEY_RIGHT:
                 userInput.pressedRight();
+                break;
+        }
+    }
+    if (action == GLFW_PRESS)
+    {
+        switch(key) 
+        {
+            case GLFW_KEY_1:
+                this->Camera = this->CamFirstPersion;
+                break;
+            case GLFW_KEY_2:
+                this->Camera = this->CamTopView;
                 break;
         }
     }

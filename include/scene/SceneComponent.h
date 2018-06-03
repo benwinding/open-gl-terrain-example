@@ -8,8 +8,7 @@ class SceneComponent
 {
 public:
     virtual void onSetup() = 0;
-    virtual void onRender() = 0;
-    virtual void setViewProjection(glm::mat4 viewMtx, glm::mat4 projectionMtx) = 0;
+    virtual void render(glm::mat4 viewMtx, glm::mat4 projectionMtx) = 0;
 };
 
 #endif

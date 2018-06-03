@@ -24,9 +24,8 @@ private:
 
 public:
     WorldFloor(float scale, int alignment);
-    void setViewProjection(glm::mat4 viewMtx, glm::mat4 projectionMtx);
+    void render(glm::mat4 viewMtx, glm::mat4 projectionMtx);
     void onSetup();
-    void onRender();
 };
 
 #endif

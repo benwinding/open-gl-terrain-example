@@ -54,7 +54,9 @@ private:
     glm::mat4 projection;
     void updateProjection();
 
-    ObjectViewer *Camera;
+    Viewer *Camera;
+    Viewer *CamFirstPersion;
+    Viewer *CamTopView;
 };
 
 #endif

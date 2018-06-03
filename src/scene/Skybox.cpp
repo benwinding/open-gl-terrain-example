@@ -5,11 +5,6 @@
 #include "external_files/stb_image.h"
 #include "scene/Skybox.h"
 
-Skybox::Skybox(int scale) 
-{
-    this->scale = scale;
-}
-
 // loads a cubemap texture from 6 individual texture faces
 // order:
 // +X (right)
@@ -110,21 +105,23 @@ void Skybox::onSetup()
     // -------------
     std::vector<std::string> faces
     {
-        "/home/ben/projects/CGA3-part2/res/skybox/right.jpg",
-        "/home/ben/projects/CGA3-part2/res/skybox/left.jpg",
-        "/home/ben/projects/CGA3-part2/res/skybox/top.jpg",
-        "/home/ben/projects/CGA3-part2/res/skybox/bottom.jpg",
-        "/home/ben/projects/CGA3-part2/res/skybox/front.jpg",
-        "/home/ben/projects/CGA3-part2/res/skybox/back.jpg",
+        "res/skybox/right.jpg",
+        "res/skybox/left.jpg",
+        "res/skybox/top.jpg",
+        "res/skybox/bottom.jpg",
+        "res/skybox/front.jpg",
+        "res/skybox/back.jpg",
     };
     this->cubemapTexture = loadCubemap(faces);
     this->shader = new Shader("res/skybox.vert","res/skybox.frag");
     this->shader->setInt("skybox", 0);
 }
 
-void Skybox::onRender()
+void Skybox::render(glm::mat4 viewMtx, glm::mat4 projectionMtx)
 {
     this->shader->use();
+    this->shader->setMat4("view", glm::mat4(glm::mat3(viewMtx)));
+    this->shader->setMat4("projection", projectionMtx);
     glDepthFunc(GL_LEQUAL);  
     glBindVertexArray(skyboxVAO);
     glActiveTexture(GL_TEXTURE0);
@@ -132,10 +129,4 @@ void Skybox::onRender()
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
     glDepthFunc(GL_LESS); 
-}
-
-void Skybox::setViewProjection(glm::mat4 viewMtx, glm::mat4 projectionMtx)
-{
-    this->shader->setMat4("view", glm::mat4(glm::mat3(viewMtx)));
-    this->shader->setMat4("projection", projectionMtx);
 }

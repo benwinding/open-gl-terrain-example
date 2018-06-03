@@ -5,12 +5,6 @@ WorldFloor::WorldFloor(float scale, int align) {
     this->align = align;
 }
 
-void WorldFloor::setViewProjection(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
-    // Set common uniforms
-    shader->setMat4("view", viewMtx);
-    shader->setMat4("projection", projectionMtx);
-}
-
 void WorldFloor::onSetup() {
     const char* fname = "res/models/cube-simple/cube-simple.obj";
     // const char* fname = "res/models/Barrel/Barrel02.obj";
@@ -18,8 +12,12 @@ void WorldFloor::onSetup() {
     this->shader = new Shader("res/debug_inspect.vert","res/debug_inspect.frag");
 }
 
-void WorldFloor::onRender() {
+void WorldFloor::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
+    // Set common uniforms
     this->shader->use();
+    shader->setMat4("view", viewMtx);
+    shader->setMat4("projection", projectionMtx);
+
     ObjContainer* obj = this->objContainer;
     glm::mat4 modelM(1.f);
     // Move to side
