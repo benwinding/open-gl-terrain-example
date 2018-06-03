@@ -44,6 +44,8 @@ class TopObjectViewer : public Viewer
 private:
     float height;
 public:
+    void zoomIn();
+    void zoomOut();
     TopObjectViewer(float height);
     void updateFromPlayer(glm::vec3 location, glm::vec3 direction);
 };

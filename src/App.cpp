@@ -31,7 +31,7 @@ App::App(int winX, int winY)
 // 2. Switchable camera First Person, World View
 // TODO: 3. Multiple shaders; Lighting, sun, torches
 // 4. Sky box
-// TODO: 5. Environment box on mirror cube
+// 5. Environment box on mirror cube
 // TODO: 6. Depth cue (fog)
 // TODO: 7. Bump mapping, light mapping, parralax mapping
 // TODO: 8. Generated terrain
@@ -46,7 +46,7 @@ void App::loadSceneComponents() {
     this->skyBox = new Skybox();
     this->worldFloor = new WorldFloor(20, ALIGN_TOP);
     this->barrel = new Plant(50, glm::vec3(10,0,10));
-    this->mirrorBox = new MirrorBox(1, glm::vec3(0,0,0));
+    this->mirrorBox = new MirrorBox(3, glm::vec3(-2,1,5));
 
     this->player = new Player();
 }
@@ -107,6 +107,14 @@ void App::Key_callback(int key, int action)
                 break;
             case GLFW_KEY_RIGHT:
                 userInput.pressedRight();
+                break;
+            case GLFW_KEY_MINUS:
+            case GLFW_KEY_KP_SUBTRACT:
+                this->CamTopView->zoomOut();
+                break;
+            case GLFW_KEY_EQUAL:
+            case GLFW_KEY_KP_ADD:
+                this->CamTopView->zoomIn();
                 break;
         }
     }

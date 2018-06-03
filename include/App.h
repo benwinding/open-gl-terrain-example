@@ -41,8 +41,8 @@ private:
     void updateProjection();
 
     Viewer *Camera;
-    Viewer *CamFirstPersion;
-    Viewer *CamTopView;
+    ObjectViewer *CamFirstPersion;
+    TopObjectViewer *CamTopView;
 };
 
 #endif
