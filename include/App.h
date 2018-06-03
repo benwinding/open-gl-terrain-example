@@ -7,8 +7,8 @@
 #include "graphics/Viewer.h"
 #include "graphics/ObjContainer.h"
 #include "graphics/InputState.h"
-#include "scene_components/WorldFloor.h"
-#include "scene_components/Player.h"
+#include "scene/WorldFloor.h"
+#include "scene/Player.h"
 
 enum debugViewType
 {

@@ -6,7 +6,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
-#include "scene_components/Player.h"
+#include "scene/Player.h"
 #include "utils/Logger.h"
 
 Player::Player()
