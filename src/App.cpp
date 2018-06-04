@@ -90,45 +90,39 @@ void App::MouseMove_callback(double x, double y)
 
 void App::Key_callback(int key, int action)
 {
-    if (action == GLFW_RELEASE) 
-        userInput.resetKeys();
-    if (action == GLFW_PRESS || action == GLFW_REPEAT)
+    bool repeatPress = action == GLFW_PRESS || action == GLFW_REPEAT;
+    bool singlePress = action == GLFW_PRESS;
+
+    switch(key)
     {
-        switch(key) 
-        {
-            case GLFW_KEY_UP:
-                userInput.pressedUp();
-                break;
-            case GLFW_KEY_DOWN:
-                userInput.pressedDown();
-                break;
-            case GLFW_KEY_LEFT:
-                userInput.pressedLeft();
-                break;
-            case GLFW_KEY_RIGHT:
-                userInput.pressedRight();
-                break;
-            case GLFW_KEY_MINUS:
-            case GLFW_KEY_KP_SUBTRACT:
-                this->CamTopView->zoomOut();
-                break;
-            case GLFW_KEY_EQUAL:
-            case GLFW_KEY_KP_ADD:
-                this->CamTopView->zoomIn();
-                break;
-        }
+        case GLFW_KEY_UP:
+            userInput.setUp(repeatPress);
+            break;
+        case GLFW_KEY_DOWN:
+            userInput.setDown(repeatPress);
+            break;
+        case GLFW_KEY_LEFT:
+            userInput.setLeft(repeatPress);
+            break;
+        case GLFW_KEY_RIGHT:
+            userInput.setRight(repeatPress);
+            break;
+        case GLFW_KEY_MINUS:
+        case GLFW_KEY_KP_SUBTRACT:
+            this->CamTopView->zoomOut();
+            break;
+        case GLFW_KEY_EQUAL:
+        case GLFW_KEY_KP_ADD:
+            this->CamTopView->zoomIn();
+            break;
     }
-    if (action == GLFW_PRESS)
+
+    if (singlePress)
     {
-        switch(key) 
-        {
-            case GLFW_KEY_1:
-                this->Camera = this->CamFirstPersion;
-                break;
-            case GLFW_KEY_2:
-                this->Camera = this->CamTopView;
-                break;
-        }
+        if (key == GLFW_KEY_1)
+            this->Camera = this->CamFirstPersion;
+        if (key == GLFW_KEY_2)
+            this->Camera = this->CamTopView;
     }
 }
 
@@ -144,6 +138,6 @@ void App::SetWindowSize(int x, int y)
 void App::updateProjection()
 {
     float aspect = (float) this->winX / this->winY;    
-    float fov = 85;
+    float fov = 50;
     projection = glm::perspective(glm::radians(fov), aspect, 0.005f, 1000.0f );
 }

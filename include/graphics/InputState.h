@@ -7,6 +7,7 @@
 #define _INPUTSTATE_H_
 
 #include <glm/glm.hpp>
+#include "utils/Logger.h"
 #include "glm/gtc/matrix_transform.hpp"
 
 enum keyMove {
@@ -28,7 +29,6 @@ struct InputState
                   rMousePressed(false),
                   prevX(0), prevY(0),
                   deltaX(0), deltaY(0) {
-                    resetKeys();
                   }
 
     // Is the mouse button currently being held down?
@@ -112,24 +112,17 @@ struct InputState
         return stateUp || stateDown || stateLeft || stateRight;
     };
 
-    void pressedUp() {
-        stateUp = true;
+    void setUp(bool state) {
+        stateUp = state;
     };
-    void pressedDown() {
-        stateDown = true;
+    void setDown(bool state) {
+        stateDown = state;
     };
-    void pressedLeft() {
-        stateLeft = true;
+    void setLeft(bool state) {
+        stateLeft = state;
     };
-    void pressedRight() {
-        stateRight = true;
-    };
-
-    bool resetKeys() {
-        stateUp = false;
-        stateDown = false;
-        stateLeft = false;
-        stateRight = false;
+    void setRight(bool state) {
+        stateRight = state;
     };
 
 private:
