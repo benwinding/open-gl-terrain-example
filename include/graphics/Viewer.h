@@ -25,8 +25,9 @@ protected:
     glm::mat4 viewMtx;
 
 public:
-    glm::mat4 getViewMtx();
     virtual void updateFromPlayer(glm::vec3 location, glm::vec3 direction) = 0;
+    glm::mat4 getViewMtx();
+    glm::vec3 Position;
 };
 
 

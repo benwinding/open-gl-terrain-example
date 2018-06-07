@@ -65,6 +65,7 @@ void App::Render()
 
     this->worldFloor->render(view, projection);
     this->barrel->render(view, projection);
+    this->mirrorBox->setCamPosition(this->Camera->Position);
     this->mirrorBox->render(view, projection);
     this->skyBox->render(view, projection);
 

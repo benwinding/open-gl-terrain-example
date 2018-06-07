@@ -102,9 +102,9 @@ void MirrorBox::render(glm::mat4 viewMtx, glm::mat4 projectionMtx)
     // modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2, 0));
     modelM = glm::translate(modelM, this->location / scale);
     shader->setMat4("model", modelM);
-    glm::vec3 cameraPos = GetCameraPosition(viewMtx);
-    shader->setVec3("cameraPos", cameraPos);
-    Print("cameraPos", viewMtx);
+    // glm::vec3 cameraPos = GetCameraPosition(viewMtx);
+    shader->setVec3("cameraPos", this->camPos);
+    // Print("cameraPos", viewMtx);
     // Draw object
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);

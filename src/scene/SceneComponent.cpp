@@ -9,3 +9,7 @@ glm::vec3 SceneComponent::GetCameraPosition(glm::mat4 viewMtx)
     return currentEye;
 }
 
+void SceneComponent::setCamPosition(glm::vec3 camPos)
+{
+    this->camPos = camPos;
+}
