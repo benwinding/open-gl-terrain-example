@@ -14,6 +14,7 @@
 #include "scene/WorldFloor.h"
 #include "scene/Plant.h"
 #include "scene/MirrorBox.h"
+#include "scene/Fire.h"
 
 // Public API
 
@@ -47,6 +48,7 @@ void App::loadSceneComponents() {
     this->worldFloor = new WorldFloor(20, ALIGN_TOP);
     this->barrel = new Plant(50, glm::vec3(10,0,10));
     this->mirrorBox = new MirrorBox(3, glm::vec3(-2,1,5));
+    this->fire = new Fire(3, glm::vec3(5,0,10));
 
     this->player = new Player();
 }
@@ -66,6 +68,8 @@ void App::Render()
     this->worldFloor->render(view, projection);
     this->barrel->render(view, projection);
     this->mirrorBox->render(view, projection);
+    this->fire->render(view, projection);
+
     this->skyBox->render(view, projection);
 
     glFlush();

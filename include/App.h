@@ -31,6 +31,7 @@ private:
     SceneComponent* skyBox;
     SceneComponent* barrel;
     SceneComponent* mirrorBox;
+    SceneComponent* fire;
     Player* player;
 
     InputState userInput;

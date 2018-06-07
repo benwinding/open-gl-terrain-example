@@ -1,19 +1,13 @@
-#include <GL/glew.h>
-#include <iostream>
-#include "external_files/stb_image.h"
-#include "utils/Logger.h"
-#include "scene/MirrorBox.h"
-#include "scene/SceneComponent.h"
+#include "scene/Fire.h"
 
-MirrorBox::MirrorBox(float scale, glm::vec3 location)
+Fire::Fire(float scale, glm::vec3 location)
 {
     this->scale = scale;
     this->location = location;
     this->onSetup();
 }
 
-void MirrorBox::onSetup()
-{
+void Fire::onSetup() {
     float cubeVertices[] = {
         // positions          // normals
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
@@ -57,7 +51,7 @@ void MirrorBox::onSetup()
          0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
         -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-    }; 
+    };
     // cube VAO
     glGenVertexArrays(1, &cubeVAO);
     glGenBuffers(1, &cubeVBO);
@@ -69,85 +63,42 @@ void MirrorBox::onSetup()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
-    this->shader = new Shader("res/mirrorbox.vert","res/mirrorbox.frag");
-    // load textures
-    // -------------
-    std::vector<std::string> faces
-    {
-        "res/skybox/right.jpg",
-        "res/skybox/left.jpg",
-        "res/skybox/top.jpg",
-        "res/skybox/bottom.jpg",
-        "res/skybox/front.jpg",
-        "res/skybox/back.jpg",
-    };
-    this->cubemapTexture = loadCubemap(faces);
+    this->shader = new Shader("res/debug_inspect.vert","res/debug_inspect.frag");
 }
 
-void MirrorBox::render(glm::mat4 viewMtx, glm::mat4 projectionMtx)
-{
+void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     // Set common uniforms
     this->shader->use();
     shader->setMat4("view", viewMtx);
     shader->setMat4("projection", projectionMtx);
 
-    // ObjContainer* obj = this->objContainer;
-    glm::mat4 modelM(1.f);
+    glm::mat4 modelM;
     // Align to top or bottom
     float align = 1; // align bottom = 1, align top = -1
-    float objHeight = 1; //obj->GetObjSize().y;
+    float objHeight = 1;
     // Move to side
+    modelM = glm::mat4(1.f);
     modelM = glm::scale(modelM, glm::vec3(scale));
-    // modelM = glm::translate(modelM, -obj->GetOffsetCenter());
-    // modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2, 0));
+    modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2, 0));
     modelM = glm::translate(modelM, this->location / scale);
     shader->setMat4("model", modelM);
-    glm::vec3 cameraPos = GetCameraPosition(viewMtx);
-    shader->setVec3("cameraPos", cameraPos);
     // Draw object
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+    this->drawObject();
+    // Move to side
+    modelM = glm::mat4(1.f);
+    modelM = glm::scale(modelM, glm::vec3(scale));
+    modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2 + 2, 0));
+    modelM = glm::translate(modelM, this->location / scale);
+    shader->setMat4("model", modelM);
+    // Draw object
+    this->drawObject();
+}
+
+void Fire::drawObject() 
+{
     // cubes
     glBindVertexArray(cubeVAO);
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
-}
-
-// loads a cubemap texture from 6 individual texture faces
-// order:
-// +X (right)
-// -X (left)
-// +Y (top)
-// -Y (bottom)
-// +Z (front) 
-// -Z (back)
-// -------------------------------------------------------
-unsigned int MirrorBox::loadCubemap(std::vector<std::string> faces)
-{
-    unsigned int textureID;
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
-    int width, height, nrChannels;
-    for (unsigned int i = 0; i < faces.size(); i++)
-    {
-        unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
-        if (data)
-        {
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-            stbi_image_free(data);
-        }
-        else
-        {
-            std::cout << "Cubemap texture failed to load at path: " << faces[i] << std::endl;
-            stbi_image_free(data);
-        }
-    }
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-    return textureID;
 }
 
