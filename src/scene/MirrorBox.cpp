@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <iostream>
 #include "external_files/stb_image.h"
+#include "utils/Logger.h"
 #include "scene/MirrorBox.h"
 #include "scene/SceneComponent.h"
 
@@ -94,14 +95,16 @@ void MirrorBox::render(glm::mat4 viewMtx, glm::mat4 projectionMtx)
     glm::mat4 modelM(1.f);
     // Align to top or bottom
     float align = 1; // align bottom = 1, align top = -1
-    float objHeight = obj->GetObjSize().y;
+    float objHeight = 1; //obj->GetObjSize().y;
     // Move to side
     modelM = glm::scale(modelM, glm::vec3(scale));
     // modelM = glm::translate(modelM, -obj->GetOffsetCenter());
     // modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2, 0));
     modelM = glm::translate(modelM, this->location / scale);
     shader->setMat4("model", modelM);
-    shader->setVec3("cameraPos", GetCameraPosition(viewMtx));
+    glm::vec3 cameraPos = GetCameraPosition(viewMtx);
+    shader->setVec3("cameraPos", cameraPos);
+    Print("cameraPos", viewMtx);
     // Draw object
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
