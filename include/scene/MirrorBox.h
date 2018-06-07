@@ -13,7 +13,7 @@ private:
     float scale;
     glm::vec3 location;
     Shader* shader;
-    ObjContainer* objContainer;
+    unsigned int cubeVAO, cubeVBO;
     unsigned int cubemapTexture;
     unsigned int loadCubemap(std::vector<std::string> faces);
 

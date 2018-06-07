@@ -138,6 +138,6 @@ void App::SetWindowSize(int x, int y)
 void App::updateProjection()
 {
     float aspect = (float) this->winX / this->winY;    
-    float fov = 50;
+    float fov = 75;
     projection = glm::perspective(glm::radians(fov), aspect, 0.005f, 1000.0f );
 }
