@@ -70,15 +70,24 @@ void Fire::onSetup() {
     this->shader = new Shader("res/fire.vert","res/fire.frag");
 }
 
-double calcTimeJagged(double offset)
+double randJagged(double offset)
+{
+    static double startTime = glfwGetTime();
+    double nowTime = startTime - glfwGetTime() + offset;
+    static double speed = 0.5;
+    static double height = 1;
+    static double a = 1 / speed;
+    double mult = nowTime / a;
+    return height * (1 + -mult + floor(mult));
+}
+
+double randSin(double offset)
 {
     static double startTime = glfwGetTime();
     double nowTime = startTime - glfwGetTime() + offset;
     static double speed = 0.5;
     static double height = 2;
-    static double a = 1 / speed;
-    double mult = nowTime / a;
-    return height * (1 + -mult + floor(mult));
+    return (1 + sin(nowTime))/2;
 }
 
 void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
@@ -98,12 +107,13 @@ void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     modelM = glm::translate(modelM, this->location / scale);
     modelM = glm::scale(modelM, glm::vec3(0.2));
     shader->setMat4("model", modelM);
-    // Draw object
-    for (int i = 0; i < 4; ++i)
+    // Draw fire
+    int particles = 100;
+    for (int i = 0; i < particles; ++i)
     {
-        double time = calcTimeJagged((double)i*0.1);
-        Print("Time=", time);
+        double time = randJagged((double)i*0.1);
         shader->setFloat("time", time);
+        shader->setInt("id", i);
         this->drawObject();
     }
 }

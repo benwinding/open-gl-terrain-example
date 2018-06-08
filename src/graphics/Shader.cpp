@@ -91,6 +91,8 @@ Shader::Shader(std::string vertex_file_path,
 {
     this->shaderPath = vertex_file_path;
 	this->shaderId = this->LoadShaders(vertex_file_path, fragment_file_path);
+    if (this->shaderId == 0)
+        exit(0);
 	this->use();
 }
 
