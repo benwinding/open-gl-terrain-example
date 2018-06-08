@@ -14,10 +14,12 @@ class SceneComponent
 {
 protected:
     glm::vec3 GetCameraPosition(glm::mat4 viewMtx);
+    glm::vec3 camPos;
     
 public:
     virtual void onSetup() = 0;
     virtual void render(glm::mat4 viewMtx, glm::mat4 projectionMtx) = 0;
+    void setCamPosition(glm::vec3 camPos);
 };
 
 #endif

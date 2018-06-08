@@ -18,6 +18,7 @@ glm::mat4 Viewer::getViewMtx()
 
 void ObjectViewer::updateFromPlayer(glm::vec3 location, glm::vec3 direction) 
 {
+    Position = location;
     viewMtx = glm::mat4(0);
     glm::vec3 up(0.0f, 1.0f, 0.0f);
     glm::vec3 target = location + direction;
@@ -33,6 +34,7 @@ TopObjectViewer::TopObjectViewer(float height)
 
 void TopObjectViewer::updateFromPlayer(glm::vec3 location, glm::vec3 direction) 
 {
+    Position = location;
     viewMtx = glm::mat4(0);
     glm::vec3 up = direction;
     glm::vec3 target(location + glm::vec3(0,-100,0)); // Always looking down
