@@ -1,4 +1,8 @@
+#include <cmath>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include "scene/Fire.h"
+#include "utils/Logger.h"
 
 Fire::Fire(float scale, glm::vec3 location)
 {
@@ -63,7 +67,18 @@ void Fire::onSetup() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
-    this->shader = new Shader("res/debug_inspect.vert","res/debug_inspect.frag");
+    this->shader = new Shader("res/fire.vert","res/fire.frag");
+}
+
+double calcTimeJagged(double offset)
+{
+    static double startTime = glfwGetTime();
+    double nowTime = startTime - glfwGetTime() + offset;
+    static double speed = 0.5;
+    static double height = 2;
+    static double a = 1 / speed;
+    double mult = nowTime / a;
+    return height * (1 + -mult + floor(mult));
 }
 
 void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
@@ -81,17 +96,16 @@ void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     modelM = glm::scale(modelM, glm::vec3(scale));
     modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2, 0));
     modelM = glm::translate(modelM, this->location / scale);
+    modelM = glm::scale(modelM, glm::vec3(0.2));
     shader->setMat4("model", modelM);
     // Draw object
-    this->drawObject();
-    // Move to side
-    modelM = glm::mat4(1.f);
-    modelM = glm::scale(modelM, glm::vec3(scale));
-    modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2 + 2, 0));
-    modelM = glm::translate(modelM, this->location / scale);
-    shader->setMat4("model", modelM);
-    // Draw object
-    this->drawObject();
+    for (int i = 0; i < 4; ++i)
+    {
+        double time = calcTimeJagged((double)i*0.1);
+        Print("Time=", time);
+        shader->setFloat("time", time);
+        this->drawObject();
+    }
 }
 
 void Fire::drawObject() 
