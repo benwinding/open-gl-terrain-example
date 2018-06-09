@@ -4,8 +4,11 @@
 #include "scene/Fire.h"
 #include "utils/Logger.h"
 
-Fire::Fire(float scale, glm::vec3 location)
+Fire::Fire(float fireHeight, float fireWidth, int particleCount, glm::vec3 location)
 {
+    this->particleCount = particleCount;
+    this->fireHeight = fireHeight;
+    this->fireWidth = fireWidth;    
     this->location = location;
     this->onSetup();    
 }
@@ -67,8 +70,6 @@ void Fire::onSetup() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
     this->shader = new Shader("res/fire.vert","res/fire.frag");
-
-    this->particleCount = 200;
     this->particles = new FireParticle[particleCount];
 }
 
@@ -87,8 +88,8 @@ float randomFloat(float a, float b) {
 
 int minLife = 300;
 int maxLife = 1000;
-float minSpeed = 0.0001;
-float maxSpeed = 0.02;
+float minSpeed = 0.02;
+float maxSpeed = 0.1;
 int maxDist = maxLife * maxSpeed;
 void respawnParticle(FireParticle* p) {
     srand(getTime());
@@ -114,8 +115,6 @@ void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     shader->setMat4("model", modelM);
     // Draw fire
     float initScale = 0.1;
-    float fireHeight = 1;
-    double fireWidth = 1;
     for (int i = 0; i < this->particleCount; ++i)
     {
         FireParticle *p = &this->particles[i];

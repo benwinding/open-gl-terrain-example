@@ -48,7 +48,7 @@ void App::loadSceneComponents() {
     this->worldFloor = new WorldFloor(20, ALIGN_TOP);
     this->barrel = new Plant(1, glm::vec3(0,0,0));
     // this->mirrorBox = new MirrorBox(3, glm::vec3(-2,1,5));
-    this->fire = new Fire(1, glm::vec3(0,0,-3));
+    this->fire = new Fire(1.5, 1, 1000, glm::vec3(0,0.9,0));
 
     this->player = new Player();
 }

@@ -26,9 +26,11 @@ private:
     unsigned int cubeVAO, cubeVBO;
     FireParticle* particles;
     int particleCount;
+    float fireHeight = 1;
+    float fireWidth = 1;
 
 public:
-    Fire(float scale, glm::vec3 location);
+    Fire(float fireHeight, float fireWidth, int particleCount, glm::vec3 location);
     void onSetup();
     void render(glm::mat4 viewMtx, glm::mat4 projectionMtx);
     void drawObject();
