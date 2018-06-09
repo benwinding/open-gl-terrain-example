@@ -86,10 +86,10 @@ float randomFloat(float a, float b) {
     return a + r;
 }
 
-int minLife = 300;
-int maxLife = 1000;
-float minSpeed = 0.02;
-float maxSpeed = 0.1;
+int minLife = 30;
+int maxLife = 100;
+float minSpeed = 1;
+float maxSpeed = 2;
 int maxDist = maxLife * maxSpeed;
 void respawnParticle(FireParticle* p) {
     srand(getTime());
