@@ -24,11 +24,12 @@ void Plant::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     // Align to top or bottom
     float align = 1; // align bottom = 1, align top = -1
     float objHeight = obj->GetObjSize().y;
+    float normalizeScale = scale / objHeight;
     // Move to side
-    modelM = glm::scale(modelM, glm::vec3(scale));
+    modelM = glm::scale(modelM, glm::vec3(normalizeScale));
     modelM = glm::translate(modelM, -obj->GetOffsetCenter());
     modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2, 0));
-    modelM = glm::translate(modelM, this->location / scale);
+    modelM = glm::translate(modelM, this->location / normalizeScale);
     shader->setMat4("model", modelM);
     // Draw object
     this->drawObject(obj, this->shader);
