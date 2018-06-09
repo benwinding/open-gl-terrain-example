@@ -6,9 +6,8 @@
 
 Fire::Fire(float scale, glm::vec3 location)
 {
-    this->scale = scale;
     this->location = location;
-    this->onSetup();
+    this->onSetup();    
 }
 
 void Fire::onSetup() {
@@ -68,26 +67,15 @@ void Fire::onSetup() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
     this->shader = new Shader("res/fire.vert","res/fire.frag");
+
+    this->particleCount = 200;
+    this->particles = new FireParticle[particleCount];
 }
 
 double getTime() {
     static double startTime = glfwGetTime();
     static double nowTime = startTime - glfwGetTime();
     return nowTime++;
-}
-
-double functJagged(float speed, double nowTime, double min, double max)
-{
-    static double height = max - min;
-    static double a = 1 / speed;
-    double mult = nowTime / a;
-    return min + height * (1 + -mult + floor(mult));
-}
-
-double randSin(double nowTime, double min, double max)
-{
-    static double height = max - min;
-    return min + height * (1 + cos(nowTime))/2;
 }
 
 float randomFloat(float a, float b) {
@@ -97,53 +85,68 @@ float randomFloat(float a, float b) {
     return a + r;
 }
 
+int minLife = 300;
+int maxLife = 1000;
+float minSpeed = 0.0001;
+float maxSpeed = 0.02;
+int maxDist = maxLife * maxSpeed;
+void respawnParticle(FireParticle* p) {
+    srand(getTime());
+    p->life = randomFloat(minLife, maxLife);
+    p->age = randomFloat(0, p->life);
+    p->speed = randomFloat(minSpeed, maxSpeed);
+    p->temperature = randomFloat(0, 1);
+    p->initx = randomFloat(-1, 1);
+    p->initz = randomFloat(-1, 1);
+    p->variance = randomFloat(-1, 1);
+}
+
 void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     // Set common uniforms
     this->shader->use();
     shader->setMat4("view", viewMtx);
     shader->setMat4("projection", projectionMtx);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glm::mat4 modelM;
-    // Align to top or bottom
-    float align = 1; // align bottom = 1, align top = -1
-    float objHeight = 1;
     // Move to side
     modelM = glm::mat4(1.f);
-    // modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2, 0));
     modelM = glm::translate(modelM, this->location);
     shader->setMat4("model", modelM);
     // Draw fire
-    int particles = 100;
-    float particleScale = 0.1;
-    double fireHeight = this->scale;
-    double fireRadius = 0.5;
-    double timeSeed = 0.6 * getTime();
-    for (int i = 0; i < particles; ++i)
+    float initScale = 0.1;
+    float fireHeight = 1;
+    double fireWidth = 1;
+    for (int i = 0; i < this->particleCount; ++i)
     {
-        // Init random seed
-        srand(timeSeed + i);
-        // Calculate random transformation matrix
-        float fraction = (float)i / (float)particles;
-        float initY = fireHeight * fraction;
-        double offset = initY + randomFloat(-fireHeight, fireHeight);
-        double randSpeed = randomFloat(0.01, 0.9);
-        double jaggedY = functJagged(randSpeed, randSpeed*offset, 0, fireHeight);
-        float randY = jaggedY + randomFloat(0, 0.01);
-        float radiusPoint = randomFloat(0.8, 1) * 0.5 * fireRadius * sin(M_PI * randY / fireHeight) * fireHeight;
-        float randX = randomFloat(-1, 1) * radiusPoint;
-        float randZ = randomFloat(-1, 1) * radiusPoint;
+        FireParticle *p = &this->particles[i];
+        p->age = p->age + 1;
+        if (p->age == p->life)
+            respawnParticle(p);
+
+        float percentAge = (float)p->age / (float)p->life;
+        float percentHeight = (p->age * p->speed) / maxDist;
+        float particleScale = initScale * (0.7*(1-percentHeight) + 0.3*(1-percentAge));
+
+        float yLoc = fireHeight * percentHeight;
+        float maxRadius = 0.25 * fireWidth * sin(M_PI * percentAge);
+        float xLoc = p->initx * maxRadius;
+        float zLoc = p->initz * maxRadius;
         glm::mat4 varianceM(1.0f);
+        varianceM = glm::translate(varianceM, glm::vec3(xLoc, yLoc, zLoc));
         varianceM = glm::scale(varianceM, glm::vec3(particleScale));
-        varianceM = glm::translate(varianceM, glm::vec3(randX, randY, randZ) / particleScale);
-        float randAngle = randomFloat(0, M_PI);
-        varianceM = glm::rotate(varianceM, randAngle, glm::vec3(randAngle, 1, 0));
+        float randAngle = M_PI * p->variance;
+        varianceM = glm::rotate(varianceM, randAngle, glm::vec3(randAngle, randAngle, randAngle));
         shader->setMat4("variance", varianceM);
+
         // Calculate randomish colour
-        glm::vec3 red = glm::vec3(1, 0.1, 0.1);
-        glm::vec3 yellow = glm::vec3(1, 1, 0.1);
+        float percentFromCenter = glm::length(glm::vec2(xLoc, zLoc)) / maxRadius;
+        glm::vec3 red = glm::vec3(1, 0.02, 0.02);
+        glm::vec3 yellow = glm::vec3(1, 1, 0.02);
         glm::vec3 black = glm::vec3(0.1);
-        shader->setVec3("colour", red);
+        glm::vec3 colour;
+        colour = glm::mix(yellow, red,   0.1*percentHeight + 0.1*p->temperature + 0.8*percentFromCenter);
+        colour = glm::mix(colour, black, 0.8*percentHeight + 0.2*percentAge);
+        shader->setVec3("colour", colour);
         this->drawObject();
     }
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

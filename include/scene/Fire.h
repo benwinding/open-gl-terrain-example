@@ -6,6 +6,17 @@
 #include "graphics/Shader.h"
 #include "scene/SceneComponent.h"
 
+struct FireParticle
+{
+    int life = 10;
+    int age = 0;
+    float speed = 0;
+    float temperature = 0;
+    float initx = 0;
+    float initz = 0;
+    float variance = 0;
+};
+
 class Fire : public SceneComponent
 {
 private:
@@ -13,6 +24,8 @@ private:
     glm::vec3 location;
     Shader* shader;
     unsigned int cubeVAO, cubeVBO;
+    FireParticle* particles;
+    int particleCount;
 
 public:
     Fire(float scale, glm::vec3 location);
