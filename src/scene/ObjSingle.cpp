@@ -10,7 +10,7 @@ ObjSingle::ObjSingle(float scale, glm::vec3 location, std::string fname)
 
 void ObjSingle::onSetup() {
     this->objContainer = new ObjContainer((char*) this->fname);
-    this->shader = new Shader("res/plant.vert","res/plant.frag");
+    this->shader = new Shader("res/objsingle.vert","res/objsingle.frag");
 }
 
 void ObjSingle::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {

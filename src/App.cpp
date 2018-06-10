@@ -14,6 +14,7 @@
 #include "scene/Skybox.h"
 #include "scene/WorldFloor.h"
 #include "scene/ObjSingle.h"
+#include "scene/ObjInstanced.h"
 #include "scene/MirrorBox.h"
 #include "scene/Fire.h"
 #include "scene/Fountain.h"
@@ -45,6 +46,22 @@ App::App(int winX, int winY, int argc)
 // TODO: 11. Sounds
 // TODO: 12. Collision detection
 
+std::vector<InstanceParams*> MakeTreeInstances() {
+    std::vector<InstanceParams*> instanceList;
+    for (int i = 0; i < 20; ++i)
+    {
+        float randX = randomFloat(-10, 10);
+        float randZ = randomFloat(-10, 10);
+        float randSize = randomFloat(1, 8);
+        InstanceParams* instance = new InstanceParams();
+        instance->location = glm::vec3(randX, 0, randZ);
+        instance->scale = glm::vec3(randSize);
+
+        instanceList.push_back(instance);
+    }
+    return instanceList;
+}
+
 void App::loadSceneComponents() {
     glEnable(GL_DEPTH_TEST);
     this->player = new Player(glm::vec3(0,1,-5), 90, 90);
@@ -56,20 +73,9 @@ void App::loadSceneComponents() {
     this->sceneComponents.push_back(new ObjSingle(1, glm::vec3(2,0,0), dir1 + "Barrel/Barrel02.obj"));
     this->sceneComponents.push_back(new Fountain(1.5, 0.9, 500, glm::vec3(2,0.8,0)));
     // Trees
-    for (int i = 0; i < 20; ++i)
-    {
-        float randX = randomFloat(-10, 10);
-        float randZ = randomFloat(-10, 10);
-        float randSize = randomFloat(3, 8);
-        this->sceneComponents.push_back(new ObjSingle(randSize, glm::vec3(randX,0,randZ), dir1 + "tree/PineTree03.obj"));
-    }
-    for (int i = 0; i < 20; ++i)
-    {
-        float randX = randomFloat(-10, 10);
-        float randZ = randomFloat(-10, 10);
-        float randSize = randomFloat(3, 8);
-        this->sceneComponents.push_back(new ObjSingle(randSize, glm::vec3(randX,0,randZ), dir1 + "pine/PineTransp.obj"));
-    }
+    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(), dir1 + "tree/PineTree03.obj"));
+    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(), dir1 + "pine/PineTransp.obj"));
+
     if (!RENDER_ENVIRONMENT)
         return;
     this->sceneComponents.push_back(new MirrorBox(3, glm::vec3(-2,1,5), &this->Camera));
