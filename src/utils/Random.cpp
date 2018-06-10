@@ -15,3 +15,11 @@ float randomFloat(float a, float b) {
     return a + r;
 }
 
+float wave1(float x) {
+    return sin(x) + sin(x*2 + M_PI) + sin(x*3);
+}
+
+float wave2(float x) {
+    return sin(x) + sin(x + 1.5*M_PI*x) + sin(x*3);
+}
+

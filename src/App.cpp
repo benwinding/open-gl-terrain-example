@@ -50,8 +50,8 @@ void App::loadSceneComponents() {
     this->player = new Player(glm::vec3(0,1,-5), 90, 90);
     this->sceneComponents.push_back(new WorldFloor(20, ALIGN_TOP));
     this->sceneComponents.push_back(new Plant(1, glm::vec3(0,0,0)));
-    this->sceneComponents.push_back(new Fire(1.5, 0.9, 1000, glm::vec3(0,0.9,0)));
-    this->sceneComponents.push_back(new Fountain(1.5, 0.9, 1000, glm::vec3(2,0,-2)));
+    this->sceneComponents.push_back(new Fire(1.5, 0.9, 500, glm::vec3(0,0.9,0)));
+    this->sceneComponents.push_back(new Fountain(1.5, 0.9, 500, glm::vec3(2,0,-2)));
     if (!RENDER_ENVIRONMENT)
         return;
     this->sceneComponents.push_back(new MirrorBox(3, glm::vec3(-2,1,5), this->player));

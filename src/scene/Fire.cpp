@@ -87,9 +87,8 @@ void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     static double time = 0;
     time++;
     float x = time/30;
-    float variance = 0.5*sin(x)*cos(x+1.4) - 0.3*sin(x-0.1);
-    float currentHeight = this->fireHeight * (1 + variance);
-    float currentWidth = this->fireWidth * (1);
+    float currentHeight = this->fireHeight * (1 + 0.1*wave1(x));
+    float currentWidth = this->fireWidth * (1 + 0.1*wave1(x));
     for (int i = 0; i < this->particleCount; ++i)
     {
         FireParticle *p = &this->particles[i];
