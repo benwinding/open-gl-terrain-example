@@ -13,7 +13,7 @@
 
 #include "scene/Skybox.h"
 #include "scene/WorldFloor.h"
-#include "scene/Plant.h"
+#include "scene/ObjSingle.h"
 #include "scene/MirrorBox.h"
 #include "scene/Fire.h"
 #include "scene/Fountain.h"
@@ -51,9 +51,9 @@ void App::loadSceneComponents() {
     this->sceneComponents.push_back(new WorldFloor(20, ALIGN_TOP));
     // Barrels
     std::string dir1 = "./res/models/";
-    this->sceneComponents.push_back(new Plant(1, glm::vec3(0,0,0), dir1 + "Barrel/Barrel02.obj"));
+    this->sceneComponents.push_back(new ObjSingle(1, glm::vec3(0,0,0), dir1 + "Barrel/Barrel02.obj"));
     this->sceneComponents.push_back(new Fire(1.5, 0.9, 500, glm::vec3(0,0.9,0)));
-    this->sceneComponents.push_back(new Plant(1, glm::vec3(2,0,0), dir1 + "Barrel/Barrel02.obj"));
+    this->sceneComponents.push_back(new ObjSingle(1, glm::vec3(2,0,0), dir1 + "Barrel/Barrel02.obj"));
     this->sceneComponents.push_back(new Fountain(1.5, 0.9, 500, glm::vec3(2,0.8,0)));
     // Trees
     for (int i = 0; i < 20; ++i)
@@ -61,14 +61,14 @@ void App::loadSceneComponents() {
         float randX = randomFloat(-10, 10);
         float randZ = randomFloat(-10, 10);
         float randSize = randomFloat(3, 8);
-        this->sceneComponents.push_back(new Plant(randSize, glm::vec3(randX,0,randZ), dir1 + "tree/PineTree03.obj"));
+        this->sceneComponents.push_back(new ObjSingle(randSize, glm::vec3(randX,0,randZ), dir1 + "tree/PineTree03.obj"));
     }
     for (int i = 0; i < 20; ++i)
     {
         float randX = randomFloat(-10, 10);
         float randZ = randomFloat(-10, 10);
         float randSize = randomFloat(3, 8);
-        this->sceneComponents.push_back(new Plant(randSize, glm::vec3(randX,0,randZ), dir1 + "pine/PineTransp.obj"));
+        this->sceneComponents.push_back(new ObjSingle(randSize, glm::vec3(randX,0,randZ), dir1 + "pine/PineTransp.obj"));
     }
     if (!RENDER_ENVIRONMENT)
         return;

@@ -1,6 +1,6 @@
-#include "scene/Plant.h"
+#include "scene/ObjSingle.h"
 
-Plant::Plant(float scale, glm::vec3 location, std::string fname)
+ObjSingle::ObjSingle(float scale, glm::vec3 location, std::string fname)
 {
     this->scale = scale;
     this->location = location;
@@ -8,12 +8,12 @@ Plant::Plant(float scale, glm::vec3 location, std::string fname)
     this->onSetup();
 }
 
-void Plant::onSetup() {
+void ObjSingle::onSetup() {
     this->objContainer = new ObjContainer((char*) this->fname);
     this->shader = new Shader("res/plant.vert","res/plant.frag");
 }
 
-void Plant::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
+void ObjSingle::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     // Set common uniforms
     this->shader->use();
     shader->setMat4("view", viewMtx);
@@ -35,7 +35,7 @@ void Plant::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     this->drawObject(obj, this->shader);
 }
 
-void Plant::drawObject(ObjContainer* obj, Shader* shader) 
+void ObjSingle::drawObject(ObjContainer* obj, Shader* shader) 
 {
     int numShapes = obj->shapes.size();
     for (int i = 0; i < numShapes; ++i)

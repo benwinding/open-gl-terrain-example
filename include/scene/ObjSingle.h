@@ -1,5 +1,5 @@
-#ifndef _PLANT_H_
-#define _PLANT_H_
+#ifndef _OBJSINGLE_H_
+#define _OBJSINGLE_H_
 
 #include <string>
 #include "glm/glm.hpp"
@@ -7,7 +7,7 @@
 #include "graphics/Shader.h"
 #include "scene/SceneComponent.h"
 
-class Plant : public SceneComponent
+class ObjSingle : public SceneComponent
 {
 private:
     float scale;
@@ -17,7 +17,7 @@ private:
     ObjContainer* objContainer;
 
 public:
-    Plant(float scale, glm::vec3 location, std::string fname);
+    ObjSingle(float scale, glm::vec3 location, std::string fname);
     void onSetup();
     void render(glm::mat4 viewMtx, glm::mat4 projectionMtx);
     void drawObject(ObjContainer* obj, Shader* shader);
