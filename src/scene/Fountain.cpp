@@ -1,17 +1,18 @@
-#include "scene/Fire.h"
+#include <cmath>
+#include "scene/Fountain.h"
 #include "utils/Logger.h"
 #include "utils/Random.h"
 
-Fire::Fire(float fireHeight, float fireWidth, int particleCount, glm::vec3 location)
+Fountain::Fountain(float fountainHeight, float fountainWidth, int particleCount, glm::vec3 location)
 {
     this->particleCount = particleCount;
-    this->fireHeight = fireHeight;
-    this->fireWidth = fireWidth;    
+    this->fountainHeight = fountainHeight;
+    this->fountainWidth = fountainWidth;    
     this->location = location;
     this->onSetup();    
 }
 
-void Fire::onSetup() {
+void Fountain::onSetup() {
     float cubeVertices[] = {
         // positions          // normals
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
@@ -68,10 +69,10 @@ void Fire::onSetup() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
     this->shader = new Shader("res/fire.vert","res/fire.frag");
-    this->particles = new FireParticle[particleCount];
+    this->particles = new FountainParticle[particleCount];
 }
 
-void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
+void Fountain::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     // Set common uniforms
     this->shader->use();
     shader->setMat4("view", viewMtx);
@@ -82,21 +83,21 @@ void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     modelM = glm::mat4(1.f);
     modelM = glm::translate(modelM, this->location);
     shader->setMat4("model", modelM);
-    // Draw fire
+    // Draw fountain
     float initScale = 0.1;
     for (int i = 0; i < this->particleCount; ++i)
     {
-        FireParticle *p = &this->particles[i];
+        FountainParticle *p = &this->particles[i];
         p->age = p->age + 1;
         if (p->age == p->life)
             p->respawn();
 
         float percentAge = (float)p->age / (float)p->life;
-        float percentHeight = (p->age * p->speed) / p->maxDist;
-        float particleScale = initScale * (0.7*(1-percentHeight) + 0.3*(1-percentAge));
+        float percentHeight = sin(percentAge * M_PI);
+        float particleScale = initScale * (1-percentAge);
 
-        float yLoc = fireHeight * percentHeight;
-        float maxRadius = 0.25 * fireWidth * sin(M_PI * percentAge);
+        float yLoc = fountainHeight * percentHeight;
+        float maxRadius = fountainWidth * percentAge;
         float xLoc = p->initx * maxRadius;
         float zLoc = p->initz * maxRadius;
         glm::mat4 varianceM(1.0f);
@@ -108,19 +109,19 @@ void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
 
         // Calculate randomish colour
         float percentFromCenter = glm::length(glm::vec2(xLoc, zLoc)) / maxRadius;
-        glm::vec3 red = glm::vec3(1, 0.02, 0.02);
-        glm::vec3 yellow = glm::vec3(1, 1, 0.02);
-        glm::vec3 black = glm::vec3(0.1);
+        glm::vec3 green = glm::vec3(0.02, 1, 0.02);
+        glm::vec3 white = glm::vec3(1, 1, 1);
+        glm::vec3 blue = glm::vec3(0.02, 0.02, 1);
         glm::vec3 colour;
-        colour = glm::mix(yellow, red,   0.1*percentHeight + 0.1*p->temperature + 0.8*percentFromCenter);
-        colour = glm::mix(colour, black, 0.8*percentHeight + 0.2*percentAge);
+        colour = glm::mix(white, green,   0.1*percentHeight + 0.1*p->temperature + 0.8*percentFromCenter);
+        colour = glm::mix(colour, blue, 0.8*percentHeight + 0.2*percentAge);
         shader->setVec3("colour", colour);
         this->drawObject();
     }
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
-void Fire::drawObject() 
+void Fountain::drawObject() 
 {
     // cubes
     glBindVertexArray(cubeVAO);

@@ -1,5 +1,5 @@
-#ifndef _FIRE_H_
-#define _FIRE_H_
+#ifndef _FOUNTAIN_H_
+#define _FOUNTAIN_H_
 
 #include "glm/glm.hpp"
 #include "graphics/ObjContainer.h"
@@ -7,7 +7,7 @@
 #include "scene/SceneComponent.h"
 #include "utils/Random.h"
 
-struct FireParticle
+struct FountainParticle
 {
 private:
     int minLife = 30;
@@ -35,26 +35,24 @@ public:
         this->variance = randomFloat(-1, 1);
     }
 
-    // FireParticle() {
-    //     maxDist 
-    // }
     int maxDist = this->maxLife * this->maxSpeed;
 };
 
-class Fire : public SceneComponent
+class Fountain : public SceneComponent
 {
 private:
     float scale;
     glm::vec3 location;
     Shader* shader;
     unsigned int cubeVAO, cubeVBO;
-    FireParticle* particles;
+    FountainParticle* particles;
     int particleCount;
-    float fireHeight = 1;
-    float fireWidth = 1;
+
+    float fountainHeight = 1;
+    float fountainWidth = 1;
 
 public:
-    Fire(float fireHeight, float fireWidth, int particleCount, glm::vec3 location);
+    Fountain(float fountainHeight, float fountainWidth, int particleCount, glm::vec3 location);
     void onSetup();
     void render(glm::mat4 viewMtx, glm::mat4 projectionMtx);
     void drawObject();

@@ -15,13 +15,14 @@
 #include "scene/Plant.h"
 #include "scene/MirrorBox.h"
 #include "scene/Fire.h"
+#include "scene/Fountain.h"
 
 bool RENDER_ENVIRONMENT;
 
 // Public API
 App::App(int winX, int winY, int argc)
 {
-    RENDER_ENVIRONMENT = argc > 1;
+    RENDER_ENVIRONMENT = argc == 1;
     this->SetWindowSize(winX, winY);
     this->loadSceneComponents();
     float topViewHeight = 5.f;
@@ -50,6 +51,7 @@ void App::loadSceneComponents() {
     this->sceneComponents.push_back(new WorldFloor(20, ALIGN_TOP));
     this->sceneComponents.push_back(new Plant(1, glm::vec3(0,0,0)));
     this->sceneComponents.push_back(new Fire(1.5, 0.9, 1000, glm::vec3(0,0.9,0)));
+    this->sceneComponents.push_back(new Fountain(1.5, 0.9, 1000, glm::vec3(2,0,-2)));
     if (!RENDER_ENVIRONMENT)
         return;
     this->sceneComponents.push_back(new MirrorBox(3, glm::vec3(-2,1,5), this->player));
