@@ -85,6 +85,11 @@ void Fountain::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     shader->setMat4("model", modelM);
     // Draw fountain
     float initScale = 0.1;
+    static double time = 0;
+    time++;
+    float x = time/30;
+    float currentHeight = this->fountainHeight * (1 + 0.2*sin(x)*cos(x+0.4) + 0.2*sin(x+0.1));
+    float currentWidth = this->fountainWidth * (1 + 0.1*sin(x)+ 0.2*cos(x+0.1));
     for (int i = 0; i < this->particleCount; ++i)
     {
         FountainParticle *p = &this->particles[i];
@@ -96,8 +101,8 @@ void Fountain::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
         float percentHeight = sin(percentAge * M_PI);
         float particleScale = initScale * (1-percentAge);
 
-        float yLoc = fountainHeight * percentHeight;
-        float maxRadius = fountainWidth * percentAge;
+        float yLoc = currentHeight * percentHeight;
+        float maxRadius = currentWidth * percentAge;
         float xLoc = p->initx * maxRadius;
         float zLoc = p->initz * maxRadius;
         glm::mat4 varianceM(1.0f);
