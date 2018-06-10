@@ -8,8 +8,12 @@
 class Player {
 private:
     float turnIncrement;
-    float pan, tilt;
+    float initPan;
+    float initTilt;
+    glm::vec3 initLocation;
 
+    float pan; 
+    float tilt;
     glm::vec3 location;
 
     float GetPlayerHeight();
@@ -29,7 +33,7 @@ private:
     float incrementTurn;
 
 public:
-    Player();
+    Player(glm::vec3 location, float pan, float tilt);
     void Reset();
     void Update(InputState userInput);
 

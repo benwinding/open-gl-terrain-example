@@ -120,7 +120,7 @@ int main(int argc, char **argv)
     // Parse program arguments, add to a vector
     std::string windowTitle = "Assign3 - Part2";
     glfwSetWindowTitle(window, windowTitle.c_str());
-    TheApp = new App(winX, winY);
+    TheApp = new App(winX, winY, argc);
 
     while (!glfwWindowShouldClose(window))
     {

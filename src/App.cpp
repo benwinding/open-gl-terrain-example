@@ -16,10 +16,12 @@
 #include "scene/MirrorBox.h"
 #include "scene/Fire.h"
 
-// Public API
+bool RENDER_ENVIRONMENT;
 
-App::App(int winX, int winY)
+// Public API
+App::App(int winX, int winY, int argc)
 {
+    RENDER_ENVIRONMENT = argc > 1;
     this->SetWindowSize(winX, winY);
     this->loadSceneComponents();
     float topViewHeight = 5.f;
@@ -44,13 +46,15 @@ App::App(int winX, int winY)
 void App::loadSceneComponents() {
     glEnable(GL_DEPTH_TEST);
 
-    this->skyBox = new Skybox();
-    this->worldFloor = new WorldFloor(20, ALIGN_TOP);
-    this->barrel = new Plant(1, glm::vec3(0,0,0));
-    this->mirrorBox = new MirrorBox(3, glm::vec3(-2,1,5));
-    this->fire = new Fire(1.5, 0.9, 1000, glm::vec3(0,0.9,0));
-
-    this->player = new Player();
+    this->player = new Player(glm::vec3(0,1,-5), 90, 90);
+    this->sceneComponents.push_back(new WorldFloor(20, ALIGN_TOP));
+    this->sceneComponents.push_back(new Plant(1, glm::vec3(0,0,0)));
+    this->sceneComponents.push_back(new Fire(1.5, 0.9, 1000, glm::vec3(0,0.9,0)));
+    if (!RENDER_ENVIRONMENT)
+        return;
+    this->sceneComponents.push_back(new MirrorBox(3, glm::vec3(-2,1,5), this->player));
+    // Skybox must be last
+    this->sceneComponents.push_back(new Skybox()); 
 }
 
 void App::Render() 
@@ -65,14 +69,11 @@ void App::Render()
     );
     glm::mat4 view = this->Camera->getViewMtx();
 
-    this->worldFloor->render(view, projection);
-    this->barrel->render(view, projection);
-    this->mirrorBox->setCamPosition(this->Camera->Position);
-    this->mirrorBox->render(view, projection);
-    this->fire->render(view, projection);
-
-    this->skyBox->render(view, projection);
-
+    int numComponents = this->sceneComponents.size();
+    for (int i = 0; i < numComponents; ++i)
+    {
+        this->sceneComponents.at(i)->render(view, projection);
+    }
     glFlush();
 }
 

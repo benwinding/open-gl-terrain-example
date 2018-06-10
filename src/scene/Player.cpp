@@ -9,15 +9,18 @@
 #include "scene/Player.h"
 #include "utils/Logger.h"
 
-Player::Player()
+Player::Player(glm::vec3 location, float pan, float tilt)
 {
+    this->initLocation = location;
+    this->initPan = pan;
+    this->initTilt = tilt;
     this->Reset();
 }
 
 void Player::Reset() {
-    this->location = glm::vec3(0, 1.f, -5.f);
-    this->pan = 90;
-    this->tilt = 90;
+    this->location = this->initLocation;//glm::vec3(0, 1.f, -5.f);
+    this->pan = this->initPan;//90;
+    this->tilt = this->initTilt;//90;
 }
 
 void Player::Update(InputState userInput) 

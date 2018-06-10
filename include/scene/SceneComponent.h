@@ -19,7 +19,6 @@ public:
     virtual void onSetup() = 0;
     virtual void render(glm::mat4 viewMtx, glm::mat4 projectionMtx) = 0;
     void setCamPosition(glm::vec3 camPos);
-    glm::vec3 getCamPosition();
 };
 
 #endif

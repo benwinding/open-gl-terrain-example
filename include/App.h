@@ -16,7 +16,7 @@
  */
 class App {
 public:
-    App(int winX, int winY);
+    App(int winX, int winY, int argc);
 
     void Render();
     void Key_callback(int key, int action);
@@ -27,11 +27,8 @@ public:
 private:
     int winX, winY;
 
-    SceneComponent* worldFloor;
-    SceneComponent* skyBox;
-    SceneComponent* barrel;
-    SceneComponent* mirrorBox;
-    SceneComponent* fire;
+    std::vector<SceneComponent*> sceneComponents;
+
     Player* player;
 
     InputState userInput;
