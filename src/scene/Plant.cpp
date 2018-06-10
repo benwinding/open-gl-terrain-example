@@ -1,10 +1,10 @@
 #include "scene/Plant.h"
 
-Plant::Plant(float scale, glm::vec3 location, const char* fname)
+Plant::Plant(float scale, glm::vec3 location, std::string fname)
 {
     this->scale = scale;
     this->location = location;
-    this->fname = fname;
+    this->fname = fname.c_str();
     this->onSetup();
 }
 

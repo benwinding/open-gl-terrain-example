@@ -1,6 +1,7 @@
 #ifndef _PLANT_H_
 #define _PLANT_H_
 
+#include <string>
 #include "glm/glm.hpp"
 #include "graphics/ObjContainer.h"
 #include "graphics/Shader.h"
@@ -16,7 +17,7 @@ private:
     ObjContainer* objContainer;
 
 public:
-    Plant(float scale, glm::vec3 location, const char* fname);
+    Plant(float scale, glm::vec3 location, std::string fname);
     void onSetup();
     void render(glm::mat4 viewMtx, glm::mat4 projectionMtx);
     void drawObject(ObjContainer* obj, Shader* shader);

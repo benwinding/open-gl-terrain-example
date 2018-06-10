@@ -8,6 +8,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "utils/Logger.h"
+#include "utils/Random.h"
 #include "App.h"
 
 #include "scene/Skybox.h"
@@ -48,10 +49,27 @@ void App::loadSceneComponents() {
     glEnable(GL_DEPTH_TEST);
     this->player = new Player(glm::vec3(0,1,-5), 90, 90);
     this->sceneComponents.push_back(new WorldFloor(20, ALIGN_TOP));
-    this->sceneComponents.push_back(new Plant(1, glm::vec3(0,0,0), "res/models/Barrel/Barrel02.obj"));
+    // Barrels
+    std::string dir1 = "./res/models/";
+    this->sceneComponents.push_back(new Plant(1, glm::vec3(0,0,0), dir1 + "Barrel/Barrel02.obj"));
     this->sceneComponents.push_back(new Fire(1.5, 0.9, 500, glm::vec3(0,0.9,0)));
-    this->sceneComponents.push_back(new Plant(1, glm::vec3(2,0,0), "res/models/Barrel/Barrel02.obj"));
+    this->sceneComponents.push_back(new Plant(1, glm::vec3(2,0,0), dir1 + "Barrel/Barrel02.obj"));
     this->sceneComponents.push_back(new Fountain(1.5, 0.9, 500, glm::vec3(2,0.8,0)));
+    // Trees
+    for (int i = 0; i < 20; ++i)
+    {
+        float randX = randomFloat(-10, 10);
+        float randZ = randomFloat(-10, 10);
+        float randSize = randomFloat(3, 8);
+        this->sceneComponents.push_back(new Plant(randSize, glm::vec3(randX,0,randZ), dir1 + "tree/PineTree03.obj"));
+    }
+    for (int i = 0; i < 20; ++i)
+    {
+        float randX = randomFloat(-10, 10);
+        float randZ = randomFloat(-10, 10);
+        float randSize = randomFloat(3, 8);
+        this->sceneComponents.push_back(new Plant(randSize, glm::vec3(randX,0,randZ), dir1 + "pine/PineTransp.obj"));
+    }
     if (!RENDER_ENVIRONMENT)
         return;
     this->sceneComponents.push_back(new MirrorBox(3, glm::vec3(-2,1,5), this->player));
