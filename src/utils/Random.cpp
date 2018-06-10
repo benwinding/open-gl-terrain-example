@@ -24,3 +24,7 @@ float wave2(float x) {
     return sin(x) + sin(x + 1.5*M_PI*x) + sin(x*3);
 }
 
+float wave(float x, float y) {
+    return 0.5*sin(x)*sin(y) + 0.5*sin(x*2)*sin(y*2);
+}
+

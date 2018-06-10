@@ -18,6 +18,7 @@
 #include "scene/MirrorBox.h"
 #include "scene/Fire.h"
 #include "scene/Fountain.h"
+#include "scene/Terrain.h"
 
 bool RENDER_ENVIRONMENT;
 
@@ -67,7 +68,7 @@ std::vector<InstanceParams*> MakeTreeInstances() {
 void App::loadSceneComponents() {
     glEnable(GL_DEPTH_TEST);
     this->player = new Player(glm::vec3(0,1,-5), 90, 90);
-    this->sceneComponents.push_back(new WorldFloor(20, ALIGN_TOP));
+    // this->sceneComponents.push_back(new WorldFloor(20, ALIGN_TOP));
     // Barrels
     std::string dir1 = "./res/models/";
     this->sceneComponents.push_back(new ObjSingle(1, glm::vec3(0,0,0), dir1 + "Barrel/Barrel02.obj"));
@@ -77,6 +78,8 @@ void App::loadSceneComponents() {
     // Trees
     this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(), dir1 + "tree/PineTree03.obj"));
     this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(), dir1 + "pine/PineTransp.obj"));
+    // Terrain
+    this->sceneComponents.push_back(new Terrain(glm::vec3(-20,-3,-20), glm::vec3(400,3,400), glm::ivec3(12,0,12)));
 
     if (!RENDER_ENVIRONMENT)
         return;
@@ -173,5 +176,5 @@ void App::updateProjection()
 {
     float aspect = (float) this->winX / this->winY;    
     float fov = 75;
-    projection = glm::perspective(glm::radians(fov), aspect, 0.005f, 1000.0f );
+    projection = glm::perspective(glm::radians(fov), aspect, 0.005f, 1000.0f);
 }

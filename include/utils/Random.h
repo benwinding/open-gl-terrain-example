@@ -5,5 +5,6 @@ double getTime();
 float randomFloat(float a, float b);
 float wave1(float x);
 float wave2(float x);
+float wave(float x, float y);
 
 #endif
