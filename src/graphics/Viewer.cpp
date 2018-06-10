@@ -34,11 +34,11 @@ TopObjectViewer::TopObjectViewer(float height)
 
 void TopObjectViewer::updateFromPlayer(glm::vec3 location, glm::vec3 direction) 
 {
-    Position = location;
     viewMtx = glm::mat4(0);
     glm::vec3 up = direction;
     glm::vec3 target(location + glm::vec3(0,-100,0)); // Always looking down
     glm::vec3 locationAbove = location + glm::vec3(0,this->height,0);
+    Position = locationAbove;
     viewMtx = glm::lookAt(locationAbove, target, up);
 }
 

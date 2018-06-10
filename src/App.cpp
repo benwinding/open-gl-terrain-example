@@ -25,11 +25,11 @@ App::App(int winX, int winY, int argc)
 {
     RENDER_ENVIRONMENT = argc == 1;
     this->SetWindowSize(winX, winY);
-    this->loadSceneComponents();
     float topViewHeight = 5.f;
     this->CamTopView = new TopObjectViewer(topViewHeight);
     this->CamFirstPersion = new ObjectViewer();
     this->Camera = this->CamFirstPersion;
+    this->loadSceneComponents();
 }
 
 // 1. Flat landscape, load obj file (Tree)
@@ -72,7 +72,7 @@ void App::loadSceneComponents() {
     }
     if (!RENDER_ENVIRONMENT)
         return;
-    this->sceneComponents.push_back(new MirrorBox(3, glm::vec3(-2,1,5), this->player));
+    this->sceneComponents.push_back(new MirrorBox(3, glm::vec3(-2,1,5), &this->Camera));
     // Skybox must be last
     this->sceneComponents.push_back(new Skybox()); 
 }

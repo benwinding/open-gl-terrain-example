@@ -5,11 +5,11 @@
 #include "scene/MirrorBox.h"
 #include "scene/SceneComponent.h"
 
-MirrorBox::MirrorBox(float scale, glm::vec3 location, Player* player)
+MirrorBox::MirrorBox(float scale, glm::vec3 location, Viewer** camera)
 {
     this->scale = scale;
     this->location = location;
-    this->player = player;
+    this->camera = camera;
     this->onSetup();
 }
 
@@ -103,7 +103,7 @@ void MirrorBox::render(glm::mat4 viewMtx, glm::mat4 projectionMtx)
     // modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2, 0));
     modelM = glm::translate(modelM, this->location / scale);
     shader->setMat4("model", modelM);
-    shader->setVec3("cameraPos", this->player->GetLocation3());
+    shader->setVec3("cameraPos", (*this->camera)->Position);
     // Draw object
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
