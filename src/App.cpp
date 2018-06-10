@@ -35,12 +35,14 @@ App::App(int winX, int winY, int argc)
 
 // 1. Flat landscape, load obj file (Tree)
 // 2. Switchable camera First Person, World View
-// TODO: 3. Multiple shaders; Lighting, sun, torches
+// 3. Multiple shaders; 
+// TODO: 3.1 Multiple Lighting, sun, torches
 // 4. Sky box
 // 5. Environment box on mirror cube
 // TODO: 6. Depth cue (fog)
 // TODO: 7. Bump mapping, light mapping, parralax mapping
-// TODO: 8. Generated terrain
+// 8. Generated terrain
+// 8.1 Particle systems, water, fire
 // TODO: 9. Height mapping
 // TODO: 10. Alpha blending 
 // TODO: 11. Sounds
