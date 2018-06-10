@@ -46,12 +46,12 @@ App::App(int winX, int winY, int argc)
 
 void App::loadSceneComponents() {
     glEnable(GL_DEPTH_TEST);
-
     this->player = new Player(glm::vec3(0,1,-5), 90, 90);
     this->sceneComponents.push_back(new WorldFloor(20, ALIGN_TOP));
-    this->sceneComponents.push_back(new Plant(1, glm::vec3(0,0,0)));
+    this->sceneComponents.push_back(new Plant(1, glm::vec3(0,0,0), "res/models/Barrel/Barrel02.obj"));
     this->sceneComponents.push_back(new Fire(1.5, 0.9, 500, glm::vec3(0,0.9,0)));
-    this->sceneComponents.push_back(new Fountain(1.5, 0.9, 500, glm::vec3(2,0,-2)));
+    this->sceneComponents.push_back(new Plant(1, glm::vec3(2,0,0), "res/models/Barrel/Barrel02.obj"));
+    this->sceneComponents.push_back(new Fountain(1.5, 0.9, 500, glm::vec3(2,0.8,0)));
     if (!RENDER_ENVIRONMENT)
         return;
     this->sceneComponents.push_back(new MirrorBox(3, glm::vec3(-2,1,5), this->player));

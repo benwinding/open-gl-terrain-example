@@ -1,15 +1,15 @@
 #include "scene/Plant.h"
 
-Plant::Plant(float scale, glm::vec3 location)
+Plant::Plant(float scale, glm::vec3 location, const char* fname)
 {
     this->scale = scale;
     this->location = location;
+    this->fname = fname;
     this->onSetup();
 }
 
 void Plant::onSetup() {
-    const char* fname = "res/models/Barrel/Barrel02.obj";
-    this->objContainer = new ObjContainer((char*) fname);
+    this->objContainer = new ObjContainer((char*) this->fname);
     this->shader = new Shader("res/plant.vert","res/plant.frag");
 }
 

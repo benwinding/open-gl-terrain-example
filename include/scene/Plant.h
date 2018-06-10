@@ -11,11 +11,12 @@ class Plant : public SceneComponent
 private:
     float scale;
     glm::vec3 location;
+    const char* fname;
     Shader* shader;
     ObjContainer* objContainer;
 
 public:
-    Plant(float scale, glm::vec3 location);
+    Plant(float scale, glm::vec3 location, const char* fname);
     void onSetup();
     void render(glm::mat4 viewMtx, glm::mat4 projectionMtx);
     void drawObject(ObjContainer* obj, Shader* shader);

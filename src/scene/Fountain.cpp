@@ -114,11 +114,11 @@ void Fountain::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
 
         // Calculate randomish colour
         float percentFromCenter = glm::length(glm::vec2(xLoc, zLoc)) / maxRadius;
-        glm::vec3 green = glm::vec3(0.02, 1, 0.02);
-        glm::vec3 white = glm::vec3(1, 1, 1);
+        glm::vec3 darkBlue = glm::vec3(0.05, 0.05, 0.4);
+        glm::vec3 white = glm::vec3(1);
         glm::vec3 blue = glm::vec3(0.02, 0.02, 1);
         glm::vec3 colour;
-        colour = glm::mix(white, green,   0.1*percentHeight + 0.1*p->temperature + 0.8*percentFromCenter);
+        colour = glm::mix(white, darkBlue, 0.1*percentHeight + 0.1*p->temperature + 0.8*percentFromCenter);
         colour = glm::mix(colour, blue, 0.8*percentHeight + 0.2*percentAge);
         shader->setVec3("colour", colour);
         this->drawObject();
