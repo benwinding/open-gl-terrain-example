@@ -84,6 +84,12 @@ void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     shader->setMat4("model", modelM);
     // Draw fire
     float initScale = 0.1;
+    static double time = 0;
+    time++;
+    float x = time/30;
+    float variance = 0.5*sin(x)*cos(x+1.4) - 0.3*sin(x-0.1);
+    float currentHeight = this->fireHeight * (1 + variance);
+    float currentWidth = this->fireWidth * (1);
     for (int i = 0; i < this->particleCount; ++i)
     {
         FireParticle *p = &this->particles[i];
@@ -95,8 +101,8 @@ void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
         float percentHeight = (p->age * p->speed) / p->maxDist;
         float particleScale = initScale * (0.7*(1-percentHeight) + 0.3*(1-percentAge));
 
-        float yLoc = fireHeight * percentHeight;
-        float maxRadius = 0.25 * fireWidth * sin(M_PI * percentAge);
+        float yLoc = currentHeight * percentHeight;
+        float maxRadius = 0.25 * currentWidth * sin(M_PI * percentAge);
         float xLoc = p->initx * maxRadius;
         float zLoc = p->initz * maxRadius;
         glm::mat4 varianceM(1.0f);
