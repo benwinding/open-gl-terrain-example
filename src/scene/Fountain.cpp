@@ -88,8 +88,8 @@ void Fountain::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     static double time = 0;
     time++;
     float x = time/30;
-    float currentHeight = this->fountainHeight * (1 + 0.05*wave2(x));
-    float currentWidth = this->fountainWidth * (1 + 0.05*wave2(x));
+    float currentHeight = this->fountainHeight * (1 + 0.05*Random::wave2(x));
+    float currentWidth = this->fountainWidth * (1 + 0.05*Random::wave2(x));
     for (int i = 0; i < this->particleCount; ++i)
     {
         FountainParticle *p = &this->particles[i];

@@ -45,7 +45,7 @@ void Terrain::onSetup()
         for (int x = 0; x < gridCount.x; x++) 
         {
             int index = z * gridCount.z + x;
-            terrain[index] = terrainSize.y * wave(x*waveFreqX, z*waveFreqZ);
+            terrain[index] = terrainSize.y * Random::wave(x*waveFreqX, z*waveFreqZ);
         }
     }
 

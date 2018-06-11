@@ -31,14 +31,4 @@ float CalculateTotalScale(std::vector<ObjContainer*> objList)
     return scale;
 }
 
-glm::vec3 GetRotatingPosition() 
-{
-    static double startTime = glfwGetTime();
-    double t = (startTime - glfwGetTime())*1;
-    float r = 6.f;
-    float x = r*sin(t);
-    float y = 0.0f;
-    float z = r*cos(t);
-    return glm::vec3(x,y,z);
-}
 

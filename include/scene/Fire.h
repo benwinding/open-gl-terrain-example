@@ -25,14 +25,14 @@ public:
     float variance = 0;
 
     void respawn() {
-        srand(getTime());
-        this->life = randomFloat(this->minLife, this->maxLife);
-        this->age = randomFloat(0, this->life);
-        this->speed = randomFloat(this->minSpeed, this->maxSpeed);
-        this->temperature = randomFloat(0, 1);
-        this->initx = randomFloat(-1, 1);
-        this->initz = randomFloat(-1, 1);
-        this->variance = randomFloat(-1, 1);
+        srand(Random::getTime());
+        this->life = Random::randomFloat(this->minLife, this->maxLife);
+        this->age = Random::randomFloat(0, this->life);
+        this->speed = Random::randomFloat(this->minSpeed, this->maxSpeed);
+        this->temperature = Random::randomFloat(0, 1);
+        this->initx = Random::randomFloat(-1, 1);
+        this->initz = Random::randomFloat(-1, 1);
+        this->variance = Random::randomFloat(-1, 1);
     }
 
     // FireParticle() {

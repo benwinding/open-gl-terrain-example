@@ -53,9 +53,9 @@ std::vector<InstanceParams*> MakeTreeInstances() {
     std::vector<InstanceParams*> instanceList;
     for (int i = 0; i < 20; ++i)
     {
-        float randX = randomFloat(-10, 10);
-        float randZ = randomFloat(-10, 10);
-        float randSize = randomFloat(1, 8);
+        float randX = Random::randomFloat(-10, 10);
+        float randZ = Random::randomFloat(-10, 10);
+        float randSize = Random::randomFloat(1, 8);
         InstanceParams* instance = new InstanceParams();
         instance->location = glm::vec3(randX, 0, randZ);
         instance->scale = glm::vec3(randSize);
