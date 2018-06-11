@@ -78,7 +78,7 @@ void App::loadSceneComponents()
 {
     glEnable(GL_DEPTH_TEST);
     // Terrain
-    glm::vec3 terrainSize = glm::vec3(100.f,3,100.f);
+    glm::vec3 terrainSize = glm::vec3(150.f,3,150.f);
     glm::ivec3 terrainGrid = glm::ivec3(50,0,50);
     glm::vec3 terrainLocation = glm::vec3(0,1,0) - terrainSize*0.5f; 
     glm::vec3 treesLocation = terrainLocation;
@@ -98,8 +98,8 @@ void App::loadSceneComponents()
     this->sceneComponents.push_back(new ObjSingle(1, GetGroundPos(2,0,0), dir1 + "Barrel/Barrel02.obj"));
     this->sceneComponents.push_back(new Fountain(1.5, 0.9, 500, GetGroundPos(2,0.8,0)));
     // Trees
-    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(40, treesLocation, treesSize1, 6), dir1 + "tree/PineTree03.obj"));
-    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(60, treesLocation, treesSize2, 6), dir1 + "pine/PineTransp.obj"));
+    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(50, treesLocation, treesSize1, 6), dir1 + "tree/PineTree03.obj"));
+    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(70, treesLocation, treesSize2, 6), dir1 + "pine/PineTransp.obj"));
 
     if (!RENDER_ENVIRONMENT)
         return;
