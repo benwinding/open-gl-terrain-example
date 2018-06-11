@@ -12,7 +12,6 @@
 #include "App.h"
 
 #include "scene/Skybox.h"
-#include "scene/WorldFloor.h"
 #include "scene/ObjSingle.h"
 #include "scene/ObjInstanced.h"
 #include "scene/MirrorBox.h"
@@ -49,7 +48,7 @@ App::App(int winX, int winY, int argc)
 // TODO: 11. Sounds
 // TODO: 12. Collision detection
 
-std::vector<InstanceParams*> MakeTreeInstances() {
+std::vector<InstanceParams*> App::MakeTreeInstances() {
     std::vector<InstanceParams*> instanceList;
     for (int i = 0; i < 20; ++i)
     {
@@ -57,7 +56,7 @@ std::vector<InstanceParams*> MakeTreeInstances() {
         float randZ = Random::randomFloat(-10, 10);
         float randSize = Random::randomFloat(1, 8);
         InstanceParams* instance = new InstanceParams();
-        instance->location = glm::vec3(randX, 0, randZ);
+        instance->location = GetGroundPos(randX, randZ);// glm::vec3(randX, 0, randZ);
         instance->scale = glm::vec3(randSize);
 
         instanceList.push_back(instance);
@@ -65,22 +64,29 @@ std::vector<InstanceParams*> MakeTreeInstances() {
     return instanceList;
 }
 
-void App::loadSceneComponents() {
+glm::vec3 App::GetGroundPos(float x, float z) 
+{
+    float terrainHeight = this->terrain->CalculateTerrainHeight(x, z);
+    return glm::vec3(x, terrainHeight, z);
+}
+
+void App::loadSceneComponents() 
+{
     glEnable(GL_DEPTH_TEST);
-    this->player = new Player(glm::vec3(0,1,-5), 90, 90);
-    // this->sceneComponents.push_back(new WorldFloor(20, ALIGN_TOP));
-    // Barrels
-    std::string dir1 = "./res/models/";
-    this->sceneComponents.push_back(new ObjSingle(1, glm::vec3(0,0,0), dir1 + "Barrel/Barrel02.obj"));
-    this->sceneComponents.push_back(new Fire(1.5, 0.9, 500, glm::vec3(0,0.9,0)));
-    this->sceneComponents.push_back(new ObjSingle(1, glm::vec3(2,0,0), dir1 + "Barrel/Barrel02.obj"));
-    this->sceneComponents.push_back(new Fountain(1.5, 0.9, 500, glm::vec3(2,0.8,0)));
-    // Trees
-    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(), dir1 + "tree/PineTree03.obj"));
-    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(), dir1 + "pine/PineTransp.obj"));
     // Terrain
     this->terrain = new Terrain(glm::vec3(-30,-3,-30), glm::vec3(400,3,400), glm::ivec3(12,0,12));
     this->sceneComponents.push_back(this->terrain);
+    // Player
+    this->player = new Player(GetGroundPos(0,-5), 90, 90);
+    // Barrels
+    std::string dir1 = "./res/models/";
+    this->sceneComponents.push_back(new ObjSingle(1, GetGroundPos(0,0), dir1 + "Barrel/Barrel02.obj"));
+    this->sceneComponents.push_back(new Fire(1.5, 0.9, 500, GetGroundPos(0,0)));
+    this->sceneComponents.push_back(new ObjSingle(1, GetGroundPos(2,0), dir1 + "Barrel/Barrel02.obj"));
+    this->sceneComponents.push_back(new Fountain(1.5, 0.9, 500, GetGroundPos(2,0)));
+    // Trees
+    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(), dir1 + "tree/PineTree03.obj"));
+    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(), dir1 + "pine/PineTransp.obj"));
 
     if (!RENDER_ENVIRONMENT)
         return;
@@ -101,9 +107,8 @@ void App::Render()
         this->player->GetDirection3()
     );
     glm::mat4 view = this->Camera->getViewMtx();
-    Print("player   location: ", playerLocation);
 
-    float terrainHeight = this->terrain->getTerrainHeight(playerLocation.x, playerLocation.z);
+    float terrainHeight = GetGroundPos(playerLocation.x, playerLocation.z).y;
     this->player->UpdateYPos(terrainHeight + 1);
 
     int numComponents = this->sceneComponents.size();

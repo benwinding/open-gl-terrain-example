@@ -20,21 +20,18 @@ Terrain::Terrain(glm::vec3 terrainLocation, glm::vec3 terrainSize, glm::ivec3 gr
     this->onSetup();
 }
 
-float Terrain::CalculateTerrain(float x, float z) {
+float Terrain::CalculateTerrainHeight(float x, float z) {
     return terrainSize.y * Random::wave(x*waveFreqX, z*waveFreqZ);
 }
 
 void Terrain::AddVertex(std::vector<float>* verts, float* terrain, int x, int z)
 {
-    // float y = terrain[z*gridCount.z + x];
-    float y = CalculateTerrain(x, z);
-    glm::vec3 basicPos = glm::vec3(x, y, z);
+    glm::vec3 basicPos = glm::vec3(x, 1, z);
     float scaleNormalize = glm::max(gridCount.x, gridCount.z);
     glm::vec3 normalizedPos = basicPos * (1 / scaleNormalize);
     glm::vec3 scaledPos = normalizedPos * terrainSize;
-    // scaledPos.y = basicPos.y;
     glm::vec3 finalPos = scaledPos + terrainLocation;
-    float finalHeighty = CalculateTerrain(finalPos.x, finalPos.z);
+    float finalHeighty = CalculateTerrainHeight(finalPos.x, finalPos.z);
     verts->push_back(finalPos.x);
     verts->push_back(finalHeighty);
     verts->push_back(finalPos.z);
@@ -44,15 +41,6 @@ void Terrain::onSetup()
 {
     float* terrain = new float[gridCount.z * gridCount.x];
     float zoff = 0;
-
-    for (int z = 0; z < gridCount.z; z++) 
-    {
-        for (int x = 0; x < gridCount.x; x++) 
-        {
-            int index = z * gridCount.z + x;
-            terrain[index] = terrainSize.y * Random::wave(x*waveFreqX, z*waveFreqZ);
-        }
-    }
 
     for (int z = 0; z < gridCount.z-1; z++)
     {
@@ -68,28 +56,6 @@ void Terrain::onSetup()
     }
 
     this->shader = new Shader("res/debug_inspect.vert","res/debug_inspect.frag");
-}
-
-float Terrain::getTerrainHeight(float x, float z) {
-    if (x < minLimits.x || z < minLimits.z)
-        return 0;
-    if (x > maxLimits.x || z > maxLimits.z)
-        return 0;
-
-    // float scaleNormalize = glm::max(gridCount.x, gridCount.z);
-    // glm::vec2 normalizedPos = glm::vec2(x, z) * (1 / scaleNormalize);
-    // glm::vec2 scaledPos = normalizedPos * glm::vec2(terrainSize.x, terrainSize.z);
-
-    // // float y = terrainSize.y * Random::wave(scaledPos.x*waveFreqX, scaledPos.y*waveFreqZ);
-    // float xOrig = x * gridCount.x / terrainSize.x;
-    // float zOrig = z * gridCount.z / terrainSize.z;
-    // float yHeight = terrainSize.y * Random::wave(xOrig*waveFreqX, zOrig*waveFreqZ);
-
-    float yHeight = CalculateTerrain(x, z);
-
-    // Print("terrain original: ", glm::vec3(xOrig, yHeight, zOrig));
-    // Print("terrain   scaled: ", glm::vec3(x, yHeight, z));
-    return yHeight;
 }
 
 void Terrain::finishShape(std::vector<float> verts) {

@@ -27,17 +27,18 @@ private:
 
     float waveFreqX = 0.13;
     float waveFreqZ = 0.13;
+
     Shader* shader;
     // Vertices
     std::vector<shape_terrain> shapes;
     void AddVertex(std::vector<float> *verts, float* terrain, int x, int z);
     void finishShape(std::vector<float> verts);
-    float CalculateTerrain(float x, float z);
+    
 public:
     Terrain(glm::vec3 terrainLocation, glm::vec3 terrainSize, glm::ivec3 gridCount);
     void onSetup();
     void render(glm::mat4 viewMtx, glm::mat4 projectionMtx);
-    float getTerrainHeight(float x, float y);
+    float CalculateTerrainHeight(float x, float z);
 };
 
 #endif

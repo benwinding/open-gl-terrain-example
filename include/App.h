@@ -10,6 +10,7 @@
 #include "scene/SceneComponent.h"
 #include "scene/Terrain.h"
 #include "scene/Player.h"
+#include "scene/ObjInstanced.h"
 
 /*
  The App class is Repsonsible Composing the program and 
@@ -39,6 +40,9 @@ private:
     
     glm::mat4 projection;
     void updateProjection();
+
+    glm::vec3 GetGroundPos(float x, float z);
+    std::vector<InstanceParams*> MakeTreeInstances();
 
     Viewer *Camera;
     ObjectViewer *CamFirstPersion;
