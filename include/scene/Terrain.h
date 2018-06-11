@@ -31,9 +31,9 @@ private:
     Shader* shader;
     // Vertices
     std::vector<shape_terrain> shapes;
-    void AddVertex(std::vector<float> *verts, float* terrain, int x, int z);
+    void AddVertex(std::vector<float> *verts, int x, int z);
     void finishShape(std::vector<float> verts);
-    
+        
 public:
     Terrain(glm::vec3 terrainLocation, glm::vec3 terrainSize, glm::ivec3 gridCount);
     void onSetup();

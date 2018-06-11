@@ -15,7 +15,7 @@ Terrain::Terrain(glm::vec3 terrainLocation, glm::vec3 terrainSize, glm::ivec3 gr
     this->terrainSize = terrainSize;
     this->minLimits = terrainLocation;
     this->maxLimits = terrainSize - terrainLocation;
-    this->gridCount = 3*gridCount;
+    this->gridCount = gridCount;
     this->gridCount.x *= 4;
     this->onSetup();
 }
@@ -24,11 +24,11 @@ float Terrain::CalculateTerrainHeight(float x, float z) {
     return terrainSize.y * Random::wave(x*waveFreqX, z*waveFreqZ);
 }
 
-void Terrain::AddVertex(std::vector<float>* verts, float* terrain, int x, int z)
+void Terrain::AddVertex(std::vector<float>* verts, int x, int z)
 {
-    glm::vec3 basicPos = glm::vec3(x, 1, z);
-    float scaleNormalize = glm::max(gridCount.x, gridCount.z);
-    glm::vec3 normalizedPos = basicPos * (1 / scaleNormalize);
+    glm::vec3 gridPos = glm::vec3(x, 1, z);
+    float scaleNormalize = gridCount.z;
+    glm::vec3 normalizedPos = gridPos * (1 / scaleNormalize);
     glm::vec3 scaledPos = normalizedPos * terrainSize;
     glm::vec3 finalPos = scaledPos + terrainLocation;
     float finalHeighty = CalculateTerrainHeight(finalPos.x, finalPos.z);
@@ -39,17 +39,18 @@ void Terrain::AddVertex(std::vector<float>* verts, float* terrain, int x, int z)
 
 void Terrain::onSetup()
 {
-    float* terrain = new float[gridCount.z * gridCount.x];
-    float zoff = 0;
-
-    for (int z = 0; z < gridCount.z-1; z++)
+    for (int z = 0; z < gridCount.z; z++)
     {
         std::vector<float> verts;
         for (int x = 0; x < gridCount.x; x++) 
         {
-            AddVertex(&verts, terrain, x, z + 0);
-            AddVertex(&verts, terrain, x, z + 1);
-            AddVertex(&verts, terrain, x + 1, z);
+            AddVertex(&verts, x+0, z+0);
+            AddVertex(&verts, x+1, z+0);
+            AddVertex(&verts, x+0, z+1);
+
+            AddVertex(&verts, x+0, z+1);
+            AddVertex(&verts, x+1, z+1);
+            AddVertex(&verts, x+1, z+0);
             // Print("xyz=", glm::vec3(verts.at(0), verts.at(1), verts.at(2)));
         }
         finishShape(verts);

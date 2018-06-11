@@ -48,49 +48,62 @@ App::App(int winX, int winY, int argc)
 // TODO: 11. Sounds
 // TODO: 12. Collision detection
 
-std::vector<InstanceParams*> App::MakeTreeInstances() {
+std::vector<InstanceParams*> App::MakeTreeInstances(int instanceCount, glm::vec3 location, glm::vec3 size, float minSize) {
+    glm::vec3 limitsMin = location;
+    glm::vec3 limitsMax = size + location;
+
     std::vector<InstanceParams*> instanceList;
-    for (int i = 0; i < 20; ++i)
+    for (int i = 0; i < instanceCount; ++i)
     {
-        float randX = Random::randomFloat(-10, 10);
-        float randZ = Random::randomFloat(-10, 10);
-        float randSize = Random::randomFloat(1, 8);
+        float randX = Random::randomFloat(limitsMin.x, limitsMax.x);
+        float randZ = Random::randomFloat(limitsMin.z, limitsMax.z);
+        float randSize = Random::randomFloat(minSize, size.y);
         InstanceParams* instance = new InstanceParams();
-        instance->location = GetGroundPos(randX, randZ);// glm::vec3(randX, 0, randZ);
+        instance->location = GetGroundPos(randX, -randSize*0.05, randZ);
         instance->scale = glm::vec3(randSize);
+        instance->rotation = glm::vec3(0);
 
         instanceList.push_back(instance);
     }
     return instanceList;
 }
 
-glm::vec3 App::GetGroundPos(float x, float z) 
+glm::vec3 App::GetGroundPos(float x, float yOff, float z) 
 {
     float terrainHeight = this->terrain->CalculateTerrainHeight(x, z);
-    return glm::vec3(x, terrainHeight, z);
+    return glm::vec3(x, terrainHeight + yOff, z);
 }
 
 void App::loadSceneComponents() 
 {
     glEnable(GL_DEPTH_TEST);
     // Terrain
-    this->terrain = new Terrain(glm::vec3(-30,-3,-30), glm::vec3(400,3,400), glm::ivec3(12,0,12));
+    glm::vec3 terrainSize = glm::vec3(100.f,3,100.f);
+    glm::ivec3 terrainGrid = glm::ivec3(50,0,50);
+    glm::vec3 terrainLocation = glm::vec3(0,1,0) - terrainSize*0.5f; 
+    glm::vec3 treesLocation = terrainLocation;
+    glm::vec3 treesSize1 = terrainSize;
+    treesSize1.y = 8;
+    glm::vec3 treesSize2 = terrainSize;
+    treesSize2.y = 12;
+
+    this->terrain = new Terrain(terrainLocation, terrainSize, terrainGrid);
     this->sceneComponents.push_back(this->terrain);
     // Player
-    this->player = new Player(GetGroundPos(0,-5), 90, 90);
+    this->player = new Player(GetGroundPos(0, 1, -5), 90, 90);
     // Barrels
     std::string dir1 = "./res/models/";
-    this->sceneComponents.push_back(new ObjSingle(1, GetGroundPos(0,0), dir1 + "Barrel/Barrel02.obj"));
-    this->sceneComponents.push_back(new Fire(1.5, 0.9, 500, GetGroundPos(0,0)));
-    this->sceneComponents.push_back(new ObjSingle(1, GetGroundPos(2,0), dir1 + "Barrel/Barrel02.obj"));
-    this->sceneComponents.push_back(new Fountain(1.5, 0.9, 500, GetGroundPos(2,0)));
+    this->sceneComponents.push_back(new ObjSingle(1, GetGroundPos(0,0,0), dir1 + "Barrel/Barrel02.obj"));
+    this->sceneComponents.push_back(new Fire(1.5, 0.9, 500, GetGroundPos(0,0.9,0)));
+    this->sceneComponents.push_back(new ObjSingle(1, GetGroundPos(2,0,0), dir1 + "Barrel/Barrel02.obj"));
+    this->sceneComponents.push_back(new Fountain(1.5, 0.9, 500, GetGroundPos(2,0.8,0)));
     // Trees
-    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(), dir1 + "tree/PineTree03.obj"));
-    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(), dir1 + "pine/PineTransp.obj"));
+    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(40, treesLocation, treesSize1, 6), dir1 + "tree/PineTree03.obj"));
+    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(60, treesLocation, treesSize2, 6), dir1 + "pine/PineTransp.obj"));
 
     if (!RENDER_ENVIRONMENT)
         return;
-    this->sceneComponents.push_back(new MirrorBox(3, glm::vec3(-2,1,5), &this->Camera));
+    this->sceneComponents.push_back(new MirrorBox(2, GetGroundPos(0,1,0), &this->Camera));
     // Skybox must be last
     this->sceneComponents.push_back(new Skybox()); 
 }
@@ -108,8 +121,8 @@ void App::Render()
     );
     glm::mat4 view = this->Camera->getViewMtx();
 
-    float terrainHeight = GetGroundPos(playerLocation.x, playerLocation.z).y;
-    this->player->UpdateYPos(terrainHeight + 1);
+    float terrainHeight = GetGroundPos(playerLocation.x, 1, playerLocation.z).y;
+    this->player->UpdateYPos(terrainHeight);
 
     int numComponents = this->sceneComponents.size();
     for (int i = 0; i < numComponents; ++i)

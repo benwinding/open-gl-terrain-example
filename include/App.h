@@ -41,8 +41,8 @@ private:
     glm::mat4 projection;
     void updateProjection();
 
-    glm::vec3 GetGroundPos(float x, float z);
-    std::vector<InstanceParams*> MakeTreeInstances();
+    glm::vec3 GetGroundPos(float x, float yOff, float z);
+    std::vector<InstanceParams*> MakeTreeInstances(int instanceCount, glm::vec3 location, glm::vec3 size, float minSize);
 
     Viewer *Camera;
     ObjectViewer *CamFirstPersion;
