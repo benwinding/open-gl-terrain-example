@@ -32,8 +32,8 @@ struct InputState
                   }
 
     // Is the mouse button currently being held down?
-    bool lMousePressed;
-    bool rMousePressed;
+    bool lMousePressed = false;
+    bool rMousePressed = false;
 
     // Last known position of the cursor
     float prevX;
@@ -126,10 +126,10 @@ struct InputState
     };
 
 private:
-    bool stateUp;
-    bool stateDown;
-    bool stateLeft;
-    bool stateRight;
+    bool stateUp = false;
+    bool stateDown = false;
+    bool stateLeft = false;
+    bool stateRight = false;
 };
 
 #endif // _INPUTSTATE_H_
