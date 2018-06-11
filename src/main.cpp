@@ -12,6 +12,9 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#define GLFW_EXPOSE_NATIVE_X11
+#define GLFW_EXPOSE_NATIVE_GLX
+#include <GLFW/glfw3native.h>
 
 #include <glm/glm.hpp> // ...so now that's defined we can import GLM itself.
 #include "glm/gtc/matrix_transform.hpp" // Needed for the perspective() method
@@ -19,7 +22,7 @@
 #include "App.h"
 
 GLFWwindow* window;
-int winX = 640;
+int winX = 800;
 int winY = 640;
 
 App* TheApp;
@@ -64,6 +67,8 @@ void initWindow() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+    glfwWindowHint(GLFW_FLOATING, GL_TRUE);
+
     // Create the window and OpenGL context
     window = glfwCreateWindow(winX, winY, "Epic Model Viewer - (CGA3 - Part 1)", NULL, NULL);
     if (!window)
@@ -74,7 +79,7 @@ void initWindow() {
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
-    
+
     // Initialize GLEW
     glewExperimental = true; // Needed for core profile
     if (glewInit() != GLEW_OK) {
@@ -96,7 +101,8 @@ void initOpengl() {
     glFrontFace(GL_CCW);
 }
 
-void printHelp() {
+void printHelp() 
+{
     const char * helpScreen = R"V0G0N(
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         ~~~~ Assignment 3 - Part 2 ~~~~
@@ -112,9 +118,15 @@ void printHelp() {
     std::cout << helpScreen << std::endl;
 }
 
+void initSound() 
+{
+    system("xdg-open res/sounds/Gilman_Mom_-_07_-_Cosmic_Evening.mp3");
+}
+
 int main(int argc, char **argv)
 {
     initWindow();
+    initSound();
     initOpengl();
     printHelp();
     // Parse program arguments, add to a vector
@@ -124,6 +136,7 @@ int main(int argc, char **argv)
 
     while (!glfwWindowShouldClose(window))
     {
+        glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);
         TheApp->Render();
         glfwSwapBuffers(window);
         glfwPollEvents();

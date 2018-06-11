@@ -93,8 +93,8 @@ void App::loadSceneComponents()
     this->player = new Player(GetGroundPos(0, 1, -5), 90, 90);
     // Barrels
     std::string dir1 = "./res/models/";
-    this->sceneComponents.push_back(new ObjSingle(1, GetGroundPos(0,0,0), dir1 + "Barrel/Barrel02.obj"));
-    this->sceneComponents.push_back(new Fire(1.5, 0.9, 500, GetGroundPos(0,0.9,0)));
+    this->sceneComponents.push_back(new ObjSingle(1, GetGroundPos(-2,0,0), dir1 + "Barrel/Barrel02.obj"));
+    this->sceneComponents.push_back(new Fire(1.5, 0.9, 500, GetGroundPos(-2,0.9,0)));
     this->sceneComponents.push_back(new ObjSingle(1, GetGroundPos(2,0,0), dir1 + "Barrel/Barrel02.obj"));
     this->sceneComponents.push_back(new Fountain(1.5, 0.9, 500, GetGroundPos(2,0.8,0)));
     // Trees
@@ -105,7 +105,7 @@ void App::loadSceneComponents()
         return;
     this->sceneComponents.push_back(new MirrorBox(2, GetGroundPos(0,1,0), &this->Camera));
     // Skybox must be last
-    this->sceneComponents.push_back(new Skybox()); 
+    this->sceneComponents.push_back(new Skybox());
 }
 
 void App::Render() 
