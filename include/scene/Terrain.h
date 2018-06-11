@@ -18,16 +18,21 @@ struct shape_terrain
 class Terrain : public SceneComponent
 {
 private:
+    // Terrain properties
     glm::vec3 terrainLocation;
     glm::vec3 terrainSize;
     glm::vec3 minLimits;
     glm::vec3 maxLimits;
     glm::ivec3 gridCount; 
 
+    float waveFreqX = 0.13;
+    float waveFreqZ = 0.13;
     Shader* shader;
+    // Vertices
     std::vector<shape_terrain> shapes;
     void AddVertex(std::vector<float> *verts, float* terrain, int x, int z);
     void finishShape(std::vector<float> verts);
+    float CalculateTerrain(float x, float z);
 public:
     Terrain(glm::vec3 terrainLocation, glm::vec3 terrainSize, glm::ivec3 gridCount);
     void onSetup();
