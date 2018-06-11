@@ -20,6 +20,8 @@ class Terrain : public SceneComponent
 private:
     glm::vec3 terrainLocation;
     glm::vec3 terrainSize;
+    glm::vec3 minLimits;
+    glm::vec3 maxLimits;
     glm::ivec3 gridCount; 
 
     Shader* shader;
@@ -30,6 +32,7 @@ public:
     Terrain(glm::vec3 terrainLocation, glm::vec3 terrainSize, glm::ivec3 gridCount);
     void onSetup();
     void render(glm::mat4 viewMtx, glm::mat4 projectionMtx);
+    float getTerrainHeight(float x, float y);
 };
 
 #endif

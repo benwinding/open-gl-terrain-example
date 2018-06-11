@@ -13,6 +13,8 @@ Terrain::Terrain(glm::vec3 terrainLocation, glm::vec3 terrainSize, glm::ivec3 gr
 {
     this->terrainLocation = terrainLocation;
     this->terrainSize = terrainSize;
+    this->minLimits = terrainLocation;
+    this->maxLimits = terrainSize - terrainLocation;
     this->gridCount = 3*gridCount;
     this->gridCount.x *= 4;
     this->onSetup();
@@ -49,7 +51,6 @@ void Terrain::onSetup()
         }
     }
 
-
     for (int z = 0; z < gridCount.z-1; z++)
     {
         std::vector<float> verts;
@@ -64,6 +65,14 @@ void Terrain::onSetup()
     }
 
     this->shader = new Shader("res/debug_inspect.vert","res/debug_inspect.frag");
+}
+
+float Terrain::getTerrainHeight(float x, float z) {
+    if (x < minLimits.x || z < minLimits.z)
+        return 0;
+    if (x > maxLimits.x || z > maxLimits.z)
+        return 0;
+    return 1;
 }
 
 void Terrain::finishShape(std::vector<float> verts) {

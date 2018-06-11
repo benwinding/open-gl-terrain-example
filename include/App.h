@@ -8,6 +8,7 @@
 #include "graphics/ObjContainer.h"
 #include "graphics/InputState.h"
 #include "scene/SceneComponent.h"
+#include "scene/Terrain.h"
 #include "scene/Player.h"
 
 /*
@@ -28,6 +29,7 @@ private:
     int winX, winY;
 
     std::vector<SceneComponent*> sceneComponents;
+    Terrain* terrain;
 
     Player* player;
 

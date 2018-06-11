@@ -37,6 +37,7 @@ public:
     void Reset();
     void Update(InputState userInput);
 
+    void UpdateYPos(float y);
     glm::vec3 GetLocation3();
     glm::vec3 GetDirection3();
     float GetPan();

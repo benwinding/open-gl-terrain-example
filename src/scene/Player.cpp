@@ -134,6 +134,11 @@ void Player::TiltDown()
         this->tilt = 150;
 }
 
+void Player::UpdateYPos(float y) 
+{
+    this->location.y = y;
+}
+
 // Getters
 glm::vec3 Player::GetLocation3()
 {

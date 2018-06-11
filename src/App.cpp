@@ -79,7 +79,8 @@ void App::loadSceneComponents() {
     this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(), dir1 + "tree/PineTree03.obj"));
     this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(), dir1 + "pine/PineTransp.obj"));
     // Terrain
-    this->sceneComponents.push_back(new Terrain(glm::vec3(-20,-3,-20), glm::vec3(400,3,400), glm::ivec3(12,0,12)));
+    this->terrain = new Terrain(glm::vec3(-20,-3,-30), glm::vec3(400,3,400), glm::ivec3(12,0,12));
+    this->sceneComponents.push_back(this->terrain);
 
     if (!RENDER_ENVIRONMENT)
         return;
@@ -94,11 +95,15 @@ void App::Render()
 
     this->player->Update(userInput);
 
+    glm::vec3 playerLocation = this->player->GetLocation3();
     this->Camera->updateFromPlayer(
-        this->player->GetLocation3(), 
+        playerLocation, 
         this->player->GetDirection3()
     );
     glm::mat4 view = this->Camera->getViewMtx();
+
+    float terrainHeight = this->terrain->getTerrainHeight(playerLocation.x, playerLocation.z);
+    this->player->UpdateYPos(terrainHeight);
 
     int numComponents = this->sceneComponents.size();
     for (int i = 0; i < numComponents; ++i)
