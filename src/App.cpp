@@ -58,6 +58,9 @@ std::vector<InstanceParams*> App::MakeTreeInstances(int instanceCount, glm::vec3
         float randX = Random::randomFloat(limitsMin.x, limitsMax.x);
         float randZ = Random::randomFloat(limitsMin.z, limitsMax.z);
         float randSize = Random::randomFloat(minSize, size.y);
+        glm::vec3 location = GetGroundPos(randX, -randSize*0.05, randZ);
+        if (location.y < 0.2)
+            continue;
         InstanceParams* instance = new InstanceParams();
         instance->location = GetGroundPos(randX, -randSize*0.05, randZ);
         instance->scale = glm::vec3(randSize);
@@ -125,6 +128,8 @@ void App::Render()
     glm::mat4 view = this->Camera->getViewMtx();
 
     float terrainHeight = GetGroundPos(playerLocation.x, 1, playerLocation.z).y;
+    if (terrainHeight < 1)
+        terrainHeight = 1;
     this->player->UpdateYPos(terrainHeight);
 
     int numComponents = this->sceneComponents.size();
