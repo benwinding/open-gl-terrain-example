@@ -43,9 +43,9 @@ App::App(int winX, int winY, int argc)
 // TODO: 7. Bump mapping, light mapping, parralax mapping
 // 8. Generated terrain
 // 8.1 Particle systems, water, fire
-// TODO: 9. Height mapping
+// 9. Height mapping
 // TODO: 10. Alpha blending 
-// TODO: 11. Sounds
+// 11. Sounds
 // TODO: 12. Collision detection
 
 std::vector<InstanceParams*> App::MakeTreeInstances(int instanceCount, glm::vec3 location, glm::vec3 size, float minSize) {
