@@ -25,8 +25,8 @@ private:
     glm::vec3 maxLimits;
     glm::ivec3 gridCount; 
 
-    float waveFreqX = 0.13;
-    float waveFreqZ = 0.13;
+    float waveFreqX = 0.2;
+    float waveFreqZ = 0.2;
 
     Shader* shader;
     // Vertices

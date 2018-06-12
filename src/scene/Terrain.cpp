@@ -14,10 +14,14 @@ Terrain::Terrain(glm::vec3 terrainLocation, glm::vec3 terrainSize, glm::ivec3 gr
     this->terrainLocation = terrainLocation;
     this->terrainSize = terrainSize;
     this->minLimits = terrainLocation;
-    this->maxLimits = terrainSize - terrainLocation;
+    this->maxLimits = minLimits + terrainSize;
     this->gridCount = gridCount;
     this->gridCount.x *= 4;
     this->onSetup();
+    Print("terrainLocation:",terrainLocation);
+    Print("    terrainSize:",terrainSize);
+    Print("      minLimits:",minLimits);
+    Print("      maxLimits:",maxLimits);
 }
 
 float Terrain::CalculateTerrainHeight(float x, float z) {
@@ -37,6 +41,32 @@ void Terrain::AddVertex(std::vector<float>* verts, int x, int z)
     verts->push_back(finalPos.z);
 }
 
+void printVertStats(std::vector<float> verts) {
+    glm::vec3 lowestPoint(999);
+    glm::vec3 highestPoint(-999);
+
+    for (int i = 0; i < verts.size(); i+=3)
+    {
+        float x = verts.at(i+0);
+        float y = verts.at(i+1);
+        float z = verts.at(i+2);
+        if (y > highestPoint.y)
+        {
+            highestPoint.x = x;
+            highestPoint.y = y;
+            highestPoint.z = z;
+        }
+        if (y < lowestPoint.y)
+        {
+            lowestPoint.x = x;
+            lowestPoint.y = y;
+            lowestPoint.z = z;
+        }
+    }
+    Print("  lowestPoint: ",lowestPoint);
+    Print(" highestPoint: ",highestPoint);
+}
+
 void Terrain::onSetup()
 {
     for (int z = 0; z < gridCount.z; z++)
@@ -51,12 +81,12 @@ void Terrain::onSetup()
             AddVertex(&verts, x+0, z+1);
             AddVertex(&verts, x+1, z+1);
             AddVertex(&verts, x+1, z+0);
-            // Print("xyz=", glm::vec3(verts.at(0), verts.at(1), verts.at(2)));
         }
         finishShape(verts);
+        // printVertStats(verts);
     }
 
-    this->shader = new Shader("res/debug_inspect.vert","res/debug_inspect.frag");
+    this->shader = new Shader("res/terrain.vert","res/terrain.frag");
 }
 
 void Terrain::finishShape(std::vector<float> verts) {
@@ -89,24 +119,20 @@ void Terrain::render(glm::mat4 viewMtx, glm::mat4 projectionMtx)
     // Move to side
     glm::mat4 modelM(1.f);
     shader->setMat4("model", modelM);
-    shader->setVec3("diffuse", glm::vec3(0,1,0));
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    for (int i = 0; i < this->shapes.size(); ++i)
-    {
-        shape_terrain shape = this->shapes.at(i);
-        int vao = shape.VAO;
-        glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, 0, shape.vCount );
-    }
-    shader->setVec3("diffuse", glm::vec3(0.1));
+    // Set colours
+    shader->setVec3("colorTop", glm::vec3(0.9));
+    shader->setVec3("colorMid", glm::vec3(0.1,0.6,0.2));
+    shader->setVec3("colorMin", glm::vec3(0.1,0.4,0.1));
+    shader->setFloat("mixFactor1", 1);
+    shader->setFloat("mixFactor2", 1);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     for (int i = 0; i < this->shapes.size(); ++i)
     {
         shape_terrain shape = this->shapes.at(i);
         int vao = shape.VAO;
         glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, 0, shape.vCount );
+        glDrawArrays(GL_TRIANGLES, 0, shape.vCount);
     }
     glBindVertexArray(0);
 }
