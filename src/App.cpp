@@ -48,23 +48,33 @@ App::App(int winX, int winY, int argc)
 // 11. Sounds
 // TODO: 12. Collision detection
 
-std::vector<InstanceParams*> App::MakeTreeInstances(int instanceCount, glm::vec3 location, glm::vec3 size, float minSize) {
+std::vector<InstanceParams*> App::MakeTreeInstances(int instanceCount, glm::vec3 location, glm::vec3 size, float minSize, int axisDir) {
+    return MakeTreeInstances(instanceCount, location, size, glm::vec3(0), minSize, axisDir);
+}
+
+std::vector<InstanceParams*> App::MakeTreeInstances(int instanceCount, glm::vec3 location, glm::vec3 size, glm::vec3 rotate, float minSize, int axisDir) {
     glm::vec3 limitsMin = location;
     glm::vec3 limitsMax = size + location;
 
     std::vector<InstanceParams*> instanceList;
-    for (int i = 0; i < instanceCount; ++i)
+    for (int i = 0; i < 1000; ++i)
     {
         float randX = Random::randomFloat(limitsMin.x, limitsMax.x);
         float randZ = Random::randomFloat(limitsMin.z, limitsMax.z);
         float randSize = Random::randomFloat(minSize, size.y);
+        if (axisDir == X_DOWN)
+            randSize = Random::randomFloat(minSize, size.x);
+        if (axisDir == Z_DOWN)
+            randSize = Random::randomFloat(minSize, size.z);
         glm::vec3 location = GetGroundPos(randX, -randSize*0.05, randZ);
-        if (location.y < 0.2)
+        if (location.y < -0.2)
             continue;
+        if (instanceList.size() > instanceCount)
+            break;
         InstanceParams* instance = new InstanceParams();
-        instance->location = GetGroundPos(randX, -randSize*0.05, randZ);
+        instance->location = location;
         instance->scale = glm::vec3(randSize);
-        instance->rotation = glm::vec3(0);
+        instance->rotation = rotate;
 
         instanceList.push_back(instance);
     }
@@ -75,6 +85,11 @@ glm::vec3 App::GetGroundPos(float x, float yOff, float z)
 {
     float terrainHeight = this->terrain->CalculateTerrainHeight(x, z);
     return glm::vec3(x, terrainHeight + yOff, z);
+}
+
+void App::AddComp(SceneComponent* comp)
+{
+    this->sceneComponents.push_back(comp);
 }
 
 void App::loadSceneComponents() 
@@ -92,26 +107,28 @@ void App::loadSceneComponents()
     treesSize2.y = 12;
 
     this->terrain = new Terrain(terrainLocation, terrainSize, terrainGrid);
-    this->sceneComponents.push_back(this->terrain);
+    AddComp(this->terrain);
     // Player
     this->player = new Player(GetGroundPos(0, 1, -2), 90, 90);
     // Barrels
     std::string dir1 = "./res/models/";
-    this->sceneComponents.push_back(new ObjSingle(1, GetGroundPos(-2,0,0), dir1 + "Barrel/Barrel02.obj"));
-    this->sceneComponents.push_back(new Fire(1.5, 0.9, 500, GetGroundPos(-2,0.9,0)));
-    this->sceneComponents.push_back(new ObjSingle(1, GetGroundPos(2,0,0), dir1 + "Barrel/Barrel02.obj"));
-    this->sceneComponents.push_back(new Fountain(1.5, 0.9, 500, GetGroundPos(2,0.8,0)));
+    AddComp(new ObjSingle(1, GetGroundPos(-2,0,0), dir1 + "Barrel/Barrel02.obj"));
+    AddComp(new Fire(1.5, 0.9, 500, GetGroundPos(-2,0.9,0)));
+    AddComp(new ObjSingle(1, GetGroundPos(2,0,0), dir1 + "Barrel/Barrel02.obj"));
+    AddComp(new Fountain(1.5, 0.9, 500, GetGroundPos(2,0.8,0)));
     // Trees
-    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(50, treesLocation, treesSize1, 6), dir1 + "tree/PineTree03.obj"));
-    this->sceneComponents.push_back(new ObjInstanced(MakeTreeInstances(70, treesLocation, treesSize2, 6), dir1 + "pine/PineTransp.obj"));
+    AddComp(new ObjInstanced(MakeTreeInstances(50, treesLocation, treesSize1, 6, Y_DOWN), dir1 + "tree/PineTree03.obj", Y_DOWN));
+    AddComp(new ObjInstanced(MakeTreeInstances(70, treesLocation, treesSize2, 6, Y_DOWN), dir1 + "pine/PineTransp.obj", Y_DOWN));
+    // AddComp(new ObjInstanced(MakeTreeInstances(30, treesLocation, treesSize2, 6, Y_DOWN), dir1 + "tree2/tree2.obj", Y_DOWN));
+    // AddComp(new ObjInstanced(MakeTreeInstances(80, treesLocation, treesSize2, glm::vec3(glm::radians(-90.f),0,0), 1, X_DOWN), dir1 + "spruce/Spruce.obj", X_DOWN));
 
     if (!RENDER_ENVIRONMENT)
         return;
     std::string cubeMapDir = "./res/skyboxes/hangingstone/";
     glm::vec3 mirrorLocation(0, -mapSize, 0);
-    this->sceneComponents.push_back(new MirrorBox(mapSize, mirrorLocation, &this->Camera, cubeMapDir));
+    AddComp(new MirrorBox(mapSize, mirrorLocation, &this->Camera, cubeMapDir));
     // Skybox must be last
-    this->sceneComponents.push_back(new Skybox(cubeMapDir));
+    AddComp(new Skybox(cubeMapDir));
 }
 
 void App::Render() 

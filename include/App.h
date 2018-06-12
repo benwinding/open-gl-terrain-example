@@ -42,7 +42,9 @@ private:
     void updateProjection();
 
     glm::vec3 GetGroundPos(float x, float yOff, float z);
-    std::vector<InstanceParams*> MakeTreeInstances(int instanceCount, glm::vec3 location, glm::vec3 size, float minSize);
+    std::vector<InstanceParams*> MakeTreeInstances(int instanceCount, glm::vec3 location, glm::vec3 size, float minSize, int axisDir);
+    std::vector<InstanceParams*> MakeTreeInstances(int instanceCount, glm::vec3 location, glm::vec3 size, glm::vec3 rotate, float minSize, int axisDir);
+    void AddComp(SceneComponent* comp);
 
     Viewer *Camera;
     ObjectViewer *CamFirstPersion;

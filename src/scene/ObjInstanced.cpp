@@ -1,10 +1,11 @@
 #include "scene/ObjInstanced.h"
 #include "utils/Logger.h"
 
-ObjInstanced::ObjInstanced(std::vector<InstanceParams*> instanceList, std::string fname)
+ObjInstanced::ObjInstanced(std::vector<InstanceParams*> instanceList, std::string fname, int downAxis)
 {
     this->instanceList = instanceList;
     this->fname = fname.c_str();
+    this->downAxis = downAxis;
     this->onSetup();
 }
 
@@ -22,7 +23,12 @@ void ObjInstanced::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     ObjContainer* obj = this->objContainer;
     // Align to top or bottom
     float align = 1; // align bottom = 1, align top = -1
-    float objHeight = obj->GetObjSize().y;
+    glm::vec3 objSize = obj->GetObjSize();
+    float objHeight = objSize.y;
+    if (this->downAxis == X_DOWN)
+        objHeight = objSize.x;
+    if (this->downAxis == Z_DOWN)
+        objHeight = objSize.z;
     // Set model matrix
     glm::mat4 modelM(1.f);
     modelM = glm::translate(modelM, -obj->GetOffsetCenter());
