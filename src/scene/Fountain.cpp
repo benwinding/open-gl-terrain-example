@@ -68,7 +68,7 @@ void Fountain::onSetup() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
-    this->shader = new Shader("res/fire.vert","res/fire.frag");
+    this->shader = new Shader("res/shaders/fire.vert","res/shaders/fire.frag");
     this->particles = new FountainParticle[particleCount];
 }
 

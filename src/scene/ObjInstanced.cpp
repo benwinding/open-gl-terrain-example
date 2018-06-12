@@ -10,7 +10,7 @@ ObjInstanced::ObjInstanced(std::vector<InstanceParams*> instanceList, std::strin
 
 void ObjInstanced::onSetup() {
     this->objContainer = new ObjContainer((char*) this->fname);
-    this->shader = new Shader("res/objinstanced.vert","res/objinstanced.frag");
+    this->shader = new Shader("res/shaders/objinstanced.vert","res/shaders/objinstanced.frag");
 }
 
 void ObjInstanced::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {

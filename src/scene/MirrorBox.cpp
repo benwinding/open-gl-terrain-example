@@ -72,7 +72,7 @@ void MirrorBox::onSetup()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
-    this->shader = new Shader("res/mirrorbox.vert","res/mirrorbox.frag");
+    this->shader = new Shader("res/shaders/mirrorbox.vert","res/shaders/mirrorbox.frag");
     // load textures
     // -------------
     std::vector<std::string> faces

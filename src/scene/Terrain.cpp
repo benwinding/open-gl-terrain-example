@@ -86,7 +86,7 @@ void Terrain::onSetup()
         // printVertStats(verts);
     }
 
-    this->shader = new Shader("res/terrain.vert","res/terrain.frag");
+    this->shader = new Shader("res/shaders/terrain.vert","res/shaders/terrain.frag");
 }
 
 void Terrain::finishShape(std::vector<float> verts) {

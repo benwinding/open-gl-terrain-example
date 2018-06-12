@@ -81,7 +81,7 @@ void Skybox::onSetup()
         this->cubeMapDir + "bk.jpg",
     };
     this->cubemapTexture = loadCubemap(faces);
-    this->shader = new Shader("res/skybox.vert","res/skybox.frag");
+    this->shader = new Shader("res/shaders/skybox.vert","res/shaders/skybox.frag");
     this->shader->setInt("skybox", 0);
 }
 
