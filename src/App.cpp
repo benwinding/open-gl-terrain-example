@@ -78,7 +78,8 @@ void App::loadSceneComponents()
 {
     glEnable(GL_DEPTH_TEST);
     // Terrain
-    glm::vec3 terrainSize = glm::vec3(150.f,10,150.f);
+    float mapSize = 150;
+    glm::vec3 terrainSize = glm::vec3(mapSize,10,mapSize);
     glm::ivec3 terrainGrid = glm::ivec3(50,0,50);
     glm::vec3 terrainLocation = glm::vec3(0,1,0) - terrainSize*0.5f; 
     glm::vec3 treesLocation = terrainLocation;
@@ -90,7 +91,7 @@ void App::loadSceneComponents()
     this->terrain = new Terrain(terrainLocation, terrainSize, terrainGrid);
     this->sceneComponents.push_back(this->terrain);
     // Player
-    this->player = new Player(GetGroundPos(0, 1, -5), 90, 90);
+    this->player = new Player(GetGroundPos(0, 1, -2), 90, 90);
     // Barrels
     std::string dir1 = "./res/models/";
     this->sceneComponents.push_back(new ObjSingle(1, GetGroundPos(-2,0,0), dir1 + "Barrel/Barrel02.obj"));
@@ -103,9 +104,11 @@ void App::loadSceneComponents()
 
     if (!RENDER_ENVIRONMENT)
         return;
-    this->sceneComponents.push_back(new MirrorBox(2, GetGroundPos(0,1,0), &this->Camera));
+    std::string cubeMapDir = "./res/skyboxes/hangingstone/";
+    glm::vec3 mirrorLocation(0, -mapSize, 0);
+    this->sceneComponents.push_back(new MirrorBox(mapSize, mirrorLocation, &this->Camera, cubeMapDir));
     // Skybox must be last
-    this->sceneComponents.push_back(new Skybox());
+    this->sceneComponents.push_back(new Skybox(cubeMapDir));
 }
 
 void App::Render() 

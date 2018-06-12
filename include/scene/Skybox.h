@@ -16,9 +16,10 @@ private:
     unsigned int skyboxVAO, skyboxVBO;
     unsigned int cubemapTexture;
     unsigned int loadCubemap(std::vector<std::string> faces);
+    std::string cubeMapDir;
 
 public:
-    Skybox();
+    Skybox(std::string cubeMapDir);
     void onSetup();
     void render(glm::mat4 viewMtx, glm::mat4 projectionMtx);
 };

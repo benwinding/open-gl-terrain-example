@@ -5,11 +5,13 @@
 #include "scene/MirrorBox.h"
 #include "scene/SceneComponent.h"
 
-MirrorBox::MirrorBox(float scale, glm::vec3 location, Viewer** camera)
+MirrorBox::MirrorBox(float scale, glm::vec3 location, Viewer** camera, std::string cubeMapDir)
 {
     this->scale = scale;
     this->location = location;
     this->camera = camera;
+    this->cubeMapDir = cubeMapDir;
+
     this->onSetup();
 }
 
@@ -75,12 +77,12 @@ void MirrorBox::onSetup()
     // -------------
     std::vector<std::string> faces
     {
-        "res/skybox/right.jpg",
-        "res/skybox/left.jpg",
-        "res/skybox/top.jpg",
-        "res/skybox/bottom.jpg",
-        "res/skybox/front.jpg",
-        "res/skybox/back.jpg",
+        this->cubeMapDir + "lf.jpg",
+        this->cubeMapDir + "rt.jpg",
+        this->cubeMapDir + "up.jpg",
+        this->cubeMapDir + "dn.jpg",
+        this->cubeMapDir + "ft.jpg",
+        this->cubeMapDir + "bk.jpg",
     };
     this->cubemapTexture = loadCubemap(faces);
 }
@@ -100,7 +102,7 @@ void MirrorBox::render(glm::mat4 viewMtx, glm::mat4 projectionMtx)
     // Move to side
     modelM = glm::scale(modelM, glm::vec3(scale));
     // modelM = glm::translate(modelM, -obj->GetOffsetCenter());
-    // modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2, 0));
+    modelM = glm::translate(modelM, glm::vec3(0, align * objHeight/2, 0));
     modelM = glm::translate(modelM, this->location / scale);
     shader->setMat4("model", modelM);
     shader->setVec3("cameraPos", (*this->camera)->Position);

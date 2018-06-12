@@ -5,8 +5,9 @@
 #include "external_files/stb_image.h"
 #include "scene/Skybox.h"
 
-Skybox::Skybox()
+Skybox::Skybox(std::string cubeMapDir)
 {
+    this->cubeMapDir = cubeMapDir;
     this->onSetup();
 }
 
@@ -72,12 +73,12 @@ void Skybox::onSetup()
     // -------------
     std::vector<std::string> faces
     {
-        "res/skybox/right.jpg",
-        "res/skybox/left.jpg",
-        "res/skybox/top.jpg",
-        "res/skybox/bottom.jpg",
-        "res/skybox/front.jpg",
-        "res/skybox/back.jpg",
+        this->cubeMapDir + "lf.jpg",
+        this->cubeMapDir + "rt.jpg",
+        this->cubeMapDir + "up.jpg",
+        this->cubeMapDir + "dn.jpg",
+        this->cubeMapDir + "ft.jpg",
+        this->cubeMapDir + "bk.jpg",
     };
     this->cubemapTexture = loadCubemap(faces);
     this->shader = new Shader("res/skybox.vert","res/skybox.frag");
