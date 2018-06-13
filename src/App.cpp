@@ -115,13 +115,13 @@ void App::loadSceneComponents()
     glm::vec3 fireBarrelLocation = GetGroundPos(7.6+3,0,-20);
     glm::vec3 fireLocation = fireBarrelLocation;
     fireLocation.y += 0.9;
-    AddComp(new ObjSingle(1, fireBarrelLocation, dir1 + "Barrel/Barrel02.obj"));
+    AddComp(new ObjSingle(1, fireBarrelLocation, dir1 + "Barrel/Barrel02.obj", &this->Camera));
     AddComp(new Fire(1.5, 0.9, 500, fireLocation));
     // Barrel Fountain
     glm::vec3 fountainBarrelLocation = GetGroundPos(7.6-2,0,-20);
     glm::vec3 fountainLocation = fountainBarrelLocation;
     fountainLocation.y += 0.8;
-    AddComp(new ObjSingle(1, fountainBarrelLocation, dir1 + "Barrel/Barrel02.obj"));
+    AddComp(new ObjSingle(1, fountainBarrelLocation, dir1 + "Barrel/Barrel02.obj", &this->Camera));
     AddComp(new Fountain(1.5, 0.9, 500, fountainLocation));
     // Trees
     AddComp(new ObjInstanced(MakeTreeInstances(50, treesLocation, treesSize1, 6, Y_DOWN), dir1 + "tree/PineTree03.obj", Y_DOWN));
