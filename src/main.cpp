@@ -9,28 +9,35 @@
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
+#include <stdio.h>
+
+#include <unistd.h>
+#include <sys/types.h>
+#include <signal.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#define GLFW_EXPOSE_NATIVE_X11
-#define GLFW_EXPOSE_NATIVE_GLX
-#include <GLFW/glfw3native.h>
 
 #include <glm/glm.hpp> // ...so now that's defined we can import GLM itself.
 #include "glm/gtc/matrix_transform.hpp" // Needed for the perspective() method
 
 #include "App.h"
+#include "utils/Logger.h"
 
 GLFWwindow* window;
 int winX = 800;
 int winY = 640;
 
 App* TheApp;
-    
+
+pid_t sound_pid;
+
 void key_callback(GLFWwindow* window,
                   int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+         //Sends the SIGINT Signal to the process, telling it to stop.
+        kill(sound_pid, 15); 
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
     TheApp->Key_callback(key, action);
@@ -120,13 +127,20 @@ void printHelp()
 
 void initSound() 
 {
-    system("xdg-open res/sounds/Gilman_Mom_-_07_-_Cosmic_Evening.mp3");
+    sound_pid = fork();
+    if(sound_pid == 0) {
+        Print("Starting sound...", sound_pid);
+        system("xdg-open res/sounds/Gilman_Mom_-_07_-_Cosmic_Evening.ogg");
+        usleep(141 * 1000000);
+        Print("Finished sound...", sound_pid);
+        exit(1);
+    }
 }
 
 int main(int argc, char **argv)
 {
-    initWindow();
     initSound();
+    initWindow();
     initOpengl();
     printHelp();
     // Parse program arguments, add to a vector
