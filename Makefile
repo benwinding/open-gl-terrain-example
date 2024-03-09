@@ -19,10 +19,15 @@ $(shell mkdir -p $(OUT_DIRS))
 
 # LINUX install these packages
 # sudo apt-get install libglfw3-dev libglew-dev libglm-dev
-FLAGS_BUILDING = `pkg-config --static --libs glfw3 glew` -framework OpenGL
+FLAGS_BUILDING = `pkg-config --static --libs glfw3 glew`
 FLAGS_LINKING = `pkg-config --cflags glfw3` -std=c++11 -Iinclude -g
 
-$(info Platform="$(PLATFORM)")
+ifeq ($(PLATFORM), Darwin)
+  # mac specific, breaks on Linux
+	FLAGS_BUILDING += -framework OpenGL
+endif
+
+$(info Platform        = $(PLATFORM) )
 $(info EXE_FILE        = $(EXE_FILE) )
 $(info CPP_FILES       = $(CPP_FILES) )
 $(info O_FILES         = $(O_FILES) )
