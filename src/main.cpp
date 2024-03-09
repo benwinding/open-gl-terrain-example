@@ -15,7 +15,6 @@
 #include <sys/types.h>
 #include <signal.h>
 
-#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp> // ...so now that's defined we can import GLM itself.

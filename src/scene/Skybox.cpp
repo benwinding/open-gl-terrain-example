@@ -1,7 +1,6 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include <GL/glew.h>
 #include "external_files/stb_image.h"
 #include "scene/Skybox.h"
 

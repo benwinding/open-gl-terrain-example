@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include <GL/glew.h>
 #include "glm/glm.hpp"
 #include "external_files/stb_image.h"
 #include "utils/Random.h"

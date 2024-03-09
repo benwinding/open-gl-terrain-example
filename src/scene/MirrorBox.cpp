@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <iostream>
 #include "external_files/stb_image.h"
 #include "utils/Logger.h"
