@@ -30,12 +30,12 @@ $(info D_FILES         = $(O_FILES) )
 $(info FLAGS_BUILDING  = $(FLAGS_BUILDING) )
 $(info FLAGS_LINKING   = $(FLAGS_LINKING) )
 
-all: 
-	$(EXE)
+all: $(EXE)
 
 # Linking
 $(OUT_DIR)%.o: $(SRC_DIR)%.cpp
-	$(CC) $(FLAGS_LINKING) -c -MMD -o $@ $< -include $(D_FILES)
+	$(CC) $(FLAGS_LINKING) -c -MMD -o $@ $<
+-include $(D_FILES)
 
 # Building
 $(EXE): $(O_FILES)
