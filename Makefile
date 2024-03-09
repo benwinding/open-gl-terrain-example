@@ -1,17 +1,10 @@
 PLATFORM := $(shell uname)
-$(info Platform="$(PLATFORM)")
 
 # Project variables
-CC = g++
-EXE = assign3_part2
+CC = clang++
+EXE_FILE = demo
 OUT_DIR = out/
 SRC_DIR = src/
-
-# LINUX install these packages
-# sudo apt-get install libglfw3-dev libglew-dev libglm-dev
-GL_LIBS = `pkg-config --static --libs glfw3 glew`
-EXT =
-CPPFLAGS = `pkg-config --cflags glfw3` -std=c++11 -Iinclude -g
 
 # Directory variables
 SRC_DIRS = $(shell cd $(SRC_DIR) && find . -type d)
@@ -21,21 +14,37 @@ CPP_FILES = $(shell find $(SRC_DIR) -name "*.cpp")
 O_FILES = $(addprefix $(OUT_DIR), $(CPP_FILES:$(SRC_DIR)%.cpp=%.o ))
 D_FILES = $(addprefix $(OUT_DIR), $(CPP_FILES:$(SRC_DIR)%.cpp=%.d ))
 
-# $(info CPP_FILES = $(CPP_FILES) )
-# $(info O_FILES   = $(O_FILES) )
-# $(info D_FILES   = $(D_FILES) )
-
 # Create output paths
 $(shell mkdir -p $(OUT_DIRS))
 
-all: $(EXE)
+# LINUX install these packages
+# sudo apt-get install libglfw3-dev libglew-dev libglm-dev
+FLAGS_BUILDING = `pkg-config --static --libs glfw3 glew`
+FLAGS_LINKING = `pkg-config --cflags glfw3` -std=c++11 -Iinclude -g
 
+ifeq ($(PLATFORM), Darwin)
+  # mac specific, breaks on Linux
+	FLAGS_BUILDING += -framework OpenGL
+endif
+
+$(info Platform        = $(PLATFORM) )
+$(info EXE_FILE        = $(EXE_FILE) )
+$(info CPP_FILES       = $(CPP_FILES) )
+$(info O_FILES         = $(O_FILES) )
+$(info D_FILES         = $(O_FILES) )
+$(info FLAGS_BUILDING  = $(FLAGS_BUILDING) )
+$(info FLAGS_LINKING   = $(FLAGS_LINKING) )
+
+all: $(EXE_FILE)
+
+# Linking
 $(OUT_DIR)%.o: $(SRC_DIR)%.cpp
-	$(CC) $(CPPFLAGS) -c -MMD -o $@ $<
+	$(CC) $(FLAGS_LINKING) -c -MMD -o $@ $<
 -include $(D_FILES)
 
-$(EXE): $(O_FILES)
-	$(CC) -o $(EXE) $(O_FILES) $(GL_LIBS)
+# Building
+$(EXE_FILE): $(O_FILES)
+	$(CC) -o $(EXE_FILE) $(O_FILES) $(FLAGS_BUILDING)
 
 clean:
-	rm -rf $(OUT_DIR)* $(EXE)$(EXT)
+	rm -rf $(OUT_DIR) $(EXE_FILE)

@@ -1,8 +1,2 @@
-assign*
-*.o
-*.d
-.idea
-.svn
-cmake-build-debug
-CMakeFiles
-CMakeCache.txt
+demo
+out
