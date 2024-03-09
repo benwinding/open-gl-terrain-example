@@ -97,7 +97,7 @@ void Terrain::finishShape(std::vector<float> verts) {
     glBindBuffer(GL_ARRAY_BUFFER, vertsVBO);
     glBufferData(GL_ARRAY_BUFFER, verts.size(), &verts[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * SceneComponent::FLOAT_SIZE, (void*)0);
     glBindVertexArray(0);
     shape_terrain shape;
     shape.VAO = vertsVAO;
