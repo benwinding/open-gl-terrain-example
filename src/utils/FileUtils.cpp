@@ -1,5 +1,3 @@
-#include <GL/glew.h>
-
 #include "utils/FileUtils.h"
 
 std::string GetBaseDir(const std::string& filepath) {
@@ -20,12 +18,3 @@ bool FileExists(const std::string& abs_filename) {
 
   return ret;
 }
-
-void CheckErrors(std::string desc) {
-  GLenum e = glGetError();
-  if (e != GL_NO_ERROR) {
-    fprintf(stderr, "OpenGL error in \"%s\": %d (%d)\n", desc.c_str(), e, e);
-    exit(20);
-  }
-}
-

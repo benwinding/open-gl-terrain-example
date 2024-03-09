@@ -5,6 +5,5 @@
 
 std::string GetBaseDir(const std::string& filepath);
 bool FileExists(const std::string& abs_filename);
-void CheckErrors(std::string desc);
 
 #endif
