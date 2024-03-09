@@ -7,18 +7,11 @@
 #define GLFW_INCLUDE_NONE
 
 #include <iostream>
-#include <vector>
-#include <stdlib.h>
 #include <stdio.h>
-
-#include <unistd.h>
 #include <sys/types.h>
 #include <signal.h>
 
 #include <GLFW/glfw3.h>
-
-#include <glm/glm.hpp> // ...so now that's defined we can import GLM itself.
-#include "glm/gtc/matrix_transform.hpp" // Needed for the perspective() method
 
 #include "App.h"
 #include "utils/Logger.h"

@@ -3,10 +3,9 @@
 
 #include "glm/glm.hpp"
 
+#include <vector>
 #include "graphics/Shader.h"
 #include "graphics/Viewer.h"
-#include "graphics/ObjContainer.h"
-#include "graphics/InputState.h"
 #include "scene/SceneComponent.h"
 #include "scene/Terrain.h"
 #include "scene/Player.h"
