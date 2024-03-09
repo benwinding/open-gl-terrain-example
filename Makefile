@@ -1,9 +1,8 @@
 PLATFORM := $(shell uname)
-$(info Platform="$(PLATFORM)")
 
 # Project variables
-CC = clang
-EXE = demo
+CC = clang++
+EXE_FILE = demo
 OUT_DIR = out/
 SRC_DIR = src/
 
@@ -17,20 +16,21 @@ D_FILES = $(addprefix $(OUT_DIR), $(CPP_FILES:$(SRC_DIR)%.cpp=%.d ))
 
 # Create output paths
 $(shell mkdir -p $(OUT_DIRS))
-$(shell touch $(EXE))
 
 # LINUX install these packages
 # sudo apt-get install libglfw3-dev libglew-dev libglm-dev
-FLAGS_BUILDING = `pkg-config --static --libs glfw3 glew` -std=c++11 -Iinclude -g
+FLAGS_BUILDING = `pkg-config --static --libs glfw3 glew` -framework OpenGL
 FLAGS_LINKING = `pkg-config --cflags glfw3` -std=c++11 -Iinclude -g
 
+$(info Platform="$(PLATFORM)")
+$(info EXE_FILE        = $(EXE_FILE) )
 $(info CPP_FILES       = $(CPP_FILES) )
 $(info O_FILES         = $(O_FILES) )
 $(info D_FILES         = $(O_FILES) )
 $(info FLAGS_BUILDING  = $(FLAGS_BUILDING) )
 $(info FLAGS_LINKING   = $(FLAGS_LINKING) )
 
-all: $(EXE)
+all: $(EXE_FILE)
 
 # Linking
 $(OUT_DIR)%.o: $(SRC_DIR)%.cpp
@@ -38,8 +38,8 @@ $(OUT_DIR)%.o: $(SRC_DIR)%.cpp
 -include $(D_FILES)
 
 # Building
-$(EXE): $(O_FILES)
-	$(CC) -o $(EXE) $(O_FILES) $(FLAGS_BUILDING)
+$(EXE_FILE): $(O_FILES)
+	$(CC) -o $(EXE_FILE) $(O_FILES) $(FLAGS_BUILDING)
 
 clean:
-	rm -rf $(OUT_DIR) $(EXE)
+	rm -rf $(OUT_DIR) $(EXE_FILE)
