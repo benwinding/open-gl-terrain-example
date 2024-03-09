@@ -178,7 +178,7 @@ void App::MouseBtn_callback(int button, int action)
 
 void App::MouseMove_callback(double x, double y)
 {
-    userInput.update((float)x, (float)y);
+    userInput.update(x, y);
 }
 
 void App::Key_callback(int key, int action)
@@ -230,7 +230,7 @@ void App::SetWindowSize(int x, int y)
 
 void App::updateProjection()
 {
-    float aspect = (float) this->winX / this->winY;    
+    float aspect = static_cast<float>(this->winX) / this->winY;    
     float fov = 75;
     projection = glm::perspective(glm::radians(fov), aspect, 0.005f, 1000.0f);
 }

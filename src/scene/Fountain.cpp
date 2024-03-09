@@ -97,7 +97,7 @@ void Fountain::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
         if (p->age == p->life)
             p->respawn();
 
-        float percentAge = (float)p->age / (float)p->life;
+        float percentAge = static_cast<float>(p->age) / static_cast<float>(p->life);
         float percentHeight = sin(percentAge * M_PI);
         float particleScale = initScale * (1-percentAge);
 

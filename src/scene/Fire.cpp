@@ -96,7 +96,7 @@ void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
         if (p->age == p->life)
             p->respawn();
 
-        float percentAge = (float)p->age / (float)p->life;
+        float percentAge = static_cast<float>(p->age) / static_cast<float>(p->life);
         float percentHeight = (p->age * p->speed) / p->maxDist;
         float particleScale = initScale * (0.7*(1-percentHeight) + 0.3*(1-percentAge));
 
