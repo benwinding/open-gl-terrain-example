@@ -1,5 +1,6 @@
 #include <cmath>
 #include <cstdlib>
+#include <random>
 #include "utils/Time.h"
 #include "utils/Random.h"
 
@@ -9,11 +10,16 @@ double Random::getTime() {
     return nowTime++;
 }
 
-float Random::randomFloat(float a, float b) {
-    float random = ((float) rand()) / (float) RAND_MAX;
-    float diff = b - a;
-    float r = random * diff;
-    return a + r;
+float Random::randomFloat(float min, float max) {
+    // Create a random device
+    std::random_device rd;
+    // Initialize a Mersenne Twister pseudo-random number generator
+    std::mt19937 gen(rd());
+    // Create a uniform distribution in the range [min, max)
+    std::uniform_real_distribution<> dis(min, max);
+    // Generate a random number
+    float random = dis(gen);
+    return random;
 }
 
 float Random::wave1(float x) {
