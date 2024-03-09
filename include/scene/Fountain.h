@@ -10,10 +10,10 @@
 struct FountainParticle
 {
 private:
-    int minLife = 30;
-    int maxLife = 200;
-    float minSpeed = 1;
-    float maxSpeed = 10;
+    const int minLife = 30;
+    const int maxLife = 200;
+    const float minSpeed = 1;
+    const float maxSpeed = 10;
 
 public:
     int life = 10;

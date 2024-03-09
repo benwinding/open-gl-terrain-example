@@ -10,10 +10,10 @@
 struct FireParticle
 {
 private:
-    int minLife = 30;
-    int maxLife = 100;
-    float minSpeed = 1;
-    float maxSpeed = 2;
+    const int minLife = 30;
+    const int maxLife = 100;
+    const float minSpeed = 1;
+    const float maxSpeed = 2;
 
 public:
     int life = 10;

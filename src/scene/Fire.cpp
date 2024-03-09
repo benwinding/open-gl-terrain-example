@@ -83,7 +83,7 @@ void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
     modelM = glm::translate(modelM, this->location);
     shader->setMat4("model", modelM);
     // Draw fire
-    float initScale = 0.1;
+    static float initScale = 0.1;
     static double time = 0;
     time++;
     float x = time/30;

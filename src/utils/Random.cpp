@@ -31,11 +31,12 @@ float Random::wave2(float x) {
 }
 
 float Random::wave(float x, float y) {
-    static int partCount = 3;
+    static float partCount = 3;
     float wave = 0;
     wave += sin(x)*sin(y) / partCount;
     wave += sin(x/3 + y)*sin(y/2) / partCount;
     wave += sin(x/5)*cos(y/11 + x) / partCount;
-    return wave/2;
+    float halfWave = wave/2;
+    return halfWave;
 }
 

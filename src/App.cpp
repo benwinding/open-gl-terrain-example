@@ -59,8 +59,8 @@ std::vector<InstanceParams*> App::MakeTreeInstances(int instanceCount, glm::vec3
     std::vector<InstanceParams*> instanceList;
     for (int i = 0; i < 1000; ++i)
     {
-        float randX = Random::randomFloat(limitsMin.x, limitsMax.x);
-        float randZ = Random::randomFloat(limitsMin.z, limitsMax.z);
+        const float randX = Random::randomFloat(limitsMin.x, limitsMax.x);
+        const float randZ = Random::randomFloat(limitsMin.z, limitsMax.z);
         float randSize = Random::randomFloat(minSize, size.y);
         if (axisDir == X_DOWN)
             randSize = Random::randomFloat(minSize, size.x);
@@ -230,7 +230,7 @@ void App::SetWindowSize(int x, int y)
 
 void App::updateProjection()
 {
-    float aspect = static_cast<float>(this->winX) / this->winY;    
-    float fov = 75;
+    const float aspect = static_cast<float>(this->winX) / this->winY;    
+    const float fov = 75;
     projection = glm::perspective(glm::radians(fov), aspect, 0.005f, 1000.0f);
 }
