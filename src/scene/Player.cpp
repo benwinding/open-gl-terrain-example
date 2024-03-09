@@ -1,6 +1,5 @@
 #include <cmath>
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -8,6 +7,7 @@
 
 #include "scene/Player.h"
 #include "utils/Logger.h"
+#include "utils/Time.h"
 
 Player::Player(glm::vec3 location, float pan, float tilt)
 {
@@ -75,8 +75,8 @@ void Player::MoveStraight(int moveDir)
 
 float Player::GetPlayerHeight()
 {
-    static double startTime = glfwGetTime();
-    double nowTime = startTime - glfwGetTime();
+    static double startTime = Time::getTimeNow();
+    double nowTime = startTime - Time::getTimeNow();
     return 1+0.04f*sin(nowTime);
 }
 

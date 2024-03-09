@@ -1,11 +1,11 @@
 #include <cmath>
 #include <cstdlib>
-#include <GLFW/glfw3.h>
+#include "utils/Time.h"
 #include "utils/Random.h"
 
 double Random::getTime() {
-    static double startTime = glfwGetTime();
-    static double nowTime = startTime - glfwGetTime();
+    static double startTime = Time::getTimeNow();
+    static double nowTime = startTime - Time::getTimeNow();
     return nowTime++;
 }
 
