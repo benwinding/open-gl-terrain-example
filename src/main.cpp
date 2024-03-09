@@ -8,29 +8,26 @@
 
 #include <iostream>
 #include <stdio.h>
-#include <unistd.h>
 #include <sys/types.h>
-#include <signal.h>
 
 #include <GLFW/glfw3.h>
 
 #include "App.h"
 #include "utils/Logger.h"
+#include "utils/Sound.h"
 
 GLFWwindow* window;
 int winX = 800;
 int winY = 640;
 
 App* TheApp;
-
-pid_t sound_pid;
+Sound sound = Sound();
 
 void key_callback(GLFWwindow* window,
                   int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-         //Sends the SIGINT Signal to the process, telling it to stop.
-        kill(sound_pid, 15); 
+        sound.kill();
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
     TheApp->Key_callback(key, action);
@@ -118,21 +115,9 @@ void printHelp()
     std::cout << helpScreen << std::endl;
 }
 
-void initSound() 
-{
-    sound_pid = fork();
-    if(sound_pid == 0) {
-        Print("Starting sound...", sound_pid);
-        system("xdg-open res/sounds/Gilman_Mom_-_07_-_Cosmic_Evening.ogg");
-        usleep(141 * 1000000);
-        Print("Finished sound...", sound_pid);
-        exit(1);
-    }
-}
-
 int main(int argc, char **argv)
 {
-    initSound();
+    sound.init();
     initWindow();
     initOpengl();
     printHelp();
