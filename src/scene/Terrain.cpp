@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include "external_files/stb_image.h"
 #include "utils/Random.h"
 #include "utils/Logger.h"

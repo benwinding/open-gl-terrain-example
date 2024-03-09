@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <cmath>
 
-#include "glm/gtc/matrix_transform.hpp"
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "utils/Logger.h"
 #include "utils/Random.h"

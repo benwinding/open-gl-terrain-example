@@ -2,7 +2,7 @@
 #define _TERRAIN_H_
 
 #include <vector>
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include "graphics/ObjContainer.h"
 #include "graphics/Shader.h"
 #include "graphics/Viewer.h"

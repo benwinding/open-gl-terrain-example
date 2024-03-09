@@ -1,7 +1,7 @@
 #ifndef _SCENE_COMPONENT_H_
 #define _SCENE_COMPONENT_H_
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 enum alignment 
 {

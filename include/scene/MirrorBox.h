@@ -1,7 +1,7 @@
 #ifndef _MIRROR_BOX_H_
 #define _MIRROR_BOX_H_
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include "graphics/ObjContainer.h"
 #include "graphics/Shader.h"
 #include "graphics/Viewer.h"

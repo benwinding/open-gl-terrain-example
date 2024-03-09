@@ -1,8 +1,8 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "graphics/ObjContainer.h"
 

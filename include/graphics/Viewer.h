@@ -10,7 +10,7 @@
 #define _VIEWER_H_
 
 #include "graphics/InputState.h"
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 /**
  The base Viewer class stores a current view transformation.

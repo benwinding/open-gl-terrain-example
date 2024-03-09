@@ -1,7 +1,7 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
-#include "glm/gtc/matrix_transform.hpp"
+#include <glm/gtc/matrix_transform.hpp>
 #include "graphics/InputState.h"
 
 // Repsonsible For Tracking the players movements

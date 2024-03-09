@@ -1,7 +1,7 @@
 #include <vector>
 #include <string>
 #include <cmath>
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #include "graphics/SceneCalculations.h"
 #include "graphics/ObjContainer.h"

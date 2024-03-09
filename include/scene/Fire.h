@@ -1,7 +1,7 @@
 #ifndef _FIRE_H_
 #define _FIRE_H_
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include "graphics/ObjContainer.h"
 #include "graphics/Shader.h"
 #include "scene/SceneComponent.h"

@@ -1,8 +1,8 @@
 #include <string>
 #include <iostream>
 
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "utils/Logger.h"
 #include "graphics/ObjContainer.h"

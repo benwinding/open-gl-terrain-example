@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include "graphics/ObjContainer.h"
 #include "graphics/Shader.h"
 #include "scene/SceneComponent.h"

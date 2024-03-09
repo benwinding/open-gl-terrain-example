@@ -2,7 +2,7 @@
 #define _OBJSINGLE_H_
 
 #include <string>
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include "graphics/ObjContainer.h"
 #include "graphics/Shader.h"
 #include "graphics/Viewer.h"

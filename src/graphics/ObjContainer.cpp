@@ -3,8 +3,8 @@
 #include <iostream>
 #include <unordered_map>
 
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "external_files/tiny_obj_loader.h"
 #include "external_files/stb_image.h"

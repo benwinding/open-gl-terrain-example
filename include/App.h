@@ -1,7 +1,7 @@
 #ifndef __APP_H_
 #define __APP_H_
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 
 #include <vector>
 #include "graphics/Shader.h"

@@ -1,7 +1,7 @@
 #ifndef _FOUNTAIN_H_
 #define _FOUNTAIN_H_
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include "graphics/ObjContainer.h"
 #include "graphics/Shader.h"
 #include "scene/SceneComponent.h"

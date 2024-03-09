@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include "scene/SceneComponent.h"
 #include "graphics/Shader.h"
 
