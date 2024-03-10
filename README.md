@@ -2,7 +2,7 @@
 
 This is a little OpenGL demo project, written in C++ years ago ([my original code](https://github.com/benwinding/CGA3-part2)), and updated to work on Apple Silicon too!
 
-https://github.com/benwinding/open-gl-terrain-world/assets/11782590/7f23a46e-64da-42e5-bb0d-1418068f1128
+https://github.com/benwinding/open-gl-terrain-example/assets/11782590/e67bb6ea-5012-41d4-8c62-a193dc05d9bb
 
 *Some artifacts of the terrain on the mac version*
 
