@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <string>
 #include <sys/types.h>
 
 #include <GLFW/glfw3.h>
@@ -117,7 +118,17 @@ void printHelp()
 
 int main(int argc, char **argv)
 {
-    sound.init();
+    bool shouldDisableSound = false;
+    for (int count = 0; count < argc; count++) {
+        const auto currentArg = std::string(argv[count]);
+        const auto hasDisableSoundArg = currentArg.compare("--disable-sound") != 0;
+        if (hasDisableSoundArg) {
+            shouldDisableSound = true;
+        }
+    }
+    if (!shouldDisableSound) {
+        sound.init();
+    }
     initWindow();
     initOpengl();
     printHelp();
