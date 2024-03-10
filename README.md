@@ -1,6 +1,6 @@
-## OpenGL Example - Walking around
+## `open-gl-terrain-example`
 
-A little OpenGL demo project, written in C++ years ago, and updated to work on Apple Silicon too.
+This is a little OpenGL demo project, written in C++ years ago ([my original code](https://github.com/benwinding/CGA3-part2)), and updated to work on Apple Silicon too!
 
 https://github.com/benwinding/open-gl-terrain-world/assets/11782590/7f23a46e-64da-42e5-bb0d-1418068f1128
 
@@ -18,8 +18,8 @@ https://github.com/benwinding/open-gl-terrain-world/assets/11782590/7f23a46e-64d
 
 This project has the following dependencies:
 
-- Libraries:
-  - OpenGl 4 (compatible with Mac)
+- C++ Libraries:
+  - OpenGL (compatible with Mac Silicon)
   - GLFW
   - GLEW
 - Build System
