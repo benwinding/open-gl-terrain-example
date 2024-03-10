@@ -57,15 +57,17 @@ std::vector<InstanceParams*> App::MakeTreeInstances(int instanceCount, glm::vec3
     glm::vec3 limitsMax = size + location;
 
     std::vector<InstanceParams*> instanceList;
-    for (int i = 0; i < 1000; ++i)
+    const int TREE_COUNT = 1000;
+    int RAND_SEED = 2;
+    for (int i = 0; i < TREE_COUNT; ++i)
     {
-        const float randX = Random::randomFloat(limitsMin.x, limitsMax.x);
-        const float randZ = Random::randomFloat(limitsMin.z, limitsMax.z);
-        float randSize = Random::randomFloat(minSize, size.y);
+        const float randX = Random::randomFloatSeeded(limitsMin.x, limitsMax.x, RAND_SEED++);
+        const float randZ = Random::randomFloatSeeded(limitsMin.z, limitsMax.z, RAND_SEED++);
+        float randSize = Random::randomFloatSeeded(minSize, size.y, RAND_SEED++);
         if (axisDir == X_DOWN)
-            randSize = Random::randomFloat(minSize, size.x);
+            randSize = Random::randomFloatSeeded(minSize, size.x, RAND_SEED++);
         if (axisDir == Z_DOWN)
-            randSize = Random::randomFloat(minSize, size.z);
+            randSize = Random::randomFloatSeeded(minSize, size.z, RAND_SEED++);
         glm::vec3 location = GetGroundPos(randX, -randSize*0.05, randZ);
         if (location.y < -0.2)
             continue;

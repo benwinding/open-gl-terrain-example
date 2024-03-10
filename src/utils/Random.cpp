@@ -4,17 +4,21 @@
 #include "utils/Time.h"
 #include "utils/Random.h"
 
-double Random::getTime() {
-    static double startTime = Time::getTimeNow();
-    static double nowTime = startTime - Time::getTimeNow();
-    return nowTime++;
-}
-
 float Random::randomFloat(float min, float max) {
     // Create a random device
     std::random_device rd;
     // Initialize a Mersenne Twister pseudo-random number generator
     std::mt19937 gen(rd());
+    // Create a uniform distribution in the range [min, max)
+    std::uniform_real_distribution<> dis(min, max);
+    // Generate a random number
+    float random = dis(gen);
+    return random;
+}
+
+float Random::randomFloatSeeded(float min, float max, unsigned int seed) {
+    // Initialize a Mersenne Twister pseudo-random number generator
+    std::mt19937 gen(seed);
     // Create a uniform distribution in the range [min, max)
     std::uniform_real_distribution<> dis(min, max);
     // Generate a random number
