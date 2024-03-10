@@ -25,7 +25,6 @@ public:
     float variance = 0;
 
     void respawn() {
-        srand(Random::getTime());
         this->life = Random::randomFloat(this->minLife, this->maxLife);
         this->age = Random::randomFloat(0, this->life);
         this->speed = Random::randomFloat(this->minSpeed, this->maxSpeed);
@@ -34,10 +33,6 @@ public:
         this->initz = Random::randomFloat(-1, 1);
         this->variance = Random::randomFloat(-1, 1);
     }
-
-    // FireParticle() {
-    //     maxDist 
-    // }
     int maxDist = this->maxLife * this->maxSpeed;
 };
 

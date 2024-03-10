@@ -25,7 +25,6 @@ public:
     float variance = 0;
 
     void respawn() {
-        srand(Random::getTime());
         this->life = Random::randomFloat(this->minLife, this->maxLife);
         this->age = Random::randomFloat(0, this->life);
         this->speed = Random::randomFloat(this->minSpeed, this->maxSpeed);
