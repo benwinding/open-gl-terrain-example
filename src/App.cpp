@@ -19,12 +19,9 @@
 #include "scene/Fountain.h"
 #include "scene/Terrain.h"
 
-bool RENDER_ENVIRONMENT;
-
 // Public API
 App::App(int winX, int winY, int argc)
 {
-    RENDER_ENVIRONMENT = argc == 1;
     this->SetWindowSize(winX, winY);
     float topViewHeight = 5.f;
     this->CamTopView = new TopObjectViewer(topViewHeight);
@@ -131,8 +128,6 @@ void App::loadSceneComponents()
     // AddComp(new ObjInstanced(MakeTreeInstances(30, treesLocation, treesSize2, 6, Y_DOWN), dir1 + "tree2/tree2.obj", Y_DOWN));
     // AddComp(new ObjInstanced(MakeTreeInstances(80, treesLocation, treesSize2, glm::vec3(glm::radians(-90.f),0,0), 1, X_DOWN), dir1 + "spruce/Spruce.obj", X_DOWN));
 
-    if (!RENDER_ENVIRONMENT)
-        return;
     std::string cubeMapDir = "./res/skyboxes/hangingstone/";
     glm::vec3 mirrorLocation(0, -mapSize, 0);
     AddComp(new MirrorBox(mapSize, mirrorLocation, &this->Camera, cubeMapDir));

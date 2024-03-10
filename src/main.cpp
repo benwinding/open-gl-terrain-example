@@ -1,9 +1,3 @@
-
-/**
- * Draws a single cube in front of the camera.
- * Toggles Projection matrix, and depth buffer.
- */
-
 #define GLFW_INCLUDE_NONE
 
 #include <iostream>
@@ -103,14 +97,20 @@ void printHelp()
 {
     const char * helpScreen = R"V0G0N(
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        ~~~~ Assignment 3 - Part 2 ~~~~
+        ~~~~~~~~~ OpenGL Demo ~~~~~~~~~
         ~~~~~~~ By Ben Winding ~~~~~~~~
 
     Usage: 
-        ./assign3_part2
+        ./demo
+        ./demo --disable-sound
 
     Keyboard:
         ESC  = Exit Program
+        Arrows = Move around
+        U = Tilt view up
+        D = Tilt view down
+        1 = First Person View
+        2 = Top View
 
     )V0G0N";
     std::cout << helpScreen << std::endl;
@@ -120,9 +120,8 @@ int main(int argc, char **argv)
 {
     bool shouldDisableSound = false;
     for (int count = 0; count < argc; count++) {
-        const auto currentArg = std::string(argv[count]);
-        const auto hasDisableSoundArg = currentArg.compare("--disable-sound") != 0;
-        if (hasDisableSoundArg) {
+        std::string currentArg = std::string(argv[count]);
+        if (currentArg == std::string("--disable-sound")) {
             shouldDisableSound = true;
         }
     }
@@ -133,7 +132,7 @@ int main(int argc, char **argv)
     initOpengl();
     printHelp();
     // Parse program arguments, add to a vector
-    std::string windowTitle = "Assign3 - Part2";
+    std::string windowTitle = "OpenGL Demo - By Ben Winding";
     glfwSetWindowTitle(window, windowTitle.c_str());
     TheApp = new App(winX, winY, argc);
 
