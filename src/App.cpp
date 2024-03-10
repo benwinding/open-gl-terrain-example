@@ -54,9 +54,9 @@ std::vector<InstanceParams*> App::MakeTreeInstances(int instanceCount, glm::vec3
     glm::vec3 limitsMax = size + location;
 
     std::vector<InstanceParams*> instanceList;
-    const int TREE_COUNT = 1000;
-    int RAND_SEED = 2;
-    for (int i = 0; i < TREE_COUNT; ++i)
+    const int MAX_ITERATIONS = 1000;
+    static int RAND_SEED = 2;
+    for (int i = 0; i < MAX_ITERATIONS; ++i)
     {
         const float randX = Random::randomFloatSeeded(limitsMin.x, limitsMax.x, RAND_SEED++);
         const float randZ = Random::randomFloatSeeded(limitsMin.z, limitsMax.z, RAND_SEED++);
@@ -66,9 +66,11 @@ std::vector<InstanceParams*> App::MakeTreeInstances(int instanceCount, glm::vec3
         if (axisDir == Z_DOWN)
             randSize = Random::randomFloatSeeded(minSize, size.z, RAND_SEED++);
         glm::vec3 location = GetGroundPos(randX, -randSize*0.05, randZ);
-        if (location.y < -0.2)
+        bool isInWater = location.y < -0.2;
+        if (isInWater)
             continue;
-        if (instanceList.size() > instanceCount)
+        bool reachedLimit = instanceList.size() > instanceCount;
+        if (reachedLimit)
             break;
         InstanceParams* instance = new InstanceParams();
         instance->location = location;
@@ -125,7 +127,7 @@ void App::loadSceneComponents()
     // Trees
     AddComp(new ObjInstanced(MakeTreeInstances(50, treesLocation, treesSize1, 6, Y_DOWN), dir1 + "tree/PineTree03.obj", Y_DOWN));
     AddComp(new ObjInstanced(MakeTreeInstances(70, treesLocation, treesSize2, 6, Y_DOWN), dir1 + "pine/PineTransp.obj", Y_DOWN));
-    // AddComp(new ObjInstanced(MakeTreeInstances(30, treesLocation, treesSize2, 6, Y_DOWN), dir1 + "tree2/tree2.obj", Y_DOWN));
+    // AddComp(new ObjInstanced(MakeTreeInstances(30, treesLocation, treesSize2, 6, Y_DOWN), dir1 + "winterTree/tree.obj", Y_DOWN));
     // AddComp(new ObjInstanced(MakeTreeInstances(80, treesLocation, treesSize2, glm::vec3(glm::radians(-90.f),0,0), 1, X_DOWN), dir1 + "spruce/Spruce.obj", X_DOWN));
 
     std::string cubeMapDir = "./res/skyboxes/hangingstone/";
