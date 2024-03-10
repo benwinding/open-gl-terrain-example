@@ -208,6 +208,12 @@ void App::Key_callback(int key, int action)
         case GLFW_KEY_KP_ADD:
             this->CamTopView->zoomIn();
             break;
+        case GLFW_KEY_U:
+            userInput.setTiltUp(repeatPress);
+            break;
+        case GLFW_KEY_D:
+            userInput.setTiltDown(repeatPress);
+            break;
     }
 
     if (singlePress)

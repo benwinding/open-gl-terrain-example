@@ -20,16 +20,21 @@ enum keyMove {
     MOVE_BACKWARD,
     MOVE_LEFTBACKWARD,
 
+    MOVE_TILTUP,
+    MOVE_TILTDOWN,
+
     NOMOVE,
 };
 
 struct InputState
 {    
-    InputState(): lMousePressed(false),
-                  rMousePressed(false),
-                  prevX(0), prevY(0),
-                  deltaX(0), deltaY(0) {
-                  }
+    InputState(): 
+        lMousePressed(false),
+        rMousePressed(false),
+        prevX(0), 
+        prevY(0),
+        deltaX(0), 
+        deltaY(0) { }
 
     // Is the mouse button currently being held down?
     bool lMousePressed = false;
@@ -105,6 +110,11 @@ struct InputState
         if (stateRight)
             return MOVE_RIGHT;
 
+        if (stateTiltUp)
+            return MOVE_TILTUP;
+        if (stateTiltDown)
+            return MOVE_TILTDOWN;
+
         return NOMOVE;
     };
 
@@ -124,12 +134,20 @@ struct InputState
     void setRight(bool state) {
         stateRight = state;
     };
+    void setTiltUp(bool state) {
+        stateTiltUp = state;
+    };
+    void setTiltDown(bool state) {
+        stateTiltDown = state;
+    };
 
 private:
     bool stateUp = false;
     bool stateDown = false;
     bool stateLeft = false;
     bool stateRight = false;
+    bool stateTiltUp = false;
+    bool stateTiltDown = false;
 };
 
 #endif // _INPUTSTATE_H_

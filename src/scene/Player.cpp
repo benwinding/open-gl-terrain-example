@@ -39,6 +39,12 @@ void Player::Update(InputState userInput)
         case MOVE_RIGHT:
             PanRight();
             break;
+        case MOVE_TILTUP:
+            TiltUp();
+            break;
+        case MOVE_TILTDOWN:
+            TiltDown();
+            break;
         case MOVE_LEFTFORWARD:
             PanLeft();
             MoveStraight(MOVE_FORWARD);
