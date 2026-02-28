@@ -26,6 +26,25 @@ This project has the following dependencies:
   - Make
   - Clang
 
+### Build - Nix (Mac + Linux)
+
+If you prefer isolated deps on macOS or Linux:
+
+``` shell
+# Flakes
+nix develop
+# Or non-flake
+nix-shell
+# Then build with
+make
+```
+
+Or use the helper script:
+
+``` shell
+./scripts/nix-build.sh
+```
+
 ### Build - Linux
 
 Make sure you have installed the relevant `apt` libs:
