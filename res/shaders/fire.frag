@@ -1,4 +1,4 @@
-#version 330 core
+#version 330
 
 in vec3 FragPos;
 
@@ -8,5 +8,5 @@ uniform vec3 colour;
 
 void main()
 {
-    FragColor = vec4(colour, 1);
+    FragColor = vec4(colour, 1.0);
 }

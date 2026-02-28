@@ -8,6 +8,7 @@ pkgs.mkShell {
     glfw
     glew
     glm
+    emscripten
   ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [
     mesa
   ];

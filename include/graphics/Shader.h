@@ -9,18 +9,24 @@
 **************************************************/
 
 #include <string>
+#if defined(__EMSCRIPTEN__)
+#include <GLES3/gl3.h>
+#else
 #include <GL/glew.h>
+#endif
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 class Shader
 {
-	int shaderId;
+    int shaderId;
     std::string shaderPath;
-	int getHandle(std::string uniformName);
-	int CompileShader(const char *ShaderPath, const GLuint ShaderID);
-	GLuint LoadShaders(std::string vertex_file_path, std::string fragment_file_path);
+    int getHandle(std::string uniformName);
+    std::string PrepareShaderSource(const std::string &shaderSource, GLenum shaderType);
+    int CompileShader(const char *ShaderPath, const GLuint ShaderID, GLenum shaderType);
+    GLuint LoadShaders(std::string vertex_file_path, std::string fragment_file_path);
+
 public:
     Shader(std::string vertex_file_path, std::string fragment_file_path);
     void setMat4(std::string uniformName, const glm::mat4 &mat);

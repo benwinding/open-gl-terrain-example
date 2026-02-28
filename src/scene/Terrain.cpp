@@ -125,7 +125,9 @@ void Terrain::render(glm::mat4 viewMtx, glm::mat4 projectionMtx)
     shader->setVec3("colorMin", glm::vec3(0.1,0.4,0.1));
     shader->setFloat("mixFactor1", 1);
     shader->setFloat("mixFactor2", 1);
+#ifndef __EMSCRIPTEN__
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
     for (int i = 0; i < this->shapes.size(); ++i)
     {
         shape_terrain shape = this->shapes.at(i);

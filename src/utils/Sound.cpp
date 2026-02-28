@@ -1,3 +1,14 @@
+#if defined(__EMSCRIPTEN__)
+#include "utils/Sound.h"
+#include "utils/Logger.h"
+
+void Sound::init() {
+  Print("Sound disabled in web build", 0);
+}
+
+void Sound::kill() {
+}
+#else
 #include <iostream>
 #include <string>
 #include <unistd.h>
@@ -28,3 +39,4 @@ void Sound::kill() {
   //Sends the SIGINT Signal to the process, telling it to stop.
   ::kill(this->sound_pid, 15); 
 }
+#endif

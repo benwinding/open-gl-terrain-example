@@ -45,6 +45,18 @@ Or use the helper script:
 ./scripts/nix-build.sh
 ```
 
+### Build - Web (Emscripten)
+
+With Nix (includes emscripten) you can build a WebGL version:
+
+``` shell
+make web
+# or
+./scripts/nix-web-build.sh
+```
+
+This outputs `web/index.html`, `web/index.js`, and `web/index.wasm`. Serve the `web/` directory with a static server.
+
 ### Build - Linux
 
 Make sure you have installed the relevant `apt` libs:

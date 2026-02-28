@@ -90,8 +90,8 @@ void main(void)
     int mode = scene.lightingMode;
     // int mode = 0;
     Light light;
-    light.ambient = vec3(1,1,1);
-    light.constant = 1;
+    light.ambient = vec3(1.0, 1.0, 1.0);
+    light.constant = 1.0;
     light.linear = 0.09;
     light.quadratic = 0.032;
     /*
@@ -104,7 +104,7 @@ void main(void)
     {
         light.diffuse = vec3(1.0, 0.5, 0.5);
         light.specular = vec3(0.5, 0.5, 1.0);
-        vec3 direction = vec3(0, -1, 0);
+        vec3 direction = vec3(0.0, -1.0, 0.0);
         colour = ApplyDirectionalLight(material, light, direction);
     }
     /*
@@ -121,13 +121,13 @@ void main(void)
         A yellow point light that rotates around the object at a fixed speed;
      */
     else if (mode == 2) {
-        light.diffuse = vec3(1,0.5,0.5);
-        light.specular = vec3(1,0.5,1);
+        light.diffuse = vec3(1.0, 0.5, 0.5);
+        light.specular = vec3(1.0, 0.5, 1.0);
         vec3 position = scene.rotatingPosition;
         colour = ApplyBlingPhong(material, light, position);
     }
     else {
         colour = texture(material.texture, TexCoords).rgb;
     }
-    FragColor = vec4(colour, 1);
+    FragColor = vec4(colour, 1.0);
 }

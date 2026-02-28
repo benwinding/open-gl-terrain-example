@@ -122,7 +122,9 @@ void Fire::render(glm::mat4 viewMtx, glm::mat4 projectionMtx) {
         shader->setVec3("colour", colour);
         this->drawObject();
     }
+#ifndef __EMSCRIPTEN__
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
 }
 
 void Fire::drawObject() 

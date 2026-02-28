@@ -4,19 +4,58 @@
 #include <iostream>
 #include <fstream>
 
+#if defined(__EMSCRIPTEN__)
+#include <GLES3/gl3.h>
+#include <emscripten/emscripten.h>
+#else
 #include <GL/glew.h>
+#endif
 
 #include "graphics/Shader.h"
 
-int Shader::CompileShader(const char *ShaderPath, const GLuint ShaderID)
+std::string Shader::PrepareShaderSource(const std::string &shaderSource, GLenum shaderType)
+{
+#if defined(__EMSCRIPTEN__)
+    std::string output = shaderSource;
+    const std::string versionToken = "#version 330";
+    const std::string esVersionToken = "#version 300 es";
+    size_t versionPos = output.find(versionToken);
+    if (versionPos != std::string::npos) {
+        output.replace(versionPos, versionToken.size(), esVersionToken);
+    } else {
+        output = esVersionToken + "\n" + output;
+    }
+
+    if (shaderType == GL_FRAGMENT_SHADER && output.find("precision") == std::string::npos) {
+        size_t insertPos = output.find('\n');
+        if (insertPos != std::string::npos) {
+            output.insert(insertPos + 1, "precision mediump float;\n");
+        } else {
+            output += "\nprecision mediump float;\n";
+        }
+    }
+
+    return output;
+#else
+    (void)shaderType;
+    return shaderSource;
+#endif
+}
+
+int Shader::CompileShader(const char *ShaderPath, const GLuint ShaderID, GLenum shaderType)
 {
 	// Read shader code from file
 	std::string ShaderCode;
 	std::ifstream ShaderStream (ShaderPath, std::ios::in);
 	if (ShaderStream.is_open()) {
 		std::string Line = "";
+        bool firstLine = true;
 		while (getline(ShaderStream, Line)) {
-			ShaderCode += "\n" + Line;
+            if (!firstLine) {
+                ShaderCode += "\n";
+            }
+            firstLine = false;
+			ShaderCode += Line;
         }
 		ShaderStream.close();
 	}
@@ -24,6 +63,8 @@ int Shader::CompileShader(const char *ShaderPath, const GLuint ShaderID)
         std::cerr << "Cannot open " << ShaderPath << ". Are you in the right directory?" << std::endl;
 		return 0;
 	}
+
+    ShaderCode = PrepareShaderSource(ShaderCode, shaderType);
 
 	// Compile Shader
 	char const *SourcePointer = ShaderCode.c_str();
@@ -37,13 +78,20 @@ int Shader::CompileShader(const char *ShaderPath, const GLuint ShaderID)
 	glGetShaderiv(ShaderID, GL_COMPILE_STATUS, &Result);
 	glGetShaderiv(ShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
     // printf("compiled shader %d %d\n", Result, InfoLogLength);
-	if ( InfoLogLength > 1 ) {
-        char ShaderErrorMessage[InfoLogLength+1];
+	if (InfoLogLength > 1 || Result == GL_FALSE) {
+        std::vector<char> ShaderErrorMessage(InfoLogLength + 1);
 		glGetShaderInfoLog( ShaderID,
                             InfoLogLength,
                             NULL,
-                            &ShaderErrorMessage[0]);
-        std::cerr << &ShaderErrorMessage[0] << std::endl;
+                            ShaderErrorMessage.data());
+        std::cerr << "Shader compile failed: " << ShaderPath << std::endl;
+        std::cerr << ShaderErrorMessage.data() << std::endl;
+#if defined(__EMSCRIPTEN__)
+        emscripten_log(EM_LOG_ERROR, "Shader compile failed: %s", ShaderPath);
+        emscripten_log(EM_LOG_ERROR, "%s", ShaderErrorMessage.data());
+        emscripten_log(EM_LOG_ERROR, "Shader source:\n%s", ShaderCode.c_str());
+        std::cerr << "Shader source:\n" << ShaderCode << std::endl;
+#endif
         return 0;
 	}
     return 1;
@@ -57,8 +105,8 @@ GLuint Shader::LoadShaders(std::string vertex_file_path,
 	GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
     // Compile both shaders. Exit if compile errors.
-    if ( !CompileShader(vertex_file_path.c_str(), VertexShaderID)
-         || !CompileShader(fragment_file_path.c_str(), FragmentShaderID) ) {
+    if ( !CompileShader(vertex_file_path.c_str(), VertexShaderID, GL_VERTEX_SHADER)
+         || !CompileShader(fragment_file_path.c_str(), FragmentShaderID, GL_FRAGMENT_SHADER) ) {
         return 0;
     }
     

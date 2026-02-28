@@ -12,5 +12,5 @@ uniform int debugMode;
 
 void main(void)
 {
-    FragColor = vec4(TerrainColour, 1);
+    FragColor = vec4(TerrainColour, 1.0);
 }

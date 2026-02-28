@@ -22,6 +22,16 @@ $(shell mkdir -p $(OUT_DIRS))
 FLAGS_BUILDING = `pkg-config --static --libs glfw3 glew`
 FLAGS_LINKING = `pkg-config --cflags glfw3` -std=c++11 -Iinclude -g
 
+WEB_OUT_DIR = web
+WEB_TARGET = $(WEB_OUT_DIR)/index.html
+WEB_CFLAGS = $(shell pkg-config --cflags glm)
+WEB_FLAGS = -std=c++11 -Iinclude $(WEB_CFLAGS) \
+	-s USE_GLFW=3 \
+	-s USE_WEBGL2=1 \
+	-s FULL_ES3=1 \
+	-s ALLOW_MEMORY_GROWTH=1 \
+	--preload-file res@res
+
 ifeq ($(PLATFORM), Darwin)
   # mac specific, breaks on Linux
 	FLAGS_BUILDING += -framework OpenGL
@@ -35,6 +45,8 @@ $(info D_FILES         = $(O_FILES) )
 $(info FLAGS_BUILDING  = $(FLAGS_BUILDING) )
 $(info FLAGS_LINKING   = $(FLAGS_LINKING) )
 
+.PHONY: all clean web
+
 all: $(EXE_FILE)
 
 # Linking
@@ -46,5 +58,11 @@ $(OUT_DIR)%.o: $(SRC_DIR)%.cpp
 $(EXE_FILE): $(O_FILES)
 	$(CC) -o $(EXE_FILE) $(O_FILES) $(FLAGS_BUILDING)
 
+web: $(WEB_TARGET)
+
+$(WEB_TARGET):
+	mkdir -p $(WEB_OUT_DIR)
+	em++ $(CPP_FILES) $(WEB_FLAGS) -o $(WEB_TARGET)
+
 clean:
-	rm -rf $(OUT_DIR) $(EXE_FILE)
+	rm -rf $(OUT_DIR) $(EXE_FILE) $(WEB_OUT_DIR)

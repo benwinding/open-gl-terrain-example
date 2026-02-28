@@ -27,9 +27,9 @@ vec3 getTerrainColour()
 	float minY = -0.5;
 	float maxY = 0.5;
 	float heightRatio = (a_vertex.y - minY) / (maxY - minY);
-	heightRatio = max(min(heightRatio, 1), 0);
-	vec3 outColour = vec3(0);
-	float h1 = sin(heightRatio*1.5*M_PI + M_PI/2);
+	heightRatio = max(min(heightRatio, 1.0), 0.0);
+	vec3 outColour = vec3(0.0);
+	float h1 = sin(heightRatio*1.5*M_PI + M_PI/2.0);
 	float h2 = sin(heightRatio*1.5*M_PI + M_PI);
 	outColour = mix(colorMid, colorMin, mixFactor1 * h1);
 	outColour = mix(outColour, colorTop, mixFactor2 * h2);

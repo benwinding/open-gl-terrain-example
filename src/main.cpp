@@ -5,6 +5,13 @@
 #include <string>
 #include <sys/types.h>
 
+#if defined(__EMSCRIPTEN__)
+#include <GLES3/gl3.h>
+#include <emscripten/emscripten.h>
+#else
+#include <GL/glew.h>
+#endif
+
 #include <GLFW/glfw3.h>
 
 #include "App.h"
@@ -46,6 +53,22 @@ void windowResize_callback(GLFWwindow *window, int x, int y)
     glViewport( 0, 0, x, y );
 }
 
+void mainLoop(void* arg)
+{
+    (void)arg;
+    if (glfwWindowShouldClose(window)) {
+#if defined(__EMSCRIPTEN__)
+        emscripten_cancel_main_loop();
+#endif
+        glfwDestroyWindow(window);
+        glfwTerminate();
+        return;
+    }
+    TheApp->Render();
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+}
+
 void initWindow() {
     glfwSetErrorCallback(error_callback);
     
@@ -53,13 +76,18 @@ void initWindow() {
         exit(1);
     }
 
+#if defined(__EMSCRIPTEN__)
+    // WebGL2 maps to OpenGL ES 3.0
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+#else
     // Specify that we want OpenGL 3.3
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
     glfwWindowHint(GLFW_FLOATING, GL_TRUE);
+#endif
 
     // Create the window and OpenGL context
     window = glfwCreateWindow(winX, winY, "Epic Model Viewer - (CGA3 - Part 1)", NULL, NULL);
@@ -72,12 +100,14 @@ void initWindow() {
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
+#ifndef __EMSCRIPTEN__
     // Initialize GLEW
     glewExperimental = true; // Needed for core profile
     if (glewInit() != GLEW_OK) {
         std::cerr << "Failed to initialize GLEW\n";
         exit(1);
     }
+#endif
 
     // Callback functions
     glfwSetKeyCallback(window, key_callback);
@@ -125,6 +155,9 @@ int main(int argc, char **argv)
             shouldDisableSound = true;
         }
     }
+#ifdef __EMSCRIPTEN__
+    shouldDisableSound = true;
+#endif
     if (!shouldDisableSound) {
         sound.init();
     }
@@ -136,6 +169,9 @@ int main(int argc, char **argv)
     glfwSetWindowTitle(window, windowTitle.c_str());
     TheApp = new App(winX, winY, argc);
 
+#ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop_arg(mainLoop, nullptr, 0, true);
+#else
     while (!glfwWindowShouldClose(window))
     {
         glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);
@@ -150,4 +186,5 @@ int main(int argc, char **argv)
     exit(0);
 
     return 0;
+#endif
 }   
