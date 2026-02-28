@@ -22,7 +22,7 @@ jobs:
 
       - name: Build web bundle
         run: |
-          nix --extra-experimental-features "nix-command flakes" develop --command "make web"
+          nix --extra-experimental-features "nix-command flakes" develop --command make web
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
