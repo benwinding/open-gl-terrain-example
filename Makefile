@@ -30,7 +30,8 @@ WEB_FLAGS = -std=c++11 -Iinclude $(WEB_CFLAGS) \
 	-s USE_WEBGL2=1 \
 	-s FULL_ES3=1 \
 	-s ALLOW_MEMORY_GROWTH=1 \
-	--preload-file res@res
+	--preload-file res@res \
+	--shell-file emscripten_shell.html
 
 ifeq ($(PLATFORM), Darwin)
   # mac specific, breaks on Linux
@@ -63,6 +64,8 @@ web: $(WEB_TARGET)
 $(WEB_TARGET):
 	mkdir -p $(WEB_OUT_DIR)
 	em++ $(CPP_FILES) $(WEB_FLAGS) -o $(WEB_TARGET)
+	mkdir -p $(WEB_OUT_DIR)/res
+	cp -R res/sounds $(WEB_OUT_DIR)/res/
 
 clean:
 	rm -rf $(OUT_DIR) $(EXE_FILE) $(WEB_OUT_DIR)

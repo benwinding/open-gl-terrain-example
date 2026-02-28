@@ -55,7 +55,7 @@ make web
 ./scripts/nix-web-build.sh
 ```
 
-This outputs `web/index.html`, `web/index.js`, and `web/index.wasm`. Serve the `web/` directory with a static server.
+This outputs `web/index.html`, `web/index.js`, and `web/index.wasm`. Serve the `web/` directory with a static server. Browsers require a user gesture to start audio, so click the page once to enable sound.
 
 ### Build - Linux
 

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OpenGL Demo - By Ben Winding</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #111; }
+      canvas { width: 100%; height: 100%; display: block; }
+      #audio-hint {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.75);
+        color: #f0f0f0;
+        font-family: sans-serif;
+        font-size: 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        user-select: none;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="audio-hint" type="button">Enable Sound</button>
+    <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+    <audio id="bg-audio" src="res/sounds/Gilman_Mom_-_07_-_Cosmic_Evening.ogg" autoplay loop muted playsinline></audio>
+    <script>
+      var Module = {
+        preRun: [],
+        postRun: [],
+        canvas: (function () {
+          return document.getElementById('canvas');
+        })(),
+        onRuntimeInitialized: function () {
+          var audio = document.getElementById('bg-audio');
+          var hint = document.getElementById('audio-hint');
+          var tryPlay = function () {
+            audio.muted = false;
+            audio.play().then(function () {
+              if (hint) {
+                hint.remove();
+              }
+            }).catch(function () {
+            });
+          };
+          document.addEventListener('click', tryPlay, { once: true });
+          document.addEventListener('keydown', tryPlay, { once: true });
+          document.addEventListener('visibilitychange', function () {
+            if (!document.hidden) {
+              tryPlay();
+            }
+          });
+          window.addEventListener('focus', tryPlay);
+          if (hint) {
+            hint.addEventListener('click', tryPlay);
+          }
+          audio.play().catch(function () {
+          });
+        }
+      };
+    </script>
+    {{{ SCRIPT }}}
+  </body>
+</html>
