@@ -95,13 +95,13 @@ void Terrain::finishShape(std::vector<float> verts) {
     glGenBuffers(1, &vertsVBO);
     glBindVertexArray(vertsVAO);
     glBindBuffer(GL_ARRAY_BUFFER, vertsVBO);
-    glBufferData(GL_ARRAY_BUFFER, verts.size(), &verts[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, verts.size() * sizeof(float), &verts[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * SceneComponent::FLOAT_SIZE, (void*)0);
     glBindVertexArray(0);
     shape_terrain shape;
     shape.VAO = vertsVAO;
-    shape.vCount = verts.size();
+    shape.vCount = static_cast<int>(verts.size() / 3);
     this->shapes.push_back(shape);
 }
 
