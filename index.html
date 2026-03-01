@@ -100,12 +100,8 @@
             if (canvas) {
               canvas.style.width = width + 'px';
               canvas.style.height = height + 'px';
-              if (Module.setCanvasSize) {
-                Module.setCanvasSize(width, height, false);
-              } else {
-                canvas.width = width;
-                canvas.height = height;
-              }
+              canvas.width = width;
+              canvas.height = height;
             }
           };
           window.addEventListener('resize', resizeCanvas);
