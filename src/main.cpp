@@ -8,6 +8,7 @@
 #if defined(__EMSCRIPTEN__)
 #include <GLES3/gl3.h>
 #include <emscripten/emscripten.h>
+#include <emscripten/html5.h>
 #else
 #include <GL/glew.h>
 #endif
@@ -64,6 +65,18 @@ void mainLoop(void* arg)
         glfwTerminate();
         return;
     }
+#if defined(__EMSCRIPTEN__)
+    int canvasWidth = 0;
+    int canvasHeight = 0;
+    if (emscripten_get_canvas_element_size("#canvas", &canvasWidth, &canvasHeight) == EMSCRIPTEN_RESULT_SUCCESS) {
+        if (canvasWidth > 0 && canvasHeight > 0 && (canvasWidth != winX || canvasHeight != winY)) {
+            winX = canvasWidth;
+            winY = canvasHeight;
+            TheApp->SetWindowSize(canvasWidth, canvasHeight);
+            glViewport(0, 0, canvasWidth, canvasHeight);
+        }
+    }
+#endif
     TheApp->Render();
     glfwSwapBuffers(window);
     glfwPollEvents();
