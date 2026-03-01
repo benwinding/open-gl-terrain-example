@@ -20,11 +20,57 @@
         border-radius: 6px;
         cursor: pointer;
         user-select: none;
+        z-index: 20;
+      }
+      #mobile-controls {
+        position: absolute;
+        left: 12px;
+        bottom: 12px;
+        display: grid;
+        grid-template-columns: 52px 52px 52px;
+        grid-template-rows: 52px 52px;
+        gap: 8px;
+        z-index: 15;
+      }
+      #mobile-controls button,
+      #mobile-actions button {
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        font-size: 14px;
+        font-family: sans-serif;
+        width: 52px;
+        height: 52px;
+        touch-action: none;
+      }
+      #mobile-actions {
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+        display: grid;
+        grid-auto-rows: 52px;
+        gap: 8px;
+        z-index: 15;
       }
     </style>
   </head>
   <body>
     <button id="audio-hint" type="button">Enable Sound</button>
+    <div id="mobile-controls">
+      <div></div>
+      <button type="button" data-key="ArrowUp">▲</button>
+      <div></div>
+      <button type="button" data-key="ArrowLeft">◀</button>
+      <button type="button" data-key="ArrowDown">▼</button>
+      <button type="button" data-key="ArrowRight">▶</button>
+    </div>
+    <div id="mobile-actions">
+      <button type="button" data-key="U">Look Up</button>
+      <button type="button" data-key="D">Look Down</button>
+      <button type="button" data-key="1">1st Person</button>
+      <button type="button" data-key="2">Top View</button>
+    </div>
     <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
     <audio id="bg-audio" src="res/sounds/Gilman_Mom_-_07_-_Cosmic_Evening.ogg" autoplay loop muted playsinline></audio>
     <script>
@@ -53,6 +99,52 @@
               tryPlay();
             }
           });
+          var sendKey = function (key, isDown) {
+            var codeMap = {
+              ArrowUp: 38,
+              ArrowDown: 40,
+              ArrowLeft: 37,
+              ArrowRight: 39,
+              U: 85,
+              D: 68,
+              "1": 49,
+              "2": 50
+            };
+            var keyCode = codeMap[key] || 0;
+            var event = new KeyboardEvent(isDown ? 'keydown' : 'keyup', {
+              key: key,
+              code: key,
+              keyCode: keyCode,
+              which: keyCode,
+              bubbles: true
+            });
+            window.dispatchEvent(event);
+            document.dispatchEvent(event);
+          };
+
+          var bindButton = function (button) {
+            var key = button.getAttribute('data-key');
+            if (!key) {
+              return;
+            }
+            var press = function (event) {
+              event.preventDefault();
+              sendKey(key, true);
+            };
+            var release = function (event) {
+              event.preventDefault();
+              sendKey(key, false);
+            };
+            button.addEventListener('touchstart', press);
+            button.addEventListener('touchend', release);
+            button.addEventListener('touchcancel', release);
+            button.addEventListener('mousedown', press);
+            button.addEventListener('mouseup', release);
+            button.addEventListener('mouseleave', release);
+          };
+
+          document.querySelectorAll('#mobile-controls button, #mobile-actions button').forEach(bindButton);
+
           window.addEventListener('focus', tryPlay);
           if (hint) {
             hint.addEventListener('click', tryPlay);
