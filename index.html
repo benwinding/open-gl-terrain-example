@@ -74,8 +74,28 @@
     <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
     <audio id="bg-audio" src="res/sounds/Gilman_Mom_-_07_-_Cosmic_Evening.ogg" autoplay loop muted playsinline></audio>
     <script>
+      var resizeCanvas = function () {
+        var canvas = Module && Module.canvas ? Module.canvas : document.getElementById('canvas');
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        if (canvas) {
+          canvas.style.width = width + 'px';
+          canvas.style.height = height + 'px';
+          if (Module && Module.setCanvasSize) {
+            Module.setCanvasSize(width, height, false);
+          } else {
+            canvas.width = width;
+            canvas.height = height;
+          }
+        }
+      };
+
       var Module = {
-        preRun: [],
+        preRun: [function () {
+          Module.canvas = document.getElementById('canvas');
+          window.addEventListener('resize', resizeCanvas);
+          resizeCanvas();
+        }],
         postRun: [],
         canvas: (function () {
           return document.getElementById('canvas');
@@ -93,19 +113,11 @@
             });
           };
 
-          var resizeCanvas = function () {
-            var canvas = Module.canvas;
-            var width = window.innerWidth;
-            var height = window.innerHeight;
-            if (canvas) {
-              canvas.style.width = width + 'px';
-              canvas.style.height = height + 'px';
-              canvas.width = width;
-              canvas.height = height;
-            }
-          };
-          window.addEventListener('resize', resizeCanvas);
+          Module.canvas = document.getElementById('canvas');
           resizeCanvas();
+          setTimeout(resizeCanvas, 0);
+          requestAnimationFrame(resizeCanvas);
+
           document.addEventListener('click', tryPlay, { once: true });
           document.addEventListener('keydown', tryPlay, { once: true });
           document.addEventListener('visibilitychange', function () {

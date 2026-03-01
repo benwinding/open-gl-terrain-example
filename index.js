@@ -5428,6 +5428,7 @@ function dbg(text) {
       HEAP32[((height)>>2)] = canvas.height;
     };
 
+
   var reallyNegative = (x) => x < 0 || (x === 0 && (1/x) === -Infinity);
   
   var convertI32PairToI53 = (lo, hi) => {
@@ -8914,6 +8915,8 @@ var wasmImports = {
   emscripten_cancel_main_loop: _emscripten_cancel_main_loop,
   /** @export */
   emscripten_get_canvas_element_size: _emscripten_get_canvas_element_size,
+  /** @export */
+  emscripten_get_now: _emscripten_get_now,
   /** @export */
   emscripten_log: _emscripten_log,
   /** @export */
