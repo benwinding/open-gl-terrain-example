@@ -30,6 +30,7 @@ WEB_FLAGS = -std=c++11 -Iinclude $(WEB_CFLAGS) \
 	-s USE_WEBGL2=1 \
 	-s FULL_ES3=1 \
 	-s ALLOW_MEMORY_GROWTH=1 \
+	-s EXPORTED_RUNTIME_METHODS='["setCanvasSize"]' \
 	--preload-file res@res \
 	--shell-file emscripten_shell.html
 

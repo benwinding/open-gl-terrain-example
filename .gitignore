@@ -1,3 +1,5 @@
 demo
 out
 web
+node_modules
+playwright-report

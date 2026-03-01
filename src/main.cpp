@@ -66,14 +66,19 @@ void mainLoop(void* arg)
         return;
     }
 #if defined(__EMSCRIPTEN__)
-    int canvasWidth = 0;
-    int canvasHeight = 0;
-    if (emscripten_get_canvas_element_size("#canvas", &canvasWidth, &canvasHeight) == EMSCRIPTEN_RESULT_SUCCESS) {
-        if (canvasWidth > 0 && canvasHeight > 0 && (canvasWidth != winX || canvasHeight != winY)) {
-            winX = canvasWidth;
-            winY = canvasHeight;
-            TheApp->SetWindowSize(canvasWidth, canvasHeight);
-            glViewport(0, 0, canvasWidth, canvasHeight);
+    static double lastResizeCheck = -1.0;
+    double now = emscripten_get_now();
+    if (lastResizeCheck < 0.0 || now - lastResizeCheck > 200.0) {
+        lastResizeCheck = now;
+        int canvasWidth = 0;
+        int canvasHeight = 0;
+        if (emscripten_get_canvas_element_size("#canvas", &canvasWidth, &canvasHeight) == EMSCRIPTEN_RESULT_SUCCESS) {
+            if (canvasWidth > 0 && canvasHeight > 0 && (canvasWidth != winX || canvasHeight != winY)) {
+                winX = canvasWidth;
+                winY = canvasHeight;
+                TheApp->SetWindowSize(canvasWidth, canvasHeight);
+                glViewport(0, 0, canvasWidth, canvasHeight);
+            }
         }
     }
 #endif
@@ -175,6 +180,17 @@ int main(int argc, char **argv)
         sound.init();
     }
     initWindow();
+#ifdef __EMSCRIPTEN__
+    int canvasWidth = 0;
+    int canvasHeight = 0;
+    if (emscripten_get_canvas_element_size("#canvas", &canvasWidth, &canvasHeight) == EMSCRIPTEN_RESULT_SUCCESS) {
+        if (canvasWidth > 0 && canvasHeight > 0) {
+            winX = canvasWidth;
+            winY = canvasHeight;
+            glViewport(0, 0, canvasWidth, canvasHeight);
+        }
+    }
+#endif
     initOpengl();
     printHelp();
     // Parse program arguments, add to a vector

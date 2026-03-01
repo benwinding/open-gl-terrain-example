@@ -1,0 +1,15 @@
+{
+  "name": "open-gl-terrain-example",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:web": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runTestsByPath tests/web-canvas.test.js"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "playwright": "^1.49.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}

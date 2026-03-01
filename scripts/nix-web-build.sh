@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+rm -rf web
+
 if command -v nix >/dev/null 2>&1; then
   if nix --version 2>/dev/null | grep -q "flake"; then
     nix --extra-experimental-features "nix-command flakes" develop --command "make -B web"
